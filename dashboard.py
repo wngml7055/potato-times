@@ -206,11 +206,6 @@ st.divider()
 left, right = st.columns([1,2])
 history = pd.read_csv("data/garak_history.csv")
 
-st.write(
-    history["INVEST_DT"].min(),
-    history["INVEST_DT"].max()
-)
-
 special = history[
     history["G_NAME"] == "특"
 ].copy()
