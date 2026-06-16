@@ -1,4 +1,5 @@
 import streamlit as st
+is_mobile = st.query_params.get("mobile", "0") == "1"
 import pandas as pd
 import subprocess
 import plotly.graph_objects as go
@@ -256,7 +257,14 @@ st.markdown("""
 # 가격 추이
 # =====================
 
-left, right = st.columns([1,2])
+if is_mobile:
+
+    left = st.container()
+    right = st.container()
+
+else:
+
+    left, right = st.columns([1,2])
 history = pd.read_csv("data/garak_history.csv")
 
 special = history[
