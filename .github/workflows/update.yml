@@ -2,7 +2,7 @@ name: Update Potato Data
 
 on:
   schedule:
-    - cron: '0 21 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 permissions:
@@ -23,7 +23,7 @@ jobs:
 
       - name: Install packages
         run: |
-          pip install pandas requests numpy
+          pip install -r requirements.txt
 
       - name: Update Garak
         run: python modules/garak.py
