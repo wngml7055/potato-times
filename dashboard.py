@@ -5,7 +5,6 @@ import subprocess
 import plotly.graph_objects as go
 import os
 from datetime import datetime
-from streamlit_js_eval import streamlit_js_eval
 
 st.set_page_config(
     page_title="Potato Times",
