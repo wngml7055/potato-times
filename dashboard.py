@@ -5,6 +5,7 @@ import subprocess
 import plotly.graph_objects as go
 import os
 from datetime import datetime
+from streamlit_js_eval import streamlit_js_eval
 
 st.set_page_config(
     page_title="Potato Times",
@@ -543,6 +544,16 @@ with left:
     )
 
 with right:
+
+screen_width = streamlit_js_eval(
+    js_expressions='screen.width',
+    key='SCR'
+)
+
+is_mobile = (
+    screen_width is not None
+    and screen_width < 768
+)
 
 #예보 제목======================
     st.markdown("""
