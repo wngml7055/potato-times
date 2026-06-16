@@ -31,6 +31,9 @@ jobs:
       - name: Update Weather
         run: python modules/weather.py
 
+      - name: Update KAMIS
+        run: python modules/kamis.py
+
       - name: Commit updated data
         run: |
           git config user.name "github-actions"
