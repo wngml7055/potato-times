@@ -20,7 +20,7 @@ cookies = {
     "JSESSIONID": "JSESSIONID=J5J7XG9Q13dsYsevenU8qSD584e6hxVFL1NWy1MKozaSgc2tT1mOIDjpV18wiVaz.amV1c19kb21haW4veW91dG9uZw==; JSESSIONID=F95493F34A7DF052092213B33F4B67CA"
 }
 
-start_date = datetime(2025, 1, 1)
+start_date = datetime(2020, 1, 1)
 end_date = datetime.today()
 
 all_data = []

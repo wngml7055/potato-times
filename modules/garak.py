@@ -42,6 +42,12 @@ data = r.json()["dataset"]
 
 df = pd.DataFrame(data)
 
+if len(df) == 0:
+
+    raise Exception(
+        "가락시장 API 데이터 없음"
+    )
+
 # 오늘 데이터 저장
 df.to_csv(
     "data/garak_price.csv",

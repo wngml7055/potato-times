@@ -87,17 +87,38 @@ def get_weather(region_name, region):
 
             date = day.get("data-date")
 
-            weather_am = day.select_one(".daily-weather-am span")
-            weather_pm = day.select_one(".daily-weather-pm span")
+            weather_am_tag = day.select_one(".daily-weather-am span")
+            weather_pm_tag = day.select_one(".daily-weather-pm span")
 
-            weather_am = weather_am.get("title", "-") if weather_am else "-"
-            weather_pm = weather_pm.get("title", "-") if weather_pm else "-"
+            # 중기예보(종일)
+            if not weather_am_tag and not weather_pm_tag:
+
+                allday = day.select_one(".daily-weather-allday span")
+
+                if allday:
+                    weather_am = allday.get("title", "-")
+                    weather_pm = allday.get("title", "-")
+                else:
+                    weather_am = "-"
+                    weather_pm = "-"
+
+            else:
+
+                weather_am = (
+                    weather_am_tag.get("title", "-")
+                    if weather_am_tag else "-"
+                )
+
+                weather_pm = (
+                    weather_pm_tag.get("title", "-")
+                    if weather_pm_tag else "-"
+                )
 
             temps = day.select(".daily-minmax span")
 
             if len(temps) >= 2:
-                min_temp = temps[0].text.replace("℃","")
-                max_temp = temps[1].text.replace("℃","")
+                min_temp = temps[0].text.replace("℃", "")
+                max_temp = temps[1].text.replace("℃", "")
             else:
                 min_temp = "-"
                 max_temp = "-"
@@ -105,15 +126,22 @@ def get_weather(region_name, region):
             pop_am_tag = day.select_one(".daily-pop-am span")
             pop_pm_tag = day.select_one(".daily-pop-pm span")
 
-            if pop_am_tag:
-                pop_am = pop_am_tag.text
-            else:
-                pop_am = "-"
+            # 중기예보(종일 강수확률)
+            if not pop_am_tag and not pop_pm_tag:
 
-            if pop_pm_tag:
-                pop_pm = pop_pm_tag.text
+                pop_all = day.select_one(".daily-pop-allday span")
+
+                if pop_all:
+                    pop_am = pop_all.text
+                    pop_pm = pop_all.text
+                else:
+                    pop_am = "-"
+                    pop_pm = "-"
+
             else:
-                pop_pm = "-"
+
+                pop_am = pop_am_tag.text if pop_am_tag else "-"
+                pop_pm = pop_pm_tag.text if pop_pm_tag else "-"
 
             result.append({
                 "지역": region_name,
