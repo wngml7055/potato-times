@@ -657,6 +657,7 @@ with right:
                     display:flex;
                     overflow-x:auto;
                     gap:4px;
+                    padding-top:-10px;
                     padding-bottom:2px;
                 ">
                     {cards}
