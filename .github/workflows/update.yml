@@ -41,6 +41,6 @@ jobs:
 
           git add data/*.csv
 
-          git diff --staged --quiet || git commit -m "Auto update data"
+          git commit -m "Auto update data $(date)" || true
 
           git push
