@@ -764,7 +764,8 @@ with right:
                             margin-bottom:-8px;
                         ">
                             💧 {row['오후강수확률']}
-                        </div>
+                            </div>
+                            
                         """,
                         unsafe_allow_html=True
                     )
