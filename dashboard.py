@@ -640,7 +640,6 @@ with right:
                     ">
                         💧{row['오후강수확률']}
                     </div>
-                </div>
                 """
 
             html = f"""
