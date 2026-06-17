@@ -764,7 +764,7 @@ with right:
                         unsafe_allow_html=True
                     )
 
-            st.markdown(
-                "<hr style='margin-top:2px;margin-bottom:2px;'>",
-                unsafe_allow_html=True
-            )
+        st.markdown(
+              "<hr style='margin-top:2px;margin-bottom:2px;'>",
+               unsafe_allow_html=True
+        )
