@@ -544,6 +544,14 @@ with left:
 
 with right:
     mobile = st.query_params.get("mobile") == "1"
+    areas = [
+    "양구",
+    "진부",
+    "보성",
+    "영광",
+    "당진",
+    "구미"
+    ]
 
 #예보 제목======================
     st.markdown("""
@@ -764,7 +772,7 @@ with right:
                         unsafe_allow_html=True
                     )
 
-        st.markdown(
-              "<hr style='margin-top:2px;margin-bottom:2px;'>",
-               unsafe_allow_html=True
-        )
+            st.markdown(
+                  "<hr style='margin-top:2px;margin-bottom:2px;'>",
+                   unsafe_allow_html=True
+            )
