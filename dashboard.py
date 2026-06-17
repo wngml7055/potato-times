@@ -660,13 +660,12 @@ with right:
                     padding-bottom:2px;
                 ">
                     {cards}
-                </div>
             </div>
             """
 
             components.html(
                 html,
-                height=130,
+                height=140,
                 scrolling=True
             )
 
