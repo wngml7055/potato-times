@@ -3,8 +3,10 @@ is_mobile = st.query_params.get("mobile", "0") == "1"
 import pandas as pd
 import subprocess
 import plotly.graph_objects as go
+import streamlit.components.v1 as components
 import os
 from datetime import datetime
+
 
 st.set_page_config(
     page_title="Potato Times",
@@ -584,15 +586,13 @@ with right:
 
         for area in areas:
 
-            st.markdown(f"## 📍 {area}")
-
             area_df = weather[
                 weather["지역"] == area
             ]
 
-            cols = st.columns(len(area_df))
+            cards = ""
 
-            for idx, (_, row) in enumerate(area_df.iterrows()):
+            for _, row in area_df.iterrows():
 
                 weather_text = str(row["오후날씨"])
 
@@ -605,26 +605,70 @@ with right:
                         icon = v
                         break
 
-                with cols[idx]:
+                cards += f"""
+                <div style="
+                    width:80px;
+                    flex:0 0 auto;
+                    text-align:center;
+                    padding:5px;
+                ">
+                    <div style="
+                        font-weight:bold;
+                        font-size:14px;
+                    ">
+                        {str(row['날짜'])[5:]}
+                    </div>
 
-                    st.markdown(
-                        f"**{str(row['날짜'])[5:]}**"
-                    )
+                    <div style="
+                        font-size:34px;
+                        line-height:1;
+                        margin:2px 0;
+                    ">
+                        {icon}
+                    </div>
 
-                    st.markdown(
-                        f"<h1 style='text-align:center'>{icon}</h1>",
-                        unsafe_allow_html=True
-                    )
+                    <div style="
+                        font-size:11px;
+                        color:#666;
+                    ">
+                        {row['최저기온']}~{row['최고기온']}°
+                    </div>
 
-                    st.caption(
-                        f"{row['최저기온']}~{row['최고기온']}°C"
-                    )
+                    <div style="
+                        font-size:11px;
+                        color:#666;
+                    ">
+                        💧{row['오후강수확률']}
+                    </div>
+                </div>
+                """
 
-                    st.caption(
-                        f"💧 {row['오후강수확률']}"
-                    )
+            html = f"""
+            <div style="margin-bottom:10px;">
+                <div style="
+                    font-size:20px;
+                    font-weight:bold;
+                    margin-bottom:6px;
+                ">
+                    📍 {area}
+                </div>
 
-            st.divider()
+                <div style="
+                    display:flex;
+                    overflow-x:auto;
+                    gap:4px;
+                    padding-bottom:5px;
+                ">
+                    {cards}
+                </div>
+            </div>
+            """
+
+            components.html(
+                html,
+                height=170,
+                scrolling=True
+            )
 
     # ==========================
     # PC
