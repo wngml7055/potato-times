@@ -134,36 +134,79 @@ else:
 # ==========================
 # 헤더
 # ==========================
+
+status_color = "#DFF5E1" if success else "#FFE2E2"
+text_color   = "#155724" if success else "#B00020"
+status_text  = "정상" if success else "오류"
+
 st.markdown(
     f"""
-    <div style="
+    <style>
+    .pt-header {{
         display:flex;
         justify-content:space-between;
         align-items:center;
         flex-wrap:wrap;
-        margin-bottom:5px;
-    ">
-        <div style="
-            font-size:34px;
-            font-weight:700;
-            color:#203864;
-        ">
+        gap:10px;
+        margin-bottom:8px;
+    }}
+
+    .pt-title {{
+        color:#203864;
+        font-size:2.2rem;
+        font-weight:700;
+        line-height:1.1;
+    }}
+
+    .pt-status {{
+        background:{status_color};
+        color:{text_color};
+        padding:8px 12px;
+        border-radius:8px;
+        text-align:center;
+        font-size:12px;
+        font-weight:bold;
+        line-height:1.3;
+        min-width:90px;
+    }}
+
+    @media (max-width: 768px) {{
+
+        .pt-title {{
+            font-size:1.6rem;
+        }}
+
+        .pt-status {{
+            font-size:11px;
+            padding:6px 10px;
+        }}
+    }}
+    </style>
+
+    <div class="pt-header">
+
+        <div class="pt-title">
             🥔 POTATO TIMES
         </div>
 
-        <div style="
-            background:{status_color};
-            color:{text_color};
-            padding:6px 10px;
-            border-radius:6px;
-            font-size:12px;
-            font-weight:bold;
-            text-align:center;
-        ">
-            {status_text}<br>
+        <div class="pt-status">
+            ● {status_text}<br>
             {datetime.today().strftime("%Y-%m-%d")}
         </div>
+
     </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <hr style="
+        margin-top:0px;
+        margin-bottom:15px;
+        border:none;
+        border-top:3px solid #D9D9D9;
+    ">
     """,
     unsafe_allow_html=True
 )
