@@ -134,112 +134,39 @@ else:
 # ==========================
 # 헤더
 # ==========================
+st.markdown(
+    f"""
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        flex-wrap:wrap;
+        margin-bottom:5px;
+    ">
+        <div style="
+            font-size:34px;
+            font-weight:700;
+            color:#203864;
+        ">
+            🥔 POTATO TIMES
+        </div>
 
-    st.write("mobile =", mobile)
-
-    if mobile:
-        header_left, header_right = st.columns([5,2])
-    else:
-        header_left, header_right = st.columns([8,1])
-
-    with header_left:
-
-        if mobile:
-
-            st.markdown(
-                """
-                <h3 style="
-                    color:#203864;
-                    margin-bottom:0px;
-                    font-weight:700;
-                ">
-                    🥔 POTATO TIMES
-                </h3>
-                """,
-                unsafe_allow_html=True
-            )
-
-        else:
-
-            st.markdown(
-                "# 🥔 POTATO TIMES"
-            )
-
-            st.markdown("""
-            <style>
-
-            h1{
-                color:#203864 !important;
-                font-family:Georgia !important;
-                font-weight:700 !important;
-            }
-
-            </style>
-            """, unsafe_allow_html=True)
-
-        st.markdown(
-            """
-            <hr style="
-                margin-top:0px;
-                margin-bottom:0px;
-                border:none;
-                border-top:3px solid #D9D9D9;
-            ">
-            """,
-            unsafe_allow_html=True
-        )
-
-    with header_right:
-
-        status_color = "#DFF5E1" if success else "#FFE2E2"
-        text_color   = "#155724" if success else "#B00020"
-        status_text  = "정상" if success else "오류"
-
-        update_date = datetime.today().strftime("%m-%d")
-
-        if mobile:
-
-            st.markdown(
-                f"""
-                <div style="
-                    background:{status_color};
-                    color:{text_color};
-                    padding:4px;
-                    border-radius:6px;
-                    text-align:center;
-                    font-size:11px;
-                    font-weight:bold;
-                    margin-top:6px;
-                    line-height:1.2;
-                ">
-                    {status_text}<br>
-                    {update_date}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-        else:
-
-            st.markdown("<br>", unsafe_allow_html=True)
-
-            st.markdown(
-                f"""
-                <div style="
-                    background:{status_color};
-                    color:{text_color};
-                    padding:6px;
-                    border-radius:6px;
-                    text-align:center;
-                    font-size:13px;
-                    font-weight:bold;
-                ">
-                    ● {status_text}<br>
-                    {datetime.today().strftime("%Y-%m-%d")}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        <div style="
+            background:{status_color};
+            color:{text_color};
+            padding:6px 10px;
+            border-radius:6px;
+            font-size:12px;
+            font-weight:bold;
+            text-align:center;
+        ">
+            {status_text}<br>
+            {datetime.today().strftime("%Y-%m-%d")}
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # ======================
 # KAMIS 시장동향
