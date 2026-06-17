@@ -648,7 +648,7 @@ with right:
                 <div style="
                     font-size:20px;
                     font-weight:bold;
-                    margin-bottom:6px;
+                    margin-bottom:2px;
                 ">
                     📍 {area}
                 </div>
