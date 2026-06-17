@@ -135,7 +135,7 @@ else:
 # 헤더
 # ==========================
 
-st.write("mobile =", mobile)
+    st.write("mobile =", mobile)
 
     if mobile:
         header_left, header_right = st.columns([5,2])
