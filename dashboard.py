@@ -558,73 +558,104 @@ with right:
     # ==========================
     # 모바일
     # ==========================
-if mobile:
+    if mobile:
 
-    st.markdown("""
-    <div style="
-        background:#FFF4D6;
-        padding:10px 14px;
-        border-radius:8px;
-        font-size:22px;
-        font-weight:bold;
-        color:#7A4E00;
-        margin-bottom:15px;
-    ">
-        🌞 산지별 10일 예보
-    </div>
-    """, unsafe_allow_html=True)
+        st.markdown("""
+        <div style="
+            background:#FFF4D6;
+            padding:10px 14px;
+            border-radius:8px;
+            font-size:22px;
+            font-weight:bold;
+            color:#7A4E00;
+            margin-bottom:15px;
+        ">
+            🌞 산지별 10일 예보
+        </div>
+        """, unsafe_allow_html=True)
 
-    emoji_map = {
-        "맑음":"☀️",
-        "구름많음":"⛅",
-        "흐림":"☁️",
-        "비":"🌧️",
-        "소나기":"🌦️"
-    }
+        emoji_map = {
+            "맑음": "☀️",
+            "구름많음": "⛅",
+            "흐림": "☁️",
+            "비": "🌧️",
+            "소나기": "🌦️"
+        }
 
-    for area in areas:
+        for area in areas:
 
-        st.markdown(f"## 📍 {area}")
+            st.markdown(f"### 📍 {area}")
 
-        area_df = weather[
-            weather["지역"] == area
-        ]
+            area_df = weather[
+                weather["지역"] == area
+            ]
 
-        cols = st.columns(len(area_df))
+            cards = ""
 
-        for idx, (_, row) in enumerate(area_df.iterrows()):
+            for _, row in area_df.iterrows():
 
-            weather_text = str(row["오후날씨"])
+                weather_text = str(row["오후날씨"])
 
-            icon = "☁️"
+                icon = "☁️"
 
-            for k,v in emoji_map.items():
+                for key, value in emoji_map.items():
+                    if key in weather_text:
+                        icon = value
+                        break
 
-                if k in weather_text:
+                cards += f"""
+                <div style="
+                    display:inline-block;
+                    width:95px;
+                    text-align:center;
+                    vertical-align:top;
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                    background:#fafafa;
+                    padding:8px;
+                    margin-right:8px;
+                ">
+                    <div style="
+                        font-weight:bold;
+                        margin-bottom:5px;
+                    ">
+                        {str(row['날짜'])[5:]}
+                    </div>
 
-                    icon = v
-                    break
+                    <div style="
+                        font-size:32px;
+                    ">
+                        {icon}
+                    </div>
 
-            with cols[idx]:
+                    <div style="
+                        font-size:12px;
+                        color:#666;
+                    ">
+                        {row['최저기온']}~{row['최고기온']}°C
+                    </div>
 
-                st.markdown(
-                    f"**{str(row['날짜'])[5:]}**"
-                )
+                    <div style="
+                        font-size:12px;
+                        color:#666;
+                    ">
+                        💧 {row['오후강수확률']}
+                    </div>
+                </div>
+                """
 
-                st.markdown(
-                    f"<h1 style='text-align:center'>{icon}</h1>",
-                    unsafe_allow_html=True
-                )
-
-                st.caption(
-                    f"{row['최저기온']}~{row['최고기온']}°C"
-                )
-
-                st.caption(
-                    f"💧 {row['오후강수확률']}"
-                )
-
-        st.divider()
+            st.markdown(
+                f"""
+                <div style="
+                    overflow-x:auto;
+                    white-space:nowrap;
+                    padding-bottom:10px;
+                ">
+                    {cards}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
     # ==========================
     # PC
@@ -727,6 +758,10 @@ if mobile:
                         unsafe_allow_html=True
                     )
 
+            st.markdown(
+                "<hr style='margin-top:2px;margin-bottom:2px;'>",
+                unsafe_allow_html=True
+            )
             st.markdown(
                 "<hr style='margin-top:2px;margin-bottom:2px;'>",
                 unsafe_allow_html=True
