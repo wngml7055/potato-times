@@ -648,7 +648,7 @@ with right:
                 <div style="
                     font-size:20px;
                     font-weight:bold;
-                    margin-bottom:2px;
+                    margin-bottom:5px;
                 ">
                     📍 {area}
                 </div>
@@ -657,7 +657,7 @@ with right:
                     display:flex;
                     overflow-x:auto;
                     gap:4px;
-                    padding-bottom:5px;
+                    padding-bottom:2px;
                 ">
                     {cards}
                 </div>
