@@ -666,7 +666,7 @@ with right:
 
             components.html(
                 html,
-                height=10,
+                height=100,
                 scrolling=True
             )
 
