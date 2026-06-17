@@ -555,22 +555,6 @@ with right:
         "구미"
     ]
 
-#예보 제목======================
-if not mobile:
-    st.markdown("""
-    <div style="
-        background:#FFF4D6;
-        padding:8px 12px;
-        border-radius:8px;
-        font-size:22px;
-        font-weight:bold;
-        color:#7A4E00;
-        margin-bottom:10px;
-    ">
-        🌞 산지별 10일 예보
-    </div>
-    """, unsafe_allow_html=True)
-#==============================
     if mobile:
 
         st.markdown("""
