@@ -544,8 +544,6 @@ with left:
 
 with right:
 
-with right:
-
     mobile = st.query_params.get("mobile") == "1"
 
     areas = [
