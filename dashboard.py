@@ -651,6 +651,7 @@ with right:
                 ">
                     📍 {area}
                 </div>
+            </div>
 
                 <div style="
                     display:flex;
