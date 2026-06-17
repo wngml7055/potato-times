@@ -131,13 +131,49 @@ else:
         == latest_day
     ].copy()
 
-header_left, header_right = st.columns([8,1])
+# ==========================
+# 헤더
+# ==========================
+
+if mobile:
+    header_left, header_right = st.columns([5,2])
+else:
+    header_left, header_right = st.columns([8,1])
 
 with header_left:
 
-    st.markdown(
-        "# 🥔 POTATO TIMES"
-    )
+    if mobile:
+
+        st.markdown(
+            """
+            <h3 style="
+                color:#203864;
+                margin-bottom:0px;
+                font-weight:700;
+            ">
+                🥔 POTATO TIMES
+            </h3>
+            """,
+            unsafe_allow_html=True
+        )
+
+    else:
+
+        st.markdown(
+            "# 🥔 POTATO TIMES"
+        )
+
+        st.markdown("""
+        <style>
+
+        h1{
+            color:#203864 !important;
+            font-family:Georgia !important;
+            font-weight:700 !important;
+        }
+
+        </style>
+        """, unsafe_allow_html=True)
 
     st.markdown(
         """
@@ -151,40 +187,57 @@ with header_left:
         unsafe_allow_html=True
     )
 
-    st.markdown("""
-    <style>
-
-    h1{
-        color:#203864 !important;
-        font-family:Georgia !important;
-        font-weight:700 !important;
-    }
-
-</style>
-""", unsafe_allow_html=True)
-
 with header_right:
 
     status_color = "#DFF5E1" if success else "#FFE2E2"
+    text_color   = "#155724" if success else "#B00020"
+    status_text  = "정상" if success else "오류"
 
-    status_text = "정상" if success else "오류"
+    update_date = datetime.today().strftime("%m-%d")
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    if mobile:
 
-    st.markdown(
-        f"""
-        <div style="
-            background:{status_color};
-            padding:5px;
-            border-radius:5px;
-            text-align:center;
-        ">
-            <b>● {status_text}</b><br>
-            {datetime.today().strftime("%Y-%m-%d")}
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+        st.markdown(
+            f"""
+            <div style="
+                background:{status_color};
+                color:{text_color};
+                padding:4px;
+                border-radius:6px;
+                text-align:center;
+                font-size:11px;
+                font-weight:bold;
+                margin-top:6px;
+                line-height:1.2;
+            ">
+                {status_text}<br>
+                {update_date}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    else:
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        st.markdown(
+            f"""
+            <div style="
+                background:{status_color};
+                color:{text_color};
+                padding:6px;
+                border-radius:6px;
+                text-align:center;
+                font-size:13px;
+                font-weight:bold;
+            ">
+                ● {status_text}<br>
+                {datetime.today().strftime("%Y-%m-%d")}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 # ======================
 # KAMIS 시장동향
