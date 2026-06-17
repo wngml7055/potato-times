@@ -648,7 +648,7 @@ with right:
                 <div style="
                     font-size:20px;
                     font-weight:bold;
-                    margin-bottom:5px;
+                    margin-bottom:2px;
                 ">
                     📍 {area}
                 </div>
@@ -660,13 +660,12 @@ with right:
                     padding-bottom:2px;
                 ">
                     {cards}
-                </div>
             </div>
             """
 
             components.html(
                 html,
-                height=170,
+                height=140,
                 scrolling=True
             )
 
@@ -766,7 +765,8 @@ with right:
                             margin-bottom:-8px;
                         ">
                             💧 {row['오후강수확률']}
-                        </div>
+                            </div>
+                        </div>  
                         """,
                         unsafe_allow_html=True
                     )
