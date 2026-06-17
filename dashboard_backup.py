@@ -1,9 +1,9 @@
 import streamlit as st
+is_mobile = st.query_params.get("mobile", "0") == "1"
 import pandas as pd
-import plotly.graph_objects as go
 import subprocess
+import plotly.graph_objects as go
 import os
-import json
 from datetime import datetime
 
 st.set_page_config(
@@ -15,6 +15,7 @@ st.markdown("""
 <style>
 
 .block-container {
+    max-width: 98% !important;
     padding-top: 1.5rem;
     padding-bottom: 0rem;
     padding-left: 1rem;
@@ -34,28 +35,6 @@ h2,h3 {
     font-size: 28px;
 }
 
-.title-main {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 42px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #22304A;
-
-    margin-top: 15px;
-    padding-top: 10px;
-    line-height: 1.3;
-}
-
-.section-title {
-    background-color: #FFF7E6;
-    border-left: 5px solid #D97706;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -65,18 +44,26 @@ h2,h3 {
 
 def auto_update():
 
-    today = datetime.today().strftime("%Y.%m.%d")
+    today = datetime.today().strftime(
+        "%Y.%m.%d"
+    )
 
     try:
 
-        garak = pd.read_csv("data/garak_price.csv")
+        garak = pd.read_csv(
+            "data/garak_price.csv"
+        )
 
         latest = str(
             garak["INVEST_DT"].iloc[0]
         )
 
         if latest == today:
-            return True, "최신 데이터"
+
+            return (
+                True,
+                "최신 데이터"
+            )
 
     except:
         pass
@@ -97,66 +84,82 @@ def auto_update():
 
         subprocess.run(
             ["python", "modules/kamis.py"],
-            timeout=30,
+            timeout=60,
             check=True
         )
 
-        return True, "업데이트 완료"
+        return (
+            True,
+            "업데이트 완료"
+        )
 
     except Exception as e:
 
-        return False, str(e)
-
-    today = datetime.today().strftime("%Y.%m.%d")
-
-    try:
-
-        garak = pd.read_csv("data/garak_price.csv")
-
-        latest = str(
-            garak["INVEST_DT"].iloc[0]
+        return (
+            False,
+            str(e)
         )
 
-        if latest == today:
-            return
-
-    except:
-        pass
-
-    try:
-        subprocess.run(
-            ["python", "modules/garak.py"],
-            timeout=60
-        )
-    except:
-        pass
-
-    try:
-        subprocess.run(
-            ["python", "modules/weather.py"],
-            timeout=60
-        )
-    except:
-        pass
-
-success, message = auto_update()
+success = True
+message = "자동 업데이트 사용"
 
 weather = pd.read_csv("data/weather.csv")
 
-garak = pd.read_csv("data/garak_price.csv")
+if os.path.getsize(
+    "data/garak_price.csv"
+) > 100:
 
-header_left, header_right = st.columns([4,1])
+    garak = pd.read_csv(
+        "data/garak_price.csv"
+    )
+
+else:
+
+    history_temp = pd.read_csv(
+        "data/garak_history.csv"
+    )
+
+    latest_day = (
+        history_temp["INVEST_DT"]
+        .max()
+    )
+
+    garak = history_temp[
+        history_temp["INVEST_DT"]
+        == latest_day
+    ].copy()
+
+header_left, header_right = st.columns([8,1])
 
 with header_left:
 
     st.markdown(
+        "# 🥔 POTATO TIMES"
+    )
+
+    st.markdown(
         """
-        <div class='title-main'>
-        🥔 POTATO TIMES
-        </div>
+        <hr style="
+            margin-top:0px;
+            margin-bottom:0px;
+            border:none;
+            border-top:3px solid #D9D9D9;
+        ">
         """,
         unsafe_allow_html=True
     )
+
+    st.markdown("""
+    <style>
+
+    h1{
+        color:#203864 !important;
+        font-family:Georgia !important;
+        font-weight:700 !important;
+    }
+
+</style>
+""", unsafe_allow_html=True)
 
 with header_right:
 
@@ -164,14 +167,15 @@ with header_right:
 
     status_text = "정상" if success else "오류"
 
+    st.markdown("<br>", unsafe_allow_html=True)
+
     st.markdown(
         f"""
         <div style="
             background:{status_color};
-            padding:10px;
-            border-radius:10px;
+            padding:5px;
+            border-radius:5px;
             text-align:center;
-            margin-top:20px;
         ">
             <b>● {status_text}</b><br>
             {datetime.today().strftime("%Y-%m-%d")}
@@ -180,60 +184,42 @@ with header_right:
         unsafe_allow_html=True
     )
 
-st.markdown(
-    "<hr style='margin-top:5px; margin-bottom:15px;'>",
-    unsafe_allow_html=True
-)
-
-# =========================
+# ======================
 # KAMIS 시장동향
-# =========================
+# ======================
 
-try:
+if os.path.exists("data/kamis_potato.csv"):
 
     kamis = pd.read_csv(
         "data/kamis_potato.csv",
         encoding="cp949"
     )
 
-    latest = kamis.iloc[0]
+    if len(kamis) > 0:
 
-    st.markdown(
-        f"""
-        <div style="
-        background:#EEF5FF;
-        border-left:4px solid #4A90E2;
-        padding:10px 12px;
-        border-radius:6px;
-        margin-bottom:12px;
-        ">
+        latest = kamis.iloc[0]
 
-        <div style="
-        font-size:13px;
-        font-weight:700;
-        color:#1E5AA8;
-        margin-bottom:4px;
-        ">
-        📢 KAMIS 시장동향 |
-        {latest["title"]}
-        </div>
+        title = str(
+            latest["title"]
+        )
 
-        <div style="
-        font-size:12px;
-        color:#444;
-        line-height:1.6;
-        ">
-        {latest["content"]}
-        </div>
+        summary = str(
+            latest["content"]
+        )
 
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+        st.markdown(
+            f"""
+<div style="background:#EDF4FF;border-left:4px solid #4A90E2;padding:10px 14px;border-radius:6px;margin-top:0px;margin-bottom:0px;">
+<b style="color:#1f4f9c;">📢 KAMIS 시장동향 | {title}</b>
+<br>
+<span style="color:#444;">{summary}</span>
+</div>
+            """,
+            unsafe_allow_html=True
+        )
 
-except Exception as e:
+# =======================
 
-    st.error(f"KAMIS 오류 : {e}")
 
 import os
 
@@ -242,28 +228,27 @@ weather_icon = {
     "구름많음": "assets/cloud.png",
     "흐림": "assets/cloudy.png",
     "비": "assets/rain.png",
-    "소나기": "assets/rain.png"
+    "소나기":"assets/shower.png"
 }
-
-# =====================
-# 가락시장 시세
-# =====================
 
 st.markdown("""
+
 <style>
-
-[data-testid="metric-container"]{
-    padding:0rem !important;
+[data-testid="metric-container"] {
+    padding: 0.3rem 0.5rem;
 }
 
-[data-testid="stMetricValue"]{
-    font-size:24px !important;
+[data-testid="metric-container"] label {
+    font-size: 12px;
 }
 
-[data-testid="metric-container"] label{
-    font-size:11px !important;
+[data-testid="metric-container"] div[data-testid="stMetricValue"] {
+    font-size: 28px;
 }
 
+[data-testid="metric-container"] div[data-testid="stMetricDelta"] {
+    font-size: 12px;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -272,20 +257,170 @@ st.markdown("""
 # 가격 추이
 # =====================
 
-left, right = st.columns([1,2])
+if is_mobile:
+
+    left = st.container()
+    right = st.container()
+
+else:
+
+    left, right = st.columns([1,2])
+history = pd.read_csv("data/garak_history.csv")
+
+special = history[
+    history["G_NAME"] == "보통"
+].copy()
+
+special["INVEST_DT"] = pd.to_datetime(
+    special["INVEST_DT"]
+)
+
+special = special.sort_values(
+    "INVEST_DT"
+)
+
+
+# 최근 30일===================
+
+recent30 = special.tail(30).copy()
+
+recent30["KG_P"] = (
+    recent30["AV_P"] / 20
+).round(0)
+
+# 전년 동일일 데이터 생성==========
+
+last_year = special.copy()
+
+last_year["INVEST_DT"] = (
+    last_year["INVEST_DT"]
+    + pd.DateOffset(years=1)
+)
+
+last_year["KG_P_LY"] = (
+    last_year["AV_P"] / 20
+).round(0)
+
+# 날짜 기준 병합==============
+
+chart1 = pd.merge(
+    recent30[["INVEST_DT","KG_P"]],
+    last_year[["INVEST_DT","KG_P_LY"]],
+    on="INVEST_DT",
+    how="left"
+)
+
+chart1["KG_P_LY"] = (
+    chart1["KG_P_LY"]
+    .interpolate()
+    .bfill()
+    .ffill()
+)
+
+chart1 = chart1.set_index("INVEST_DT")
+
+# =====================
+# 평년 데이터 추가
+# =====================
+
+special["KG_P"] = (
+    special["AV_P"] / 20
+).round(0)
+
+special["MMDD"] = (
+    special["INVEST_DT"]
+    .dt.strftime("%m-%d")
+)
+
+avg_df = (
+    special
+    .groupby("MMDD")["KG_P"]
+    .mean()
+    .reset_index()
+)
+
+avg_df.columns = [
+    "MMDD",
+    "KG_P_AVG"
+]
+
+chart1["MMDD"] = (
+    chart1.index
+    .strftime("%m-%d")
+)
+
+chart1 = chart1.merge(
+    avg_df,
+    on="MMDD",
+    how="left"
+)
+
+chart1 = chart1[
+    [
+        "MMDD",
+        "KG_P",
+        "KG_P_LY",
+        "KG_P_AVG"
+    ]
+]
+
+chart1 = chart1.set_index(
+    "MMDD"
+)
+
+chart1.columns = [
+    "올해",
+    "전년",
+    "평년"
+]
+
+# ===========================
+
+# 월평균
+
+monthly = special.copy()
+
+monthly["월"] = monthly[
+    "INVEST_DT"
+].dt.strftime("%Y-%m")
+
+monthly = (
+    monthly
+    .groupby("월")["AV_P"]
+    .mean()
+    .reset_index()
+)
+
+monthly["KG_P"] = (
+    monthly["AV_P"] / 20
+).round(0)
+
+chart2 = monthly[
+    ["월","KG_P"]
+].set_index("월")
 
 with left:
 
-    st.markdown(
-        "<div class='section-title'>🥔 가락시장 감자 시세</div>",
-        unsafe_allow_html=True
-    )
+# 감자시세 제목==============
+    st.markdown("""
+    <div style="
+        background:#FFF4D6;
+        padding:8px 12px;
+        border-radius:8px;
+        font-size:22px;
+        font-weight:bold;
+        color:#7A4E00;
+        margin-bottom:10px;
+    ">
+        🥔 가락시장 감자 시세
+    </div>
+    """, unsafe_allow_html=True)
+
+# ========================
 
     price_cols = st.columns(4)
 
-
-
-    for idx, grade in enumerate(["특","상","보통","하"]):
+    for idx, grade in enumerate(["특", "상", "보통", "하"]):
 
         row = garak[
             garak["G_NAME"] == grade
@@ -299,7 +434,7 @@ with left:
             int(
                 str(row["J_365_RATE"])
                 .split("(")[0]
-                .replace(",","")
+                .replace(",", "")
             ) / 20
         )
 
@@ -317,326 +452,113 @@ with left:
 
             st.metric(
                 grade,
-                f"{current_price:,}"
+                f"{current_price:,}원/kg"
             )
 
             st.caption(
-                f"전년 {last_year_price:,}"
+                f"전년 {last_year_price:,}원/kg"
             )
 
             if diff_rate > 0:
+
                 st.markdown(
-                    f"<span style='color:blue'>▲ {diff_rate}%</span>",
+                    f"<span style='color:red'>▲ {diff_rate}%</span>",
                     unsafe_allow_html=True
                 )
+
             else:
+
                 st.markdown(
-                    f"<span style='color:red'>▼ {abs(diff_rate)}%</span>",
+                    f"<span style='color:blue'>▼ {abs(diff_rate)}%</span>",
                     unsafe_allow_html=True
                 )
 
-history = pd.read_csv("data/garak_history.csv")
+# =============
+# 아래 코드는 감자시세 간격
+# =============
 
-normal = history[
-    history["G_NAME"] == "보통"
-].copy()
+    st.markdown("""
+    <style>
 
-normal["INVEST_DT"] = pd.to_datetime(
-    normal["INVEST_DT"]
-)
+    [data-testid="metric-container"] {
+        padding: 0.2rem !important;
+    }
 
-normal = normal.sort_values(
-    "INVEST_DT"
-)
+    [data-testid="stMetric"] {
+        margin-bottom: -15px;
+    }
 
-normal["YEAR"] = (
-    normal["INVEST_DT"].dt.year
-)
+    </style>
+    """, unsafe_allow_html=True)
 
-normal["MMDD"] = (
-    normal["INVEST_DT"].dt.strftime("%m-%d")
-)
-
-normal["KG_P"] = (
-    normal["AV_P"] / 20
-).round(0)
-
-today_year = datetime.today().year
-
-# 최근 30일 날짜
-
-recent_mmdd = (
-    normal[
-        normal["YEAR"] == today_year
-    ]
-    .sort_values("INVEST_DT")
-    .tail(30)["MMDD"]
-    .tolist()
-)
-
-# 평년
-
-avg_df = (
-    normal[
-        normal["YEAR"].between(2020, 2025)
-    ]
-    .groupby("MMDD")["KG_P"]
-    .mean()
-    .reset_index()
-)
-
-avg_df.columns = [
-    "MMDD",
-    "평년"
-]
-
-# 전년
-
-last_df = (
-    normal[
-        normal["YEAR"] == 2025
-    ][["MMDD","KG_P"]]
-)
-
-last_df.columns = [
-    "MMDD",
-    "전년"
-]
-
-# 올해
-
-this_df = (
-    normal[
-        normal["YEAR"] == today_year
-    ][["MMDD","KG_P"]]
-)
-
-this_df.columns = [
-    "MMDD",
-    f"{today_year}년"
-]
-
-# 최근30일 기준 병합
-
-chart1 = pd.DataFrame({
-    "MMDD": recent_mmdd
-})
-
-chart1 = chart1.merge(
-    avg_df,
-    on="MMDD",
-    how="left"
-)
-
-chart1 = chart1.merge(
-    last_df,
-    on="MMDD",
-    how="left"
-)
-
-chart1 = chart1.merge(
-    this_df,
-    on="MMDD",
-    how="left"
-)
-
-text_values = [
-    str(int(v)) if i % 2 == 0 else ""
-    for i, v in enumerate(
-        chart1[f"{today_year}년"]
-    )
-]
-
-chart1["전년"] = (
-    chart1["전년"]
-    .interpolate()
-    .bfill()
-    .ffill()
-)
-
-# 월평균
-
-monthly = normal.copy()
-
-monthly["MONTH"] = monthly["INVEST_DT"].dt.month
-
-monthly_avg = (
-    monthly[
-        monthly["YEAR"].between(2020, 2025)
-    ]
-    .groupby("MONTH")["KG_P"]
-    .mean()
-    .reset_index()
-)
-
-monthly_last = (
-    monthly[
-        monthly["YEAR"] == 2025
-    ]
-    .groupby("MONTH")["KG_P"]
-    .mean()
-    .reset_index()
-)
-
-monthly_this = (
-    monthly[
-        monthly["YEAR"] == today_year
-    ]
-    .groupby("MONTH")["KG_P"]
-    .mean()
-    .reset_index()
-)
-
-with left:
+#===============
+# 아래는 등락율과 그래프 사이 여백
+# ===============
 
     st.markdown(
-        "<div class='section-title'>📈 최근 30일 보통가격</div>",
+        "<hr style='margin-top:5px;margin-bottom:10px;'>",
         unsafe_allow_html=True
     )
+#==========================================
 
-    fig1 = go.Figure()
+# 보통가격 제목=======================
+    st.markdown("""
+    <div style="
+        background:#FFF4D6;
+        padding:8px 12px;
+        border-radius:8px;
+        font-size:20px;
+        font-weight:bold;
+        color:#7A4E00;
+        margin-bottom:5px;
+    ">
+        📈 최근 30일 보통 가격
+    </div>
+    """, unsafe_allow_html=True)
 
-    fig1.add_trace(
-        go.Scatter(
-            x=list(range(len(chart1))),
-            y=chart1["평년"],
-            name="평년",
-            mode="lines",
-            line=dict(
-                color="gray",
-                width=2
-            )
-        )
+# ================================
+    st.line_chart(
+        chart1,
+        height=280
     )
+# 평균가격 제목======================
+    st.markdown("""
+    <div style="
+        background:#FFF4D6;
+        padding:8px 12px;
+        border-radius:8px;
+        font-size:20px;
+        font-weight:bold;
+        color:#7A4E00;
+        margin-bottom:5px;
+    ">
+        📊 월별 평균 가격
+    </div>
+    """, unsafe_allow_html=True)
+#===============================
 
-    fig1.add_trace(
-        go.Scatter(
-            x=list(range(len(chart1))),
-            y=chart1["전년"],
-            name="전년",
-            mode="lines",
-            line=dict(
-                color="lightblue",
-                width=2
-            )
-        )
-    )
-
-    fig1.add_trace(
-        go.Scatter(
-            x=list(range(len(chart1))),
-            y=chart1[f"{today_year}년"],
-            name=f"{today_year}년",
-            mode="lines+markers+text",
-            line=dict(
-                color="blue",
-                width=4
-            ),
-            text=text_values,
-            textposition="top center",
-            textfont=dict(
-                color="blue",
-                size=10
-            )
-        )
-    )
-
-    fig1.update_layout(
-        height=300,
-        margin=dict(
-            t=20,
-            b=20,
-            l=20,
-            r=20
-        ),
-        legend=dict(
-            orientation="h",
-            y=1.15,
-            x=0
-        ),
-        xaxis=dict(
-            tickmode="array",
-            tickvals=list(range(len(chart1))),
-            ticktext=chart1["MMDD"]
-        )
-    )
-
-    st.write(fig1)
-
-    st.plotly_chart(
-        fig1,
-        use_container_width=False
-    )
-
-
-
-    st.markdown(
-        "<div class='section-title'>📊 월별 평균 가격</div>",
-        unsafe_allow_html=True
-    )
-
-    fig2 = go.Figure()
-
-    fig2.add_trace(
-        go.Scatter(
-            x=monthly_avg["MONTH"],
-            y=monthly_avg["KG_P"],
-            name="평년",
-            line=dict(
-                color="gray"
-            )
-        )
-    )
-
-    fig2.add_trace(
-        go.Scatter(
-            x=monthly_avg["MONTH"],
-            y=monthly_last["KG_P"],
-            name="전년",
-            line=dict(
-                color="lightblue"
-            )
-        )
-    )
-
-    fig2.add_trace(
-        go.Scatter(
-            x=monthly_avg["MONTH"],
-            y=monthly_this["KG_P"],
-            name=f"{today_year}년",
-            line=dict(
-                color="blue",
-                width=4
-            )
-        )
-    )
-
-    fig2.update_layout(
-        height=200,
-        margin=dict(
-            t=20,
-            b=20,
-            l=20,
-            r=20
-        ),
-        legend=dict(
-            orientation="h",
-            y=1.15,
-            x=0
-        )
-    )
-
-    st.plotly_chart(
-        fig2,
-        use_container_width=True
+    st.line_chart(
+        chart2,
+        height=280
     )
 
 with right:
 
-    st.markdown(
-        "<div class='section-title'>🌤️ 산지별 10일 예보</div>",
-        unsafe_allow_html=True
-    )
+#예보 제목======================
+    st.markdown("""
+    <div style="
+        background:#FFF4D6;
+        padding:8px 12px;
+        border-radius:8px;
+        font-size:22px;
+        font-weight:bold;
+        color:#7A4E00;
+        margin-bottom:10px;
+    ">
+        🌞 산지별 10일 예보
+    </div>
+    """, unsafe_allow_html=True)
+#==============================
 
     areas = [
         "양구",
@@ -684,9 +606,6 @@ with right:
 
             icon_path = None
 
-            if "소나기" in weather_text:
-                icon_path = "assets/rain.png"
-
             for key in weather_icon:
 
                 if key in weather_text:
@@ -698,41 +617,38 @@ with right:
 
                 if icon_path:
 
-                    st.image(icon_path, width=55)
-
-                if "소나기" in weather_text:
-
-                    st.markdown(
-                        """
-                        <div style="
-                            color:#1E88E5;
-                            font-size:11px;
-                            font-weight:bold;
-                            text-align:left;
-                            margin-top:-8px;
-                            margin-bottom:-4px;
-                        ">
-                        소나기
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
+                    st.image(icon_path, width=70)
 
                 st.markdown(
-                    f"<div style='font-size:12px; margin-top:-15px; margin-bottom:-15px;'>"
-                    f"{row['최저기온']}~{row['최고기온']}°C"
-                    f"</div>",
+                    f"""
+                    <div style="
+                        text-align:left;
+                        font-size:15px;
+                        color:#888;
+                        margin-top:-5px;
+                    ">
+                        {row['최저기온']}~{row['최고기온']}°C
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
 
                 st.markdown(
-                    f"<div style='font-size:12px; margin-top:-10px; margin-bottom:-20px;'>"
-                    f"💧 {row['오후강수확률']}"
-                    f"</div>",
+                    f"""
+                    <div style="
+                        text-align:left;
+                        font-size:15px;
+                        color:#888;
+                        margin-top:-4px;
+                        margin-bottom:-8px;
+                    ">
+                        💧 {row['오후강수확률']}
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
 
         st.markdown(
-            "<hr style='margin-top:10px; margin-bottom:10px;'>",
+            "<hr style='margin-top:2px;margin-bottom:2px;'>",
             unsafe_allow_html=True
         )
