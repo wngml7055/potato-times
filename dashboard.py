@@ -240,11 +240,6 @@ st.markdown("""
 # 가격 추이
 # =====================
 
-if is_mobile:
-
-    left = st.container()
-    right = st.container()
-
 else:
 
     left, right = st.columns([1,2])
@@ -527,8 +522,6 @@ with left:
 
 with right:
 
-    mobile = st.query_params.get("mobile") == "1"
-
     areas = [
         "양구",
         "진부",
@@ -537,118 +530,6 @@ with right:
         "당진",
         "구미"
     ]
-
-    # ==========================
-    # 모바일
-    # ==========================
-    if mobile:
-
-        st.markdown("""
-        <div style="
-            background:#FFF4D6;
-            padding:10px 14px;
-            border-radius:8px;
-            font-size:22px;
-            font-weight:bold;
-            color:#7A4E00;
-            margin-bottom:15px;
-        ">
-            🌞 산지별 10일 예보
-        </div>
-        """, unsafe_allow_html=True)
-
-        emoji_map = {
-            "맑음":"☀️",
-            "구름많음":"⛅",
-            "흐림":"☁️",
-            "비":"🌧️",
-            "소나기":"🌦️"
-        }
-
-        for area in areas:
-
-            area_df = weather[
-                weather["지역"] == area
-            ]
-
-            cards = ""
-
-            for _, row in area_df.iterrows():
-
-                weather_text = str(row["오후날씨"])
-
-                icon = "☁️"
-
-                for k,v in emoji_map.items():
-
-                    if k in weather_text:
-
-                        icon = v
-                        break
-
-                cards += f"""
-                <div style="
-                    width:80px;
-                    flex:0 0 auto;
-                    text-align:center;
-                    padding:5px;
-                ">
-                    <div style="
-                        font-weight:bold;
-                        font-size:14px;
-                    ">
-                        {str(row['날짜'])[5:]}
-                    </div>
-
-                    <div style="
-                        font-size:34px;
-                        line-height:1;
-                        margin:2px 0;
-                    ">
-                        {icon}
-                    </div>
-
-                    <div style="
-                        font-size:11px;
-                        color:#666;
-                    ">
-                        {row['최저기온']}~{row['최고기온']}°
-                    </div>
-
-                    <div style="
-                        font-size:11px;
-                        color:#666;
-                    ">
-                        💧{row['오후강수확률']}
-                    </div>
-                </div>
-                """
-
-            html = f"""
-            <div style="margin-bottom:10px;">
-                <div style="
-                    font-size:20px;
-                    font-weight:bold;
-                    margin-bottom:2px;
-                ">
-                    📍 {area}
-                </div>
-
-                <div style="
-                    display:flex;
-                    overflow-x:auto;
-                    gap:4px;
-                    padding-bottom:2px;
-                ">
-                    {cards}
-            </div>
-            """
-
-            components.html(
-                html,
-                height=140,
-                scrolling=True
-            )
 
     # ==========================
     # PC
