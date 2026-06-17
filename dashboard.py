@@ -544,6 +544,8 @@ with left:
 
 with right:
 
+with right:
+
     mobile = st.query_params.get("mobile") == "1"
 
     areas = [
@@ -555,17 +557,20 @@ with right:
         "구미"
     ]
 
+    # ==========================
+    # 모바일
+    # ==========================
     if mobile:
 
         st.markdown("""
         <div style="
             background:#FFF4D6;
-            padding:8px 12px;
+            padding:10px 14px;
             border-radius:8px;
             font-size:22px;
             font-weight:bold;
             color:#7A4E00;
-            margin-bottom:10px;
+            margin-bottom:15px;
         ">
             🌞 산지별 10일 예보
         </div>
@@ -581,21 +586,13 @@ with right:
 
         for area in areas:
 
-            st.markdown(
-                f"### 📍 {area}"
-            )
+            st.markdown(f"### 📍 {area}")
 
             area_df = weather[
                 weather["지역"] == area
             ]
 
-            html = """
-            <div style="
-                overflow-x:auto;
-                white-space:nowrap;
-                padding-bottom:10px;
-            ">
-            """
+            cards = ""
 
             for _, row in area_df.iterrows():
 
@@ -604,51 +601,69 @@ with right:
                 icon = "☁️"
 
                 for key, value in emoji_map.items():
-
                     if key in weather_text:
-
                         icon = value
                         break
 
-                html += f"""
+                cards += f"""
                 <div style="
                     display:inline-block;
                     width:95px;
                     text-align:center;
                     vertical-align:top;
-                    margin-right:8px;
                     border:1px solid #ddd;
                     border-radius:10px;
-                    padding:8px;
                     background:#fafafa;
+                    padding:8px;
+                    margin-right:8px;
                 ">
-                    <div style="font-weight:bold;">
+                    <div style="
+                        font-weight:bold;
+                        margin-bottom:5px;
+                    ">
                         {str(row['날짜'])[5:]}
                     </div>
 
-                    <div style="font-size:34px;">
+                    <div style="
+                        font-size:32px;
+                    ">
                         {icon}
                     </div>
 
-                    <div style="font-size:13px;color:#666;">
+                    <div style="
+                        font-size:12px;
+                        color:#666;
+                    ">
                         {row['최저기온']}~{row['최고기온']}°C
                     </div>
 
-                    <div style="font-size:13px;color:#666;">
+                    <div style="
+                        font-size:12px;
+                        color:#666;
+                    ">
                         💧 {row['오후강수확률']}
                     </div>
                 </div>
                 """
 
-            html += "</div>"
-
             st.markdown(
-                html,
+                f"""
+                <div style="
+                    overflow-x:auto;
+                    white-space:nowrap;
+                    padding-bottom:10px;
+                ">
+                    {cards}
+                </div>
+                """,
                 unsafe_allow_html=True
             )
 
+    # ==========================
+    # PC
+    # ==========================
     else:
-    
+
         st.markdown("""
         <div style="
             background:#FFF4D6;
@@ -662,15 +677,6 @@ with right:
             🌞 산지별 10일 예보
         </div>
         """, unsafe_allow_html=True)
-        
-        areas = [
-            "양구",
-            "진부",
-            "보성",
-            "영광",
-            "당진",
-            "구미"
-        ]
 
         sample = weather[
             weather["지역"] == "양구"
@@ -693,8 +699,8 @@ with right:
             ]
 
             cols = st.columns(
-                 len(area_df)+1,
-                 gap="small" 
+                len(area_df)+1,
+                gap="small"
             )
 
             cols[0].markdown(
@@ -720,7 +726,10 @@ with right:
 
                     if icon_path:
 
-                        st.image(icon_path, width=70)
+                        st.image(
+                            icon_path,
+                            width=70
+                        )
 
                     st.markdown(
                         f"""
@@ -750,6 +759,11 @@ with right:
                         """,
                         unsafe_allow_html=True
                     )
+
+            st.markdown(
+                "<hr style='margin-top:2px;margin-bottom:2px;'>",
+                unsafe_allow_html=True
+            )
 
             st.markdown(
                   "<hr style='margin-top:2px;margin-bottom:2px;'>",
