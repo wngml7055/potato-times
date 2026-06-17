@@ -543,17 +543,20 @@ with left:
     )
 
 with right:
+
     mobile = st.query_params.get("mobile") == "1"
+
     areas = [
-    "양구",
-    "진부",
-    "보성",
-    "영광",
-    "당진",
-    "구미"
+        "양구",
+        "진부",
+        "보성",
+        "영광",
+        "당진",
+        "구미"
     ]
 
 #예보 제목======================
+if not mobile:
     st.markdown("""
     <div style="
         background:#FFF4D6;
@@ -595,17 +598,7 @@ with right:
         for area in areas:
 
             st.markdown(
-                f"""
-                <div style="
-                    font-size:20px;
-                    font-weight:bold;
-                    margin-top:10px;
-                    margin-bottom:5px;
-                ">
-                    📍 {area}
-                </div>
-                """,
-                unsafe_allow_html=True
+                f"### 📍 {area}"
             )
 
             area_df = weather[
@@ -622,9 +615,7 @@ with right:
 
             for _, row in area_df.iterrows():
 
-                weather_text = str(
-                    row["오후날씨"]
-                )
+                weather_text = str(row["오후날씨"])
 
                 icon = "☁️"
 
@@ -647,30 +638,19 @@ with right:
                     padding:8px;
                     background:#fafafa;
                 ">
-                    <div style="
-                        font-weight:bold;
-                        margin-bottom:5px;
-                    ">
+                    <div style="font-weight:bold;">
                         {str(row['날짜'])[5:]}
                     </div>
 
-                    <div style="
-                        font-size:34px;
-                    ">
+                    <div style="font-size:34px;">
                         {icon}
                     </div>
 
-                    <div style="
-                        font-size:13px;
-                        color:#666;
-                    ">
+                    <div style="font-size:13px;color:#666;">
                         {row['최저기온']}~{row['최고기온']}°C
                     </div>
 
-                    <div style="
-                        font-size:13px;
-                        color:#666;
-                    ">
+                    <div style="font-size:13px;color:#666;">
                         💧 {row['오후강수확률']}
                     </div>
                 </div>
@@ -684,6 +664,21 @@ with right:
             )
 
     else:
+    
+        st.markdown("""
+        <div style="
+            background:#FFF4D6;
+            padding:8px 12px;
+            border-radius:8px;
+            font-size:22px;
+            font-weight:bold;
+            color:#7A4E00;
+            margin-bottom:10px;
+        ">
+            🌞 산지별 10일 예보
+        </div>
+        """, unsafe_allow_html=True)
+        
         areas = [
             "양구",
             "진부",
