@@ -1,5 +1,4 @@
 import streamlit as st
-is_mobile = st.query_params.get("mobile", "0") == "1"
 import pandas as pd
 import subprocess
 import plotly.graph_objects as go
@@ -17,15 +16,14 @@ st.markdown("""
 <style>
 
 .block-container {
-    max-width: 98% !important;
-    padding-top: 1.5rem;
+    padding-top: 1rem;
     padding-bottom: 0rem;
     padding-left: 1rem;
     padding-right: 1rem;
     max-width: 100%;
 }
 
-h2,h3 {
+h1,h2,h3 {
     margin-bottom: 0.3rem;
 }
 
@@ -139,77 +137,35 @@ status_color = "#DFF5E1" if success else "#FFE2E2"
 text_color   = "#155724" if success else "#B00020"
 status_text  = "정상" if success else "오류"
 
-st.markdown(
-    f"""
-    <style>
-    .pt-header {{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        flex-wrap:wrap;
-        gap:10px;
-        margin-bottom:8px;
-    }}
+title_col, status_col = st.columns([8, 2])
 
-    .pt-title {{
-        color:#203864;
-        font-size:2.2rem;
-        font-weight:700;
-        line-height:1.1;
-    }}
+with title_col:
 
-    .pt-status {{
-        background:{status_color};
-        color:{text_color};
-        padding:8px 12px;
-        border-radius:8px;
-        text-align:center;
-        font-size:12px;
-        font-weight:bold;
-        line-height:1.3;
-        min-width:90px;
-    }}
+    st.markdown(
+        "# 🥔 POTATO TIMES"
+    )
 
-    @media (max-width: 768px) {{
+with status_col:
 
-        .pt-title {{
-            font-size:1.6rem;
-        }}
-
-        .pt-status {{
-            font-size:11px;
-            padding:6px 10px;
-        }}
-    }}
-    </style>
-
-    <div class="pt-header">
-
-        <div class="pt-title">
-            🥔 POTATO TIMES
-        </div>
-
-        <div class="pt-status">
+    st.markdown(
+        f"""
+        <div style="
+            background:{status_color};
+            color:{text_color};
+            padding:8px;
+            border-radius:8px;
+            text-align:center;
+            font-size:12px;
+            font-weight:bold;
+        ">
             ● {status_text}<br>
             {datetime.today().strftime("%Y-%m-%d")}
         </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    """
-    <hr style="
-        margin-top:0px;
-        margin-bottom:15px;
-        border:none;
-        border-top:3px solid #D9D9D9;
-    ">
-    """,
-    unsafe_allow_html=True
-)
+st.divider()
 
 # ======================
 # KAMIS 시장동향
