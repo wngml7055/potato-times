@@ -222,7 +222,6 @@ if os.path.exists("data/kamis_potato.csv"):
 
 # =======================
 
-
 import os
 
 weather_icon = {
@@ -230,11 +229,10 @@ weather_icon = {
     "구름많음": "assets/cloud.png",
     "흐림": "assets/cloudy.png",
     "비": "assets/rain.png",
-    "소나기":"assets/shower.png"
+    "소나기": "assets/shower.png"
 }
 
 st.markdown("""
-
 <style>
 [data-testid="metric-container"] {
     padding: 0.3rem 0.5rem;
@@ -254,19 +252,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-
 # =====================
 # 가격 추이
 # =====================
 
-if is_mobile:
+left, right = st.columns([1, 2])
 
-    left = st.container()
-    right = st.container()
-
-else:
-
-    left, right = st.columns([1,2])
 history = pd.read_csv("data/garak_history.csv")
 
 special = history[
@@ -281,8 +272,7 @@ special = special.sort_values(
     "INVEST_DT"
 )
 
-
-# 최근 30일===================
+# 최근 30일 ===================
 
 recent30 = special.tail(30).copy()
 
@@ -290,7 +280,7 @@ recent30["KG_P"] = (
     recent30["AV_P"] / 20
 ).round(0)
 
-# 전년 동일일 데이터 생성==========
+# 전년 동일일 데이터 생성 ==========
 
 last_year = special.copy()
 
@@ -303,11 +293,11 @@ last_year["KG_P_LY"] = (
     last_year["AV_P"] / 20
 ).round(0)
 
-# 날짜 기준 병합==============
+# 날짜 기준 병합 ==============
 
 chart1 = pd.merge(
-    recent30[["INVEST_DT","KG_P"]],
-    last_year[["INVEST_DT","KG_P_LY"]],
+    recent30[["INVEST_DT", "KG_P"]],
+    last_year[["INVEST_DT", "KG_P_LY"]],
     on="INVEST_DT",
     how="left"
 )
