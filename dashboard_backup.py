@@ -245,12 +245,35 @@ if os.path.exists("data/kamis_potato.csv"):
             latest["content"]
         )
 
+        title_size = "14px" if mobile else "17px"
+        body_size = "13px" if mobile else "16px"
+
         st.markdown(
             f"""
-<div style="background:#EDF4FF;border-left:4px solid #4A90E2;padding:10px 14px;border-radius:6px;margin-top:0px;margin-bottom:0px;">
-<b style="color:#1f4f9c;">📢 KAMIS 시장동향 | {title}</b>
-<br>
-<span style="color:#444;">{summary}</span>
+<div style="
+    background:#EDF4FF;
+    border-left:4px solid #4A90E2;
+    padding:6px 9px;
+    border-radius:6px;
+    margin:0 0 0px 0;
+">
+
+<b style="
+    color:#1f4f9c;
+    font-size:{title_size};
+">
+📢 KAMIS 시장동향 | {title}
+</b>
+<span style="
+    display:block;
+    margin-top:2px;
+    margin-bottom:-10px;
+    color:#444;
+    font-size:{body_size};
+    line-height:1.5;
+">
+{summary}
+</span>
 </div>
             """,
             unsafe_allow_html=True
@@ -446,19 +469,26 @@ with left:
     # 가락시장 감자 시세
     # =====================
 
-    st.markdown("""
+    title_size = "18px" if mobile else "22px"
+    padding_size = "6px 10px" if mobile else "8px 12px"
+    margin_size = "6px" if mobile else "10px"
+
+    st.markdown(
+        f"""
     <div style="
         background:#FFF4D6;
-        padding:8px 12px;
+        padding:{padding_size};
         border-radius:8px;
-        font-size:22px;
+        font-size:{title_size};
         font-weight:bold;
         color:#7A4E00;
-        margin-bottom:10px;
+        margin-bottom:{margin_size};
     ">
         🥔 가락시장 감자 시세
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True
+    )
 
     # =====================
     # 시세 표시
@@ -574,14 +604,14 @@ with left:
                 if diff_rate > 0:
 
                     st.markdown(
-                        f"<span style='color:red;font-size:12px;'>▲ {diff_rate}%</span>",
+                        f"<span style='color:blue;font-size:12px;'>▲ {diff_rate}%</span>",
                         unsafe_allow_html=True
                     )
 
                 else:
 
                     st.markdown(
-                        f"<span style='color:blue;font-size:12px;'>▼ {abs(diff_rate)}%</span>",
+                        f"<span style='color:red;font-size:12px;'>▼ {abs(diff_rate)}%</span>",
                         unsafe_allow_html=True
                     )
 
@@ -617,19 +647,25 @@ with left:
     )
 
     # 보통가격 제목=======================
-    st.markdown("""
+    title_size = "18px" if mobile else "20px"
+    padding_size = "6px 10px" if mobile else "8px 12px"
+
+    st.markdown(
+        f"""
     <div style="
         background:#FFF4D6;
-        padding:8px 12px;
+        padding:{padding_size};
         border-radius:8px;
-        font-size:20px;
+        font-size:{title_size};
         font-weight:bold;
         color:#7A4E00;
         margin-bottom:5px;
     ">
         📈 최근 30일 보통 가격
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True
+    )
 
     data_max = chart1.max().max()
     data_min = chart1.min().min()
@@ -654,7 +690,6 @@ with left:
         x_labels[i]
         for i in tick_idx
     ]
-    
 
     fig1 = go.Figure()
 
@@ -697,14 +732,60 @@ with left:
         )
     )
 
+    max_idx = chart1["올해"].idxmax()
+    min_idx = chart1["올해"].idxmin()
+    last_idx = chart1.index[-1]
+
+    # 최고점
+    fig1.add_annotation(
+        x=str(max_idx),
+        y=chart1["올해"].max(),
+        text=f"최고 {int(chart1['올해'].max()):,}원",
+        showarrow=False,
+        yshift=18,
+        font=dict(
+            size=10 if mobile else 12,
+            color="#1565C0"
+        )
+    )
+
+    # 최저점
+    fig1.add_annotation(
+        x=str(min_idx),
+        y=chart1["올해"].min(),
+        text=f"최저 {int(chart1['올해'].min()):,}원",
+        showarrow=False,
+        yshift=18,
+        font=dict(
+            size=10 if mobile else 12,
+            color="#1565C0"
+        )
+    )
+
+    # 최신값
+    fig1.add_annotation(
+        x=str(last_idx),
+        y=chart1["올해"].iloc[-1],
+        text=f"최신 {int(chart1['올해'].iloc[-1]):,}원",
+        showarrow=False,
+        xshift=-45,
+        yshift=18,
+        font=dict(
+            size=10 if mobile else 12,
+            color="#1565C0"
+        )
+    )
+
     fig1.update_layout(
         height=220 if mobile else 280,
+
         margin=dict(
             l=10,
-            r=10,
+            r=30,
             t=30,
             b=10
         ),
+
         hovermode="x unified",
         dragmode=False,
 
@@ -738,19 +819,25 @@ with left:
     )
 
     # 평균가격 제목======================
-    st.markdown("""
+    title_size = "18px" if mobile else "20px"
+    padding_size = "6px 10px" if mobile else "8px 12px"
+
+    st.markdown(
+        f"""
     <div style="
         background:#FFF4D6;
-        padding:8px 12px;
+        padding:{padding_size};
         border-radius:8px;
-        font-size:20px;
+        font-size:{title_size};
         font-weight:bold;
         color:#7A4E00;
         margin-bottom:5px;
     ">
         📊 월별 평균 가격
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True
+    )
 
     fig2 = go.Figure()
 
@@ -853,19 +940,26 @@ with right:
         "구미"
     ]
 
-    st.markdown("""
+    title_size = "18px" if mobile else "22px"
+    padding_size = "6px 10px" if mobile else "8px 12px"
+    margin_size = "6px" if mobile else "10px"
+
+    st.markdown(
+        f"""
     <div style="
         background:#FFF4D6;
-        padding:8px 12px;
+        padding:{padding_size};
         border-radius:8px;
-        font-size:22px;
+        font-size:{title_size};
         font-weight:bold;
         color:#7A4E00;
-        margin-bottom:10px;
+        margin-bottom:{margin_size};
     ">
         🌞 산지별 10일 예보
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True
+    )
 
     # ===================================
     # 모바일
