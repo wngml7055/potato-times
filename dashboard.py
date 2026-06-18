@@ -488,6 +488,48 @@ with left:
         unsafe_allow_html=True
     )
 
+# 보통가격 제목=======================
+    st.markdown("""
+    <div style="
+        background:#FFF4D6;
+        padding:8px 12px;
+        border-radius:8px;
+        font-size:20px;
+        font-weight:bold;
+        color:#7A4E00;
+        margin-bottom:5px;
+    ">
+        📈 최근 30일 보통 가격
+    </div>
+    """, unsafe_allow_html=True)
+
+# ================================
+    st.line_chart(
+        chart1,
+        height=280
+    )
+# 평균가격 제목======================
+    st.markdown("""
+    <div style="
+        background:#FFF4D6;
+        padding:8px 12px;
+        border-radius:8px;
+        font-size:20px;
+        font-weight:bold;
+        color:#7A4E00;
+        margin-bottom:5px;
+    ">
+        📊 월별 평균 가격
+    </div>
+    """, unsafe_allow_html=True)
+#===============================
+
+    st.line_chart(
+        chart2,
+        height=280
+    )
+# =======================================
+
 with right:
 
     areas = [
