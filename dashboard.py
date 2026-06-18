@@ -139,7 +139,7 @@ with header_left:
 
     st.markdown("""
     <div style="
-        font-family:'Brush Script MT', 'Lucida Handwriting', cursive;
+        font-family:'Georgia', serif;
         font-size:58px;
         font-weight:bold;
         color:#203864;
