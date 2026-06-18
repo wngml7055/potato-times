@@ -786,7 +786,7 @@ with left:
             b=10
         ),
 
-        hovermode="x unified",
+        hovermode=False if mobile else "x unified",
         dragmode=False,
 
         xaxis=dict(
@@ -906,7 +906,7 @@ with left:
             t=10,
             b=10
         ),
-        hovermode="x unified",
+        hovermode=False if mobile else "x unified",
         dragmode=False,
         showlegend=False,
         yaxis=dict(
