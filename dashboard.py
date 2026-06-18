@@ -491,47 +491,6 @@ with left:
         unsafe_allow_html=True
     )
 
-# 보통가격 제목=======================
-    st.markdown("""
-    <div style="
-        background:#FFF4D6;
-        padding:8px 12px;
-        border-radius:8px;
-        font-size:20px;
-        font-weight:bold;
-        color:#7A4E00;
-        margin-bottom:5px;
-    ">
-        📈 최근 30일 보통 가격
-    </div>
-    """, unsafe_allow_html=True)
-
-# ================================
-    st.line_chart(
-        chart1,
-        height=280
-    )
-# 평균가격 제목======================
-    st.markdown("""
-    <div style="
-        background:#FFF4D6;
-        padding:8px 12px;
-        border-radius:8px;
-        font-size:20px;
-        font-weight:bold;
-        color:#7A4E00;
-        margin-bottom:5px;
-    ">
-        📊 월별 평균 가격
-    </div>
-    """, unsafe_allow_html=True)
-#===============================
-
-    st.line_chart(
-        chart2,
-        height=280
-    )
-
 with right:
 
     areas = [
@@ -543,109 +502,108 @@ with right:
         "구미"
     ]
 
-    # ==========================
-    # PC
-    # ==========================
-    else:
+    st.markdown("""
+    <div style="
+        background:#FFF4D6;
+        padding:8px 12px;
+        border-radius:8px;
+        font-size:22px;
+        font-weight:bold;
+        color:#7A4E00;
+        margin-bottom:10px;
+    ">
+        🌞 산지별 10일 예보
+    </div>
+    """, unsafe_allow_html=True)
 
-        st.markdown("""
-        <div style="
-            background:#FFF4D6;
-            padding:8px 12px;
-            border-radius:8px;
-            font-size:22px;
-            font-weight:bold;
-            color:#7A4E00;
-            margin-bottom:10px;
-        ">
-            🌞 산지별 10일 예보
-        </div>
-        """, unsafe_allow_html=True)
+    sample = weather[
+        weather["지역"] == "양구"
+    ]
 
-        sample = weather[
-            weather["지역"] == "양구"
+    header = st.columns(
+        len(sample) + 1
+    )
+
+    header[0].markdown("**산지**")
+
+    for i, (_, row) in enumerate(
+        sample.iterrows()
+    ):
+
+        header[i + 1].markdown(
+            f"**{str(row['날짜'])[5:]}**"
+        )
+
+    for area in areas:
+
+        area_df = weather[
+            weather["지역"] == area
         ]
 
-        header = st.columns(len(sample)+1)
+        cols = st.columns(
+            len(area_df) + 1,
+            gap="small"
+        )
 
-        header[0].markdown("**산지**")
+        cols[0].markdown(
+            f"**{area}**"
+        )
 
-        for i, (_, row) in enumerate(sample.iterrows()):
+        for i, (_, row) in enumerate(
+            area_df.iterrows()
+        ):
 
-            header[i+1].markdown(
-                f"**{str(row['날짜'])[5:]}**"
+            weather_text = str(
+                row["오후날씨"]
             )
 
-        for area in areas:
+            icon_path = None
 
-            area_df = weather[
-                weather["지역"] == area
-            ]
+            for key in weather_icon:
 
-            cols = st.columns(
-                len(area_df)+1,
-                gap="small"
-            )
+                if key in weather_text:
 
-            cols[0].markdown(
-                f"**{area}**"
-            )
+                    icon_path = weather_icon[key]
+                    break
 
-            for i, (_, row) in enumerate(area_df.iterrows()):
+            with cols[i + 1]:
 
-                weather_text = str(
-                    row["오후날씨"]
+                if icon_path:
+
+                    st.image(
+                        icon_path,
+                        width=50
+                    )
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align:center;
+                        font-size:12px;
+                        color:#666;
+                        margin-top:-8px;
+                    ">
+                        {row['최저기온']}~{row['최고기온']}℃
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
 
-                icon_path = None
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align:center;
+                        font-size:12px;
+                        color:#666;
+                        margin-top:-4px;
+                    ">
+                        💧 {row['오후강수확률']}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-                for key in weather_icon:
-
-                    if key in weather_text:
-
-                        icon_path = weather_icon[key]
-                        break
-
-                with cols[i+1]:
-
-                    if icon_path:
-
-                        st.image(
-                            icon_path,
-                            width=70
-                        )
-
-                    st.markdown(
-                        f"""
-                        <div style="
-                            text-align:left;
-                            font-size:15px;
-                            color:#888;
-                            margin-top:-5px;
-                        ">
-                            {row['최저기온']}~{row['최고기온']}°C
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-                    st.markdown(
-                        f"""
-                        <div style="
-                            text-align:left;
-                            font-size:15px;
-                            color:#888;
-                            margin-top:-4px;
-                            margin-bottom:-8px;
-                        ">
-                            💧 {row['오후강수확률']}
-                            </div>
-                        </div>  
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-            st.markdown(
-                "<hr style='margin-top:2px;margin-bottom:2px;'>",
-                unsafe_allow_html=True
-            )
+        st.markdown(
+            "<hr style='margin-top:2px;margin-bottom:2px;'>",
+            unsafe_allow_html=True
+        )
