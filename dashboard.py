@@ -541,7 +541,7 @@ with left:
                 </div>
 
                 <div style="
-                    font-size:22px;
+                    font-size:24px;
                     font-weight:bold;
                     color:#333;
                 ">
@@ -553,7 +553,7 @@ with left:
                     color:#999;
                     margin-top:2px;
                 ">
-                    전년 {last_year_price:,}
+                    전년 {last_year_price:,}원
                 </div>
 
                 <div style="
@@ -577,14 +577,19 @@ with left:
                     {row_html}
                 </tr>
             </table>
+            """,
+            unsafe_allow_html=True
+        )
 
+        st.markdown(
+            """
             <div style="
                 text-align:right;
                 color:#999;
                 font-size:10px;
                 margin-top:4px;
             ">
-                출처 : KAMIS 농산물유통정보
+                출처 : 서울시농수산식품공사(가락시장)
             </div>
             """,
             unsafe_allow_html=True
