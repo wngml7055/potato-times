@@ -264,9 +264,8 @@ if os.path.exists("data/kamis_potato.csv"):
     font-size:{title_size};
 ">
 📢 KAMIS 시장동향 | {title}
-
+</b>
 <br>
-
 <span style="
     color:#444;
     font-size:{body_size};
