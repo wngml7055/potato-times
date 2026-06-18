@@ -654,7 +654,6 @@ with left:
         x_labels[i]
         for i in tick_idx
     ]
-    
 
     fig1 = go.Figure()
 
@@ -697,48 +696,50 @@ with left:
         )
     )
 
-    fig1.add_trace(
-        go.Scatter(
-            x=[
-                x_labels[i]
-                for i in tick_idx
-            ],
-            y=[
-                chart1["올해"].iloc[i]
-                for i in tick_idx
-            ],
-            mode="markers+text",
+    # PC만 레이블 표시
+    if not mobile:
 
-            text=[
-                f"{int(chart1['올해'].iloc[i]):,}"
-                for i in tick_idx
-            ],
+        label_idx = tick_idx[::2]
 
-            textposition="top center",
-
-            textfont=dict(
-                size=11,
-                color="#1565C0"
-            ),
-
-            marker=dict(
-                size=5,
-                color="#1565C0"
-            ),
-
-            showlegend=False,
-            hoverinfo="skip"
+        fig1.add_trace(
+            go.Scatter(
+                x=[
+                    x_labels[i]
+                    for i in label_idx
+                ],
+                y=[
+                    chart1["올해"].iloc[i]
+                    for i in label_idx
+                ],
+                mode="markers+text",
+                text=[
+                    f"{int(chart1['올해'].iloc[i]):,}"
+                    for i in label_idx
+                ],
+                textposition="top center",
+                textfont=dict(
+                    size=10,
+                    color="#1565C0"
+                ),
+                marker=dict(
+                    size=5,
+                    color="#1565C0"
+                ),
+                showlegend=False,
+                hoverinfo="skip"
+            )
         )
-    )
 
     fig1.update_layout(
         height=220 if mobile else 280,
+
         margin=dict(
             l=10,
             r=10,
             t=30,
             b=10
         ),
+
         hovermode="x unified",
         dragmode=False,
 
