@@ -761,21 +761,31 @@ with left:
         go.Scatter(
             x=label_df["월"],
             y=label_df["KG_P"],
-            mode="markers+text",
-            text=[
-                f"{row['월']}<br>{int(row['KG_P']):,}원"
-                for _, row in label_df.iterrows()
-            ],
-            textposition="top right",
-            textfont=dict(
-                size=11
-            ),
+            mode="markers",
             marker=dict(
                 size=8
             ),
             showlegend=False
         )
     )
+
+    for _, row in label_df.iterrows():
+
+        fig2.add_annotation(
+            x=row["월"],
+            y=row["KG_P"],
+            text=(
+                f"{row['월']}<br>"
+                f"{int(row['KG_P']):,}원"
+            ),
+            showarrow=True,
+            arrowhead=0,
+            ax=0,
+            ay=-35,
+            font=dict(
+                size=10
+            )
+        )
 
     fig2.update_layout(
         height=220 if mobile else 280,
