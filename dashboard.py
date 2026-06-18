@@ -527,29 +527,22 @@ with left:
             )
 
             row_html += f"""
-            <td style="
-                text-align:center;
-                border:1px solid #DDD;
-                padding:8px 4px;
-            ">
+            <td style="text-align:center;">
                 <div style="
                     font-weight:bold;
-                    font-size:14px;
-                    margin-bottom:4px;
                 ">
                     {grade}
                 </div>
 
                 <div style="
-                    font-size:24px;
+                    font-size:22px;
                     font-weight:bold;
-                    color:#333;
                 ">
                     {current_price:,}
                 </div>
 
                 <div style="
-                    font-size:10px;
+                    font-size:9px;
                     color:#999;
                     margin-top:2px;
                 ">
@@ -559,11 +552,9 @@ with left:
                 <div style="
                     font-size:11px;
                     color:#0A36FF;
-                    margin-top:2px;
                 ">
                     ▼ {abs(diff_rate)}%
                 </div>
-            </td>
             """
 
         st.markdown(
@@ -571,11 +562,9 @@ with left:
             <table style="
                 width:100%;
                 table-layout:fixed;
-                border-collapse:collapse;
             ">
                 <tr>
                     {row_html}
-                </tr>
             </table>
             """,
             unsafe_allow_html=True
@@ -587,7 +576,7 @@ with left:
                 text-align:right;
                 color:#999;
                 font-size:10px;
-                margin-top:4px;
+                margin-top:2px;
             ">
                 출처 : 서울시농수산식품공사(가락시장)
             </div>
