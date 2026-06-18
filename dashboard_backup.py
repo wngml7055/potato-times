@@ -1,9 +1,9 @@
 import streamlit as st
-is_mobile = st.query_params.get("mobile", "0") == "1"
 import pandas as pd
 import subprocess
 import plotly.graph_objects as go
 import streamlit.components.v1 as components
+from streamlit_js_eval import streamlit_js_eval
 import os
 from datetime import datetime
 
@@ -13,19 +13,40 @@ st.set_page_config(
     layout="wide"
 )
 
+# ==========================
+# 모바일 자동 감지
+# ==========================
+
+try:
+
+    screen_width = streamlit_js_eval(
+        js_expressions="window.innerWidth",
+        key="WIDTH"
+    )
+
+    mobile = (
+        screen_width is not None
+        and screen_width < 768
+    )
+
+except:
+
+    mobile = False
+
+# =======================================
+
 st.markdown("""
 <style>
 
 .block-container {
-    max-width: 98% !important;
-    padding-top: 1.5rem;
+    padding-top: 3rem;
     padding-bottom: 0rem;
     padding-left: 1rem;
     padding-right: 1rem;
-    max-width: 100%;
+    max-width: 110%;
 }
 
-h2,h3 {
+h1,h2,h3 {
     margin-bottom: 0.3rem;
 }
 
@@ -131,60 +152,75 @@ else:
         == latest_day
     ].copy()
 
-header_left, header_right = st.columns([8,1])
+# ==========================
+# 헤더
+# ==========================
+
+if mobile:
+
+    header_left, header_right = st.columns([4, 1])
+
+    title_size = "34px"
+    status_size = "10px"
+    status_margin = "4px"
+
+else:
+
+    header_left, header_right = st.columns([8, 1])
+
+    title_size = "58px"
+    status_size = "12px"
+    status_margin = "18px"
 
 with header_left:
 
     st.markdown(
-        "# 🥔 POTATO TIMES"
-    )
-
-    st.markdown(
-        """
-        <hr style="
+        f"""
+        <div style="
+            font-family:'Palatino Linotype', serif;
+            font-size:{title_size};
+            font-weight:bold;
+            color:#203864;
+            line-height:1.0;
             margin-top:0px;
             margin-bottom:0px;
-            border:none;
-            border-top:3px solid #D9D9D9;
+            white-space:nowrap;
         ">
+            🥔 Potato Times
+        </div>
         """,
         unsafe_allow_html=True
     )
 
-    st.markdown("""
-    <style>
-
-    h1{
-        color:#203864 !important;
-        font-family:Georgia !important;
-        font-weight:700 !important;
-    }
-
-</style>
-""", unsafe_allow_html=True)
-
 with header_right:
-
-    status_color = "#DFF5E1" if success else "#FFE2E2"
-
-    status_text = "정상" if success else "오류"
-
-    st.markdown("<br>", unsafe_allow_html=True)
 
     st.markdown(
         f"""
         <div style="
-            background:{status_color};
-            padding:5px;
-            border-radius:5px;
+            background:#DFF5E1;
+            color:#155724;
+            padding:4px;
+            border-radius:6px;
             text-align:center;
+            font-size:{status_size};
+            font-weight:bold;
+            margin-top:{status_margin};
         ">
-            <b>● {status_text}</b><br>
+            정상<br>
             {datetime.today().strftime("%Y-%m-%d")}
         </div>
         """,
         unsafe_allow_html=True
     )
+
+st.markdown("""
+<hr style="
+    margin-top:5px;
+    margin-bottom:5px;
+    border:none;
+    border-top:1px solid #D9D9D9;
+">
+""", unsafe_allow_html=True)
 
 # ======================
 # KAMIS 시장동향
@@ -222,7 +258,6 @@ if os.path.exists("data/kamis_potato.csv"):
 
 # =======================
 
-
 import os
 
 weather_icon = {
@@ -230,11 +265,10 @@ weather_icon = {
     "구름많음": "assets/cloud.png",
     "흐림": "assets/cloudy.png",
     "비": "assets/rain.png",
-    "소나기":"assets/shower.png"
+    "소나기": "assets/shower.png"
 }
 
 st.markdown("""
-
 <style>
 [data-testid="metric-container"] {
     padding: 0.3rem 0.5rem;
@@ -254,19 +288,25 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-
 # =====================
 # 가격 추이
 # =====================
 
-if is_mobile:
+# =====================
+# PC / 모바일 레이아웃
+# =====================
+
+if mobile:
 
     left = st.container()
     right = st.container()
 
 else:
 
-    left, right = st.columns([1,2])
+    left, right = st.columns([1, 2])
+
+# =============================
+
 history = pd.read_csv("data/garak_history.csv")
 
 special = history[
@@ -281,8 +321,7 @@ special = special.sort_values(
     "INVEST_DT"
 )
 
-
-# 최근 30일===================
+# 최근 30일 ===================
 
 recent30 = special.tail(30).copy()
 
@@ -290,7 +329,7 @@ recent30["KG_P"] = (
     recent30["AV_P"] / 20
 ).round(0)
 
-# 전년 동일일 데이터 생성==========
+# 전년 동일일 데이터 생성 ==========
 
 last_year = special.copy()
 
@@ -303,11 +342,11 @@ last_year["KG_P_LY"] = (
     last_year["AV_P"] / 20
 ).round(0)
 
-# 날짜 기준 병합==============
+# 날짜 기준 병합 ==============
 
 chart1 = pd.merge(
-    recent30[["INVEST_DT","KG_P"]],
-    last_year[["INVEST_DT","KG_P_LY"]],
+    recent30[["INVEST_DT", "KG_P"]],
+    last_year[["INVEST_DT", "KG_P_LY"]],
     on="INVEST_DT",
     how="left"
 )
@@ -403,7 +442,10 @@ chart2 = monthly[
 
 with left:
 
-# 감자시세 제목==============
+    # =====================
+    # 가락시장 감자 시세
+    # =====================
+
     st.markdown("""
     <div style="
         background:#FFF4D6;
@@ -418,90 +460,161 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
-# ========================
+    # =====================
+    # 시세 표시
+    # =====================
 
-    price_cols = st.columns(4)
+    if mobile:
 
-    for idx, grade in enumerate(["특", "상", "보통", "하"]):
+        row_html = ""
 
-        row = garak[
-            garak["G_NAME"] == grade
-        ].iloc[0]
+        for grade in ["특", "상", "보통", "하"]:
 
-        current_price = round(
-            int(row["AV_P"]) / 20
-        )
+            row = garak[
+                garak["G_NAME"] == grade
+            ].iloc[0]
 
-        last_year_price = round(
-            int(
-                str(row["J_365_RATE"])
-                .split("(")[0]
-                .replace(",", "")
-            ) / 20
-        )
-
-        diff_rate = round(
-            (
-                current_price
-                - last_year_price
-            )
-            / last_year_price
-            * 100,
-            1
-        )
-
-        with price_cols[idx]:
-
-            st.metric(
-                grade,
-                f"{current_price:,}원/kg"
+            current_price = round(
+                int(row["AV_P"]) / 20
             )
 
-            st.caption(
-                f"전년 {last_year_price:,}원/kg"
+            last_year_price = round(
+                int(
+                    str(row["J_365_RATE"])
+                    .split("(")[0]
+                    .replace(",", "")
+                ) / 20
             )
 
-            if diff_rate > 0:
+            diff_rate = round(
+                (
+                    current_price
+                    - last_year_price
+                )
+                / last_year_price
+                * 100,
+                1
+            )
 
-                st.markdown(
-                    f"<span style='color:red'>▲ {diff_rate}%</span>",
-                    unsafe_allow_html=True
+            row_html += f"""
+            <td style="text-align:center;">
+                <div style="font-weight:bold;">
+                    {grade}
+                </div>
+                <div style="
+                    font-size:22px;
+                    font-weight:bold;
+                ">
+                    {current_price:,}
+                </div>
+                <div style="
+                    font-size:11px;
+                    color:#0A36FF;
+                ">
+                    ▼ {abs(diff_rate)}%
+                </div>
+            """
+
+        st.markdown(
+            f"""
+            <table style="
+                width:100%;
+                table-layout:fixed;
+            ">
+                <tr>
+                    {row_html}
+            </table>
+            """,
+            unsafe_allow_html=True
+        )
+
+    else:
+
+        price_cols = st.columns(4)
+
+        for idx, grade in enumerate(["특", "상", "보통", "하"]):
+
+            row = garak[
+                garak["G_NAME"] == grade
+            ].iloc[0]
+
+            current_price = round(
+                int(row["AV_P"]) / 20
+            )
+
+            last_year_price = round(
+                int(
+                    str(row["J_365_RATE"])
+                    .split("(")[0]
+                    .replace(",", "")
+                ) / 20
+            )
+
+            diff_rate = round(
+                (
+                    current_price
+                    - last_year_price
+                )
+                / last_year_price
+                * 100,
+                1
+            )
+
+            with price_cols[idx]:
+
+                st.metric(
+                    label=grade,
+                    value=f"{current_price:,}원/kg"
                 )
 
-            else:
-
-                st.markdown(
-                    f"<span style='color:blue'>▼ {abs(diff_rate)}%</span>",
-                    unsafe_allow_html=True
+                st.caption(
+                    f"전년 {last_year_price:,}원/kg"
                 )
 
-# =============
-# 아래 코드는 감자시세 간격
-# =============
+                if diff_rate > 0:
+
+                    st.markdown(
+                        f"<span style='color:red;font-size:12px;'>▲ {diff_rate}%</span>",
+                        unsafe_allow_html=True
+                    )
+
+                else:
+
+                    st.markdown(
+                        f"<span style='color:blue;font-size:12px;'>▼ {abs(diff_rate)}%</span>",
+                        unsafe_allow_html=True
+                    )
+
+    # =====================
+    # 시세 영역 스타일
+    # =====================
 
     st.markdown("""
     <style>
 
     [data-testid="metric-container"] {
-        padding: 0.2rem !important;
+        padding: 0.15rem !important;
     }
 
-    [data-testid="stMetric"] {
-        margin-bottom: -15px;
+    [data-testid="stMetricValue"] {
+        font-size: 1.3rem !important;
+    }
+
+    [data-testid="stMetricLabel"] {
+        font-size: 0.8rem !important;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-#===============
-# 아래는 등락율과 그래프 사이 여백
-# ===============
+    # =====================
+    # 그래프와의 간격
+    # =====================
 
     st.markdown(
-        "<hr style='margin-top:5px;margin-bottom:10px;'>",
+        "<hr style='margin-top:5px;margin-bottom:2px;'>",
         unsafe_allow_html=True
     )
-#==========================================
 
 # 보통가격 제목=======================
     st.markdown("""
@@ -543,10 +656,9 @@ with left:
         chart2,
         height=280
     )
+# =======================================
 
 with right:
-
-    mobile = st.query_params.get("mobile") == "1"
 
     areas = [
         "양구",
@@ -557,221 +669,108 @@ with right:
         "구미"
     ]
 
-    # ==========================
-    # 모바일
-    # ==========================
-    if mobile:
+    st.markdown("""
+    <div style="
+        background:#FFF4D6;
+        padding:8px 12px;
+        border-radius:8px;
+        font-size:22px;
+        font-weight:bold;
+        color:#7A4E00;
+        margin-bottom:10px;
+    ">
+        🌞 산지별 10일 예보
+    </div>
+    """, unsafe_allow_html=True)
 
-        st.markdown("""
-        <div style="
-            background:#FFF4D6;
-            padding:10px 14px;
-            border-radius:8px;
-            font-size:22px;
-            font-weight:bold;
-            color:#7A4E00;
-            margin-bottom:15px;
-        ">
-            🌞 산지별 10일 예보
-        </div>
-        """, unsafe_allow_html=True)
+    sample = weather[
+        weather["지역"] == "양구"
+    ]
 
-        emoji_map = {
-            "맑음":"☀️",
-            "구름많음":"⛅",
-            "흐림":"☁️",
-            "비":"🌧️",
-            "소나기":"🌦️"
-        }
+    header = st.columns(
+        len(sample) + 1
+    )
 
-        for area in areas:
+    header[0].markdown("**산지**")
 
-            area_df = weather[
-                weather["지역"] == area
-            ]
+    for i, (_, row) in enumerate(
+        sample.iterrows()
+    ):
 
-            cards = ""
+        header[i + 1].markdown(
+            f"**{str(row['날짜'])[5:]}**"
+        )
 
-            for _, row in area_df.iterrows():
+    for area in areas:
 
-                weather_text = str(row["오후날씨"])
-
-                icon = "☁️"
-
-                for k,v in emoji_map.items():
-
-                    if k in weather_text:
-
-                        icon = v
-                        break
-
-                cards += f"""
-                <div style="
-                    width:80px;
-                    flex:0 0 auto;
-                    text-align:center;
-                    padding:5px;
-                ">
-                    <div style="
-                        font-weight:bold;
-                        font-size:14px;
-                    ">
-                        {str(row['날짜'])[5:]}
-                    </div>
-
-                    <div style="
-                        font-size:34px;
-                        line-height:1;
-                        margin:2px 0;
-                    ">
-                        {icon}
-                    </div>
-
-                    <div style="
-                        font-size:11px;
-                        color:#666;
-                    ">
-                        {row['최저기온']}~{row['최고기온']}°
-                    </div>
-
-                    <div style="
-                        font-size:11px;
-                        color:#666;
-                    ">
-                        💧{row['오후강수확률']}
-                    </div>
-                </div>
-                """
-
-            html = f"""
-            <div style="margin-bottom:10px;">
-                <div style="
-                    font-size:20px;
-                    font-weight:bold;
-                    margin-bottom:2px;
-                ">
-                    📍 {area}
-                </div>
-
-                <div style="
-                    display:flex;
-                    overflow-x:auto;
-                    gap:4px;
-                    padding-bottom:2px;
-                ">
-                    {cards}
-            </div>
-            """
-
-            components.html(
-                html,
-                height=140,
-                scrolling=True
-            )
-
-    # ==========================
-    # PC
-    # ==========================
-    else:
-
-        st.markdown("""
-        <div style="
-            background:#FFF4D6;
-            padding:8px 12px;
-            border-radius:8px;
-            font-size:22px;
-            font-weight:bold;
-            color:#7A4E00;
-            margin-bottom:10px;
-        ">
-            🌞 산지별 10일 예보
-        </div>
-        """, unsafe_allow_html=True)
-
-        sample = weather[
-            weather["지역"] == "양구"
+        area_df = weather[
+            weather["지역"] == area
         ]
 
-        header = st.columns(len(sample)+1)
+        cols = st.columns(
+            len(area_df) + 1,
+            gap="small"
+        )
 
-        header[0].markdown("**산지**")
+        cols[0].markdown(
+            f"**{area}**"
+        )
 
-        for i, (_, row) in enumerate(sample.iterrows()):
+        for i, (_, row) in enumerate(
+            area_df.iterrows()
+        ):
 
-            header[i+1].markdown(
-                f"**{str(row['날짜'])[5:]}**"
+            weather_text = str(
+                row["오후날씨"]
             )
 
-        for area in areas:
+            icon_path = None
 
-            area_df = weather[
-                weather["지역"] == area
-            ]
+            for key in weather_icon:
 
-            cols = st.columns(
-                len(area_df)+1,
-                gap="small"
-            )
+                if key in weather_text:
 
-            cols[0].markdown(
-                f"**{area}**"
-            )
+                    icon_path = weather_icon[key]
+                    break
 
-            for i, (_, row) in enumerate(area_df.iterrows()):
+            with cols[i + 1]:
 
-                weather_text = str(
-                    row["오후날씨"]
+                if icon_path:
+
+                    st.image(
+                        icon_path,
+                        width=70
+                    )
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align:center;
+                        font-size:12px;
+                        color:#666;
+                        margin-top:-8px;
+                    ">
+                        {row['최저기온']}~{row['최고기온']}℃
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
 
-                icon_path = None
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align:center;
+                        font-size:12px;
+                        color:#666;
+                        margin-top:-4px;
+                    ">
+                        💧 {row['오후강수확률']}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-                for key in weather_icon:
-
-                    if key in weather_text:
-
-                        icon_path = weather_icon[key]
-                        break
-
-                with cols[i+1]:
-
-                    if icon_path:
-
-                        st.image(
-                            icon_path,
-                            width=70
-                        )
-
-                    st.markdown(
-                        f"""
-                        <div style="
-                            text-align:left;
-                            font-size:15px;
-                            color:#888;
-                            margin-top:-5px;
-                        ">
-                            {row['최저기온']}~{row['최고기온']}°C
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-                    st.markdown(
-                        f"""
-                        <div style="
-                            text-align:left;
-                            font-size:15px;
-                            color:#888;
-                            margin-top:-4px;
-                            margin-bottom:-8px;
-                        ">
-                            💧 {row['오후강수확률']}
-                            </div>
-                        </div>  
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-            st.markdown(
-                "<hr style='margin-top:2px;margin-bottom:2px;'>",
-                unsafe_allow_html=True
-            )
+        st.markdown(
+            "<hr style='margin-top:2px;margin-bottom:2px;'>",
+            unsafe_allow_html=True
+        )
