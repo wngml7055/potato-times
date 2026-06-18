@@ -176,7 +176,7 @@ with header_right:
 st.markdown("""
 <hr style="
     margin-top:0px;
-    margin-bottom:3px;
+    margin-bottom:5px;
     border:none;
     border-top:1px solid #D9D9D9;
 ">
