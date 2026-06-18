@@ -273,7 +273,6 @@ if os.path.exists("data/kamis_potato.csv"):
 ">
 {summary}
 </span>
-
 </div>
             """,
             unsafe_allow_html=True
