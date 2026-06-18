@@ -671,12 +671,12 @@ with left:
         margin=dict(l=10, r=10, t=10, b=10),
         hovermode="x unified",
         dragmode=False,
-        legend=dict(
-            orientation="h",
-            y=1.15,
-            x=0,
-            bgcolor="rgba(0,0,0,0)"
-        )
+            legend=dict(
+                orientation="h",
+                y=1.15,
+                x=0,
+                bgcolor="rgba(0,0,0,0)"
+            )
         yaxis=dict(
             range=[ymin, ymax]
         )
