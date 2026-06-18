@@ -639,6 +639,14 @@ with left:
 
     x_labels = [str(x) for x in chart1.index]
 
+    tickvals = x_labels[::3]
+
+    if x_labels[-1] not in tickvals:
+
+        tickvals.append(
+            x_labels[-1]
+        )
+
     fig1 = go.Figure()
 
     fig1.add_trace(
@@ -694,8 +702,8 @@ with left:
         xaxis=dict(
             type="category",
             tickmode="array",
-            tickvals=x_labels[::3],
-            ticktext=x_labels[::3]
+            tickvals=tickvals,
+            ticktext=tickvals
         ),
 
         yaxis=dict(
