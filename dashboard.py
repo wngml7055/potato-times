@@ -812,9 +812,10 @@ with left:
         fig1,
         use_container_width=True,
         config={
+            "staticPlot": mobile,
             "scrollZoom": False,
             "displayModeBar": False,
-            "doubleClick": "reset"
+            "doubleClick": False
         }
     )
 
@@ -921,9 +922,10 @@ with left:
         fig2,
         use_container_width=True,
         config={
+            "staticPlot": mobile,
             "scrollZoom": False,
             "displayModeBar": False,
-            "doubleClick": "reset"
+            "doubleClick": False
         }
     )
 
