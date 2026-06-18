@@ -204,7 +204,7 @@ with header_right:
             text-align:center;
             font-size:{status_size};
             font-weight:bold;
-            margin-top:{status_margin};
+            margin-top:-30px;
         ">
             정상<br>
             {datetime.today().strftime("%Y-%m-%d")}
