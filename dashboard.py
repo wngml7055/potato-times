@@ -637,27 +637,29 @@ with left:
     ymax = int(data_max + 100)
     ymin = max(0, int(data_min - 100))
 
-    x_labels = [
-        str(x)[5:]
-        for x in chart1.index
-    ]
+    x_values = chart1.index.astype(str)
 
     tick_idx = list(
         range(
             0,
-            len(x_labels),
+            len(x_values),
             3
         )
     )
 
-    if (len(x_labels) - 1) not in tick_idx:
+    if (len(x_values) - 1) not in tick_idx:
 
         tick_idx.append(
-            len(x_labels) - 1
+            len(x_values) - 1
         )
 
     tickvals = [
-        x_labels[i]
+        x_values[i]
+        for i in tick_idx
+    ]
+
+    ticktext = [
+        str(x_values[i])[5:]
         for i in tick_idx
     ]
 
@@ -665,7 +667,7 @@ with left:
 
     fig1.add_trace(
         go.Scatter(
-            x=x_labels,
+            x=x_values,
             y=chart1["올해"],
             mode="lines",
             name="올해",
@@ -678,7 +680,7 @@ with left:
 
     fig1.add_trace(
         go.Scatter(
-            x=x_labels,
+            x=x_values,
             y=chart1["전년"],
             mode="lines",
             name="전년",
@@ -691,7 +693,7 @@ with left:
 
     fig1.add_trace(
         go.Scatter(
-            x=x_labels,
+            x=x_values,
             y=chart1["평년"],
             mode="lines",
             name="평년",
@@ -714,10 +716,9 @@ with left:
         dragmode=False,
 
         xaxis=dict(
-            type="category",
             tickmode="array",
             tickvals=tickvals,
-            ticktext=tickvals
+            ticktext=ticktext
         ),
 
         yaxis=dict(
