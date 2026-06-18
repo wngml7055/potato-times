@@ -182,7 +182,7 @@ with header_left:
             font-weight:bold;
             color:#203864;
             line-height:1.0;
-            margin-top:-5px;
+            margin-top:-20px;
             margin-bottom:0px;
             white-space:nowrap;
         ">
