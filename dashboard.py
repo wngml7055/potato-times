@@ -696,46 +696,47 @@ with left:
         )
     )
 
-    # 최고 / 최저 / 최신 표시
     max_idx = chart1["올해"].idxmax()
     min_idx = chart1["올해"].idxmin()
     last_idx = chart1.index[-1]
 
-    label_x = [
-        str(max_idx),
-        str(min_idx),
-        str(last_idx)
-    ]
+    # 최고점
+    fig1.add_annotation(
+        x=str(max_idx),
+        y=chart1["올해"].max(),
+        text=f"최고 {int(chart1['올해'].max()):,}원",
+        showarrow=False,
+        yshift=18,
+        font=dict(
+            size=10 if mobile else 12,
+            color="#1565C0"
+        )
+    )
 
-    label_y = [
-        chart1["올해"].max(),
-        chart1["올해"].min(),
-        chart1["올해"].iloc[-1]
-    ]
+    # 최저점
+    fig1.add_annotation(
+        x=str(min_idx),
+        y=chart1["올해"].min(),
+        text=f"최저 {int(chart1['올해'].min()):,}원",
+        showarrow=False,
+        yshift=18,
+        font=dict(
+            size=10 if mobile else 12,
+            color="#1565C0"
+        )
+    )
 
-    label_text = [
-        f"최고 {int(chart1['올해'].max()):,}원",
-        f"최저 {int(chart1['올해'].min()):,}원",
-        f"최신 {int(chart1['올해'].iloc[-1]):,}원"
-    ]
-
-    fig1.add_trace(
-        go.Scatter(
-            x=label_x,
-            y=label_y,
-            mode="markers+text",
-            text=label_text,
-            textposition="top center",
-            textfont=dict(
-                size=9 if mobile else 11,
-                color="#1565C0"
-            ),
-            marker=dict(
-                size=6,
-                color="#1565C0"
-            ),
-            showlegend=False,
-            hoverinfo="skip"
+    # 최신값
+    fig1.add_annotation(
+        x=str(last_idx),
+        y=chart1["올해"].iloc[-1],
+        text=f"최신 {int(chart1['올해'].iloc[-1]):,}원",
+        showarrow=False,
+        xshift=-45,
+        yshift=18,
+        font=dict(
+            size=10 if mobile else 12,
+            color="#1565C0"
         )
     )
 
@@ -744,7 +745,7 @@ with left:
 
         margin=dict(
             l=10,
-            r=10,
+            r=30,
             t=30,
             b=10
         ),
