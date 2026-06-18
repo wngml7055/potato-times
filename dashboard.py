@@ -647,19 +647,25 @@ with left:
     )
 
     # 보통가격 제목=======================
-    st.markdown("""
+    title_size = "18px" if mobile else "20px"
+    padding_size = "6px 10px" if mobile else "8px 12px"
+
+    st.markdown(
+        f"""
     <div style="
         background:#FFF4D6;
-        padding:8px 12px;
+        padding:{padding_size};
         border-radius:8px;
-        font-size:20px;
+        font-size:{title_size};
         font-weight:bold;
         color:#7A4E00;
         margin-bottom:5px;
     ">
         📈 최근 30일 보통 가격
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True
+    )
 
     data_max = chart1.max().max()
     data_min = chart1.min().min()
@@ -813,19 +819,25 @@ with left:
     )
 
     # 평균가격 제목======================
-    st.markdown("""
+    title_size = "18px" if mobile else "20px"
+    padding_size = "6px 10px" if mobile else "8px 12px"
+
+    st.markdown(
+        f"""
     <div style="
         background:#FFF4D6;
-        padding:8px 12px;
+        padding:{padding_size};
         border-radius:8px;
-        font-size:20px;
+        font-size:{title_size};
         font-weight:bold;
         color:#7A4E00;
         margin-bottom:5px;
     ">
         📊 월별 평균 가격
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True
+    )
 
     fig2 = go.Figure()
 
@@ -928,19 +940,26 @@ with right:
         "구미"
     ]
 
-    st.markdown("""
+    title_size = "18px" if mobile else "22px"
+    padding_size = "6px 10px" if mobile else "8px 12px"
+    margin_size = "6px" if mobile else "10px"
+
+    st.markdown(
+        f"""
     <div style="
         background:#FFF4D6;
-        padding:8px 12px;
+        padding:{padding_size};
         border-radius:8px;
-        font-size:22px;
+        font-size:{title_size};
         font-weight:bold;
         color:#7A4E00;
-        margin-bottom:10px;
+        margin-bottom:{margin_size};
     ">
         🌞 산지별 10일 예보
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True
+    )
 
     # ===================================
     # 모바일
