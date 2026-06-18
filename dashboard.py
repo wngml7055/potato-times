@@ -528,27 +528,15 @@ with left:
 
             row_html += f"""
             <td style="text-align:center;">
-                <div style="
-                    font-weight:bold;
-                ">
+                <div style="font-weight:bold;">
                     {grade}
                 </div>
-
                 <div style="
                     font-size:22px;
                     font-weight:bold;
                 ">
                     {current_price:,}
                 </div>
-
-                <div style="
-                    font-size:9px;
-                    color:#999;
-                    margin-top:2px;
-                ">
-                    전년 {last_year_price:,}원
-                </div>
-
                 <div style="
                     font-size:11px;
                     color:#0A36FF;
@@ -566,20 +554,6 @@ with left:
                 <tr>
                     {row_html}
             </table>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            """
-            <div style="
-                text-align:right;
-                color:#999;
-                font-size:10px;
-                margin-top:2px;
-            ">
-                출처 : 서울시농수산식품공사(가락시장)
-            </div>
             """,
             unsafe_allow_html=True
         )
