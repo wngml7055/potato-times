@@ -154,6 +154,7 @@ with header_right:
             font-size:12px;
             font-weight:bold;
             margin-top:12px;
+            margin-bottom:2px;
         ">
             정상<br>
             {datetime.today().strftime("%Y-%m-%d")}
