@@ -635,7 +635,11 @@ with left:
     data_min = chart1.min().min()
 
     ymax = int(data_max + 100)
-    ymin = int(data_min - 100)
+
+    ymin = max(
+        0,
+        int(data_min - 100)
+    )
 
     x_labels = [str(x) for x in chart1.index]
 
