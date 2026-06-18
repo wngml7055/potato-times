@@ -255,7 +255,7 @@ if os.path.exists("data/kamis_potato.csv"):
     border-left:4px solid #4A90E2;
     padding:6px 10px;
     border-radius:6px;
-    margin:0 0 6px 0;
+    margin:0 0 2px 0;
 ">
 
 <b style="
