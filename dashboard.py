@@ -527,22 +527,43 @@ with left:
             )
 
             row_html += f"""
-            <td style="text-align:center;">
-                <div style="font-weight:bold;">
+            <td style="
+                text-align:center;
+                border:1px solid #DDD;
+                padding:8px 4px;
+            ">
+                <div style="
+                    font-weight:bold;
+                    font-size:14px;
+                    margin-bottom:4px;
+                ">
                     {grade}
                 </div>
+
                 <div style="
                     font-size:22px;
                     font-weight:bold;
+                    color:#333;
                 ">
                     {current_price:,}
                 </div>
+
+                <div style="
+                    font-size:10px;
+                    color:#999;
+                    margin-top:2px;
+                ">
+                    전년 {last_year_price:,}
+                </div>
+
                 <div style="
                     font-size:11px;
                     color:#0A36FF;
+                    margin-top:2px;
                 ">
                     ▼ {abs(diff_rate)}%
                 </div>
+            </td>
             """
 
         st.markdown(
@@ -550,10 +571,21 @@ with left:
             <table style="
                 width:100%;
                 table-layout:fixed;
+                border-collapse:collapse;
             ">
                 <tr>
                     {row_html}
+                </tr>
             </table>
+
+            <div style="
+                text-align:right;
+                color:#999;
+                font-size:10px;
+                margin-top:4px;
+            ">
+                출처 : KAMIS 농산물유통정보
+            </div>
             """,
             unsafe_allow_html=True
         )
