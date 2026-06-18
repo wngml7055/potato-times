@@ -182,8 +182,8 @@ with header_left:
             font-weight:bold;
             color:#203864;
             line-height:1.0;
-            margin-top:0px;
-            margin-bottom:0px;
+            margin-top:-30px;
+            margin-bottom:-10px;
             white-space:nowrap;
         ">
             🥔 Potato Times
@@ -204,7 +204,7 @@ with header_right:
             text-align:center;
             font-size:{status_size};
             font-weight:bold;
-            margin-top:{status_margin};
+            margin-top:0px;
         ">
             정상<br>
             {datetime.today().strftime("%Y-%m-%d")}
