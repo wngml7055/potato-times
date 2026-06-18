@@ -631,11 +631,14 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
+    ymax = int(chart1.max().max()) + 500
+    ymin = max(0, int(chart1.min().min()) - 200)
+
     fig1 = go.Figure()
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index,
+            x=chart1.index.astype(str),
             y=chart1["올해"],
             mode="lines",
             name="올해"
@@ -644,7 +647,7 @@ with left:
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index,
+            x=chart1.index.astype(str),
             y=chart1["전년"],
             mode="lines",
             name="전년"
@@ -653,7 +656,7 @@ with left:
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index,
+            x=chart1.index.astype(str),
             y=chart1["평년"],
             mode="lines",
             name="평년"
@@ -662,9 +665,17 @@ with left:
 
     fig1.update_layout(
         height=220 if mobile else 280,
-        margin=dict(l=10, r=10, t=10, b=10),
-        dragmode=False,
+        margin=dict(
+            l=10,
+            r=10,
+            t=10,
+            b=10
+        ),
         hovermode="x unified",
+        dragmode=False,
+        yaxis=dict(
+            range=[ymin, ymax]
+        ),
         legend=dict(
             orientation="h",
             y=-0.15
@@ -676,7 +687,8 @@ with left:
         use_container_width=True,
         config={
             "scrollZoom": False,
-            "displayModeBar": False
+            "displayModeBar": False,
+            "doubleClick": "reset"
         }
     )
 
@@ -695,11 +707,28 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
+    latest_month = monthly.iloc[-1]["월"][-2:]
+
+    compare = monthly[
+        monthly["월"].str.endswith(
+            latest_month
+        )
+    ].tail(4)
+
+    compare_text = " | ".join(
+        [
+            f"{row['월']} : {int(row['KG_P']):,}원"
+            for _, row in compare.iterrows()
+        ]
+    )
+
+    st.caption(compare_text)
+
     fig2 = go.Figure()
 
     fig2.add_trace(
         go.Scatter(
-            x=chart2.index,
+            x=chart2.index.astype(str),
             y=chart2["KG_P"],
             mode="lines",
             name="가격"
@@ -708,9 +737,14 @@ with left:
 
     fig2.update_layout(
         height=220 if mobile else 280,
-        margin=dict(l=10, r=10, t=10, b=10),
-        dragmode=False,
+        margin=dict(
+            l=10,
+            r=10,
+            t=10,
+            b=10
+        ),
         hovermode="x unified",
+        dragmode=False,
         showlegend=False
     )
 
@@ -719,7 +753,8 @@ with left:
         use_container_width=True,
         config={
             "scrollZoom": False,
-            "displayModeBar": False
+            "displayModeBar": False,
+            "doubleClick": "reset"
         }
     )
 
@@ -750,94 +785,241 @@ with right:
     </div>
     """, unsafe_allow_html=True)
 
-    sample = weather[
-        weather["지역"] == "양구"
-    ]
+    # ===================================
+    # 모바일
+    # ===================================
 
-    header = st.columns(
-        len(sample) + 1
-    )
+    if mobile:
 
-    header[0].markdown("**산지**")
-
-    for i, (_, row) in enumerate(
-        sample.iterrows()
-    ):
-
-        header[i + 1].markdown(
-            f"**{str(row['날짜'])[5:]}**"
-        )
-
-    for area in areas:
-
-        area_df = weather[
-            weather["지역"] == area
+        sample = weather[
+            weather["지역"] == "양구"
         ]
 
-        cols = st.columns(
-            len(area_df) + 1,
-            gap="small"
+        BASE_ICON = (
+            "https://raw.githubusercontent.com/"
+            "wngml7055/potato-times/main/assets"
         )
 
-        cols[0].markdown(
-            f"**{area}**"
-        )
+        icon_url = {
+            "맑음": f"{BASE_ICON}/sunny.png",
+            "구름": f"{BASE_ICON}/cloud.png",
+            "흐림": f"{BASE_ICON}/cloudy.png",
+            "비": f"{BASE_ICON}/rain.png",
+            "소나기": f"{BASE_ICON}/shower.png"
+        }
 
-        for i, (_, row) in enumerate(
-            area_df.iterrows()
-        ):
+        html = """
+        <div style="
+            overflow-x:auto;
+            width:100%;
+        ">
+        <table style="
+            border-collapse:collapse;
+            white-space:nowrap;
+            text-align:center;
+            font-size:13px;
+            width:max-content;
+        ">
+        """
 
-            weather_text = str(
-                row["오후날씨"]
-            )
+        html += """
+        <tr>
+            <th style="
+                position:sticky;
+                left:0;
+                background:white;
+                z-index:999;
+                min-width:50px;
+                padding:6px;
+                border-bottom:2px solid #DDD;
+            ">
+                산지
+            </th>
+        """
 
-            icon_path = None
+        for _, row in sample.iterrows():
 
-            for key in weather_icon:
+            html += f"""
+            <th style="
+                min-width:85px;
+                padding:6px;
+                border-bottom:2px solid #DDD;
+            ">
+                {str(row['날짜'])[5:]}
+            </th>
+            """
 
-                if key in weather_text:
+        html += "</tr>"
 
-                    icon_path = weather_icon[key]
-                    break
+        for area in areas:
 
-            with cols[i + 1]:
+            area_df = weather[
+                weather["지역"] == area
+            ]
 
-                if icon_path:
+            html += f"""
+            <tr>
+                <td style="
+                    position:sticky;
+                    left:0;
+                    background:white;
+                    font-weight:bold;
+                    padding:4px;
+                    border-bottom:1px solid #EEE;
+                ">
+                    {area}
+                </td>
+            """
 
-                    st.image(
-                        icon_path,
-                        width=70
-                    )
+            for _, row in area_df.iterrows():
 
-                st.markdown(
-                    f"""
+                weather_text = str(
+                    row["오후날씨"]
+                )
+
+                icon = icon_url["흐림"]
+
+                for key in icon_url:
+
+                    if key in weather_text:
+
+                        icon = icon_url[key]
+                        break
+
+                html += f"""
+                <td style="
+                    min-width:85px;
+                    padding:4px;
+                    border-bottom:1px solid #EEE;
+                ">
+                    <img
+                        src="{icon}"
+                        width="45"
+                    >
+
                     <div style="
-                        text-align:center;
-                        font-size:12px;
+                        font-size:10px;
                         color:#666;
-                        margin-top:-8px;
                     ">
                         {row['최저기온']}~{row['최고기온']}℃
                     </div>
-                    """,
-                    unsafe_allow_html=True
-                )
 
-                st.markdown(
-                    f"""
                     <div style="
-                        text-align:center;
-                        font-size:12px;
+                        font-size:10px;
                         color:#666;
-                        margin-top:-4px;
                     ">
                         💧 {row['오후강수확률']}
                     </div>
-                    """,
-                    unsafe_allow_html=True
+                </td>
+                """
+
+            html += "</tr>"
+
+        html += """
+        </table>
+        </div>
+        """
+
+        components.html(
+            html,
+            height=620,
+            scrolling=True
+        )
+
+    # ===================================
+    # PC
+    # ===================================
+
+    else:
+
+        sample = weather[
+            weather["지역"] == "양구"
+        ]
+
+        header = st.columns(
+            len(sample) + 1
+        )
+
+        header[0].markdown("**산지**")
+
+        for i, (_, row) in enumerate(
+            sample.iterrows()
+        ):
+
+            header[i + 1].markdown(
+                f"**{str(row['날짜'])[5:]}**"
+            )
+
+        for area in areas:
+
+            area_df = weather[
+                weather["지역"] == area
+            ]
+
+            cols = st.columns(
+                len(area_df) + 1,
+                gap="small"
+            )
+
+            cols[0].markdown(
+                f"**{area}**"
+            )
+
+            for i, (_, row) in enumerate(
+                area_df.iterrows()
+            ):
+
+                weather_text = str(
+                    row["오후날씨"]
                 )
 
-        st.markdown(
-            "<hr style='margin-top:2px;margin-bottom:2px;'>",
-            unsafe_allow_html=True
-        )
+                icon_path = None
+
+                for key in weather_icon:
+
+                    if key in weather_text:
+
+                        icon_path = weather_icon[key]
+                        break
+
+                with cols[i + 1]:
+
+                    if icon_path:
+
+                        st.image(
+                            icon_path,
+                            width=70
+                        )
+
+                    st.markdown(
+                        f"""
+                        <div style="
+                            text-align:center;
+                            font-size:12px;
+                            color:#666;
+                            margin-top:-8px;
+                        ">
+                            {row['최저기온']}~{row['최고기온']}℃
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+                    st.markdown(
+                        f"""
+                        <div style="
+                            text-align:center;
+                            font-size:12px;
+                            color:#666;
+                            margin-top:-4px;
+                        ">
+                            💧 {row['오후강수확률']}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+            st.markdown(
+                "<hr style='margin-top:2px;margin-bottom:2px;'>",
+                unsafe_allow_html=True
+            )
