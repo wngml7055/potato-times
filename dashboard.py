@@ -693,7 +693,9 @@ with left:
 
         xaxis=dict(
             type="category",
-            tickangle=0
+            tickmode="array",
+            tickvals=x_labels[::3],
+            ticktext=x_labels[::3]
         ),
 
         yaxis=dict(
