@@ -635,9 +635,31 @@ with left:
     data_min = chart1.min().min()
 
     ymax = int(data_max + 100)
-    ymin = int(data_min - 100)
+    ymin = max(0, int(data_min - 100))
 
-    x_labels = [str(x) for x in chart1.index]
+    x_labels = [
+        str(x)[5:]
+        for x in chart1.index
+    ]
+
+    tick_idx = list(
+        range(
+            0,
+            len(x_labels),
+            3
+        )
+    )
+
+    if (len(x_labels) - 1) not in tick_idx:
+
+        tick_idx.append(
+            len(x_labels) - 1
+        )
+
+    tickvals = [
+        x_labels[i]
+        for i in tick_idx
+    ]
 
     fig1 = go.Figure()
 
@@ -694,8 +716,8 @@ with left:
         xaxis=dict(
             type="category",
             tickmode="array",
-            tickvals=x_labels[::3],
-            ticktext=x_labels[::3]
+            tickvals=tickvals,
+            ticktext=tickvals
         ),
 
         yaxis=dict(
