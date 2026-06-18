@@ -785,177 +785,137 @@ with right:
     </div>
     """, unsafe_allow_html=True)
 
-    # ===================================
-    # 모바일
-    # ===================================
+    html = """
+    <div style="
+        overflow-x:auto;
+        width:100%;
+    ">
+    <table style="
+        border-collapse:collapse;
+        white-space:nowrap;
+        text-align:center;
+        font-size:13px;
+        width:max-content;
+    ">
+    """
 
-    if mobile:
+    sample = weather[
+        weather["지역"] == "양구"
+    ]
 
-        selected_area = st.selectbox(
-            "산지 선택",
-            areas
-        )
+    html += """
+    <tr>
+        <th style="
+            position:sticky;
+            left:0;
+            background:white;
+            z-index:999;
+            min-width:70px;
+            padding:8px;
+            border-bottom:2px solid #DDD;
+        ">
+            산지
+        </th>
+    """
+
+    for _, row in sample.iterrows():
+
+        html += f"""
+        <th style="
+            min-width:95px;
+            padding:8px;
+            border-bottom:2px solid #DDD;
+        ">
+            {str(row['날짜'])[5:]}
+        </th>
+        """
+
+    html += "</tr>"
+
+    BASE_ICON = (
+        "https://raw.githubusercontent.com/"
+        "wngml7055/potato-times/main/assets"
+    )
+
+    icon_url = {
+        "맑음": f"{BASE_ICON}/sunny.png",
+        "구름": f"{BASE_ICON}/cloud.png",
+        "흐림": f"{BASE_ICON}/cloudy.png",
+        "비": f"{BASE_ICON}/rain.png",
+        "소나기": f"{BASE_ICON}/shower.png"
+    }
+
+    for area in areas:
 
         area_df = weather[
-            weather["지역"] == selected_area
+            weather["지역"] == area
         ]
 
-        cols = st.columns(5)
+        html += f"""
+        <tr>
+            <td style="
+                position:sticky;
+                left:0;
+                background:white;
+                font-weight:bold;
+                padding:6px;
+                border-bottom:1px solid #EEE;
+            ">
+                {area}
+            </td>
+        """
 
-        for idx, (_, row) in enumerate(
-            area_df.iterrows()
-        ):
+        for _, row in area_df.iterrows():
 
             weather_text = str(
                 row["오후날씨"]
             )
 
-            icon_path = None
+            icon = icon_url["흐림"]
 
-            for key in weather_icon:
+            for key in icon_url:
 
                 if key in weather_text:
 
-                    icon_path = weather_icon[key]
+                    icon = icon_url[key]
                     break
 
-            with cols[idx % 5]:
+            html += f"""
+            <td style="
+                min-width:95px;
+                padding:6px;
+                border-bottom:1px solid #EEE;
+            ">
+                <img
+                    src="{icon}"
+                    width="55"
+                >
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-weight:bold;
-                        margin-bottom:4px;
-                    ">
-                        {str(row['날짜'])[5:]}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+                <div style="
+                    font-size:11px;
+                    color:#666;
+                ">
+                    {row['최저기온']}~{row['최고기온']}℃
+                </div>
 
-                if icon_path:
+                <div style="
+                    font-size:11px;
+                    color:#666;
+                ">
+                    💧 {row['오후강수확률']}
+                </div>
+            </td>
+            """
 
-                    st.image(
-                        icon_path,
-                        width=55
-                    )
+        html += "</tr>"
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-size:11px;
-                        color:#666;
-                    ">
-                        {row['최저기온']}~{row['최고기온']}℃
-                    </div>
+    html += """
+    </table>
+    </div>
+    """
 
-                    <div style="
-                        text-align:center;
-                        font-size:11px;
-                        color:#666;
-                    ">
-                        💧 {row['오후강수확률']}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-    # ===================================
-    # PC
-    # ===================================
-
-    else:
-
-        sample = weather[
-            weather["지역"] == "양구"
-        ]
-
-        header = st.columns(
-            len(sample) + 1
-        )
-
-        header[0].markdown("**산지**")
-
-        for i, (_, row) in enumerate(
-            sample.iterrows()
-        ):
-
-            header[i + 1].markdown(
-                f"**{str(row['날짜'])[5:]}**"
-            )
-
-        for area in areas:
-
-            area_df = weather[
-                weather["지역"] == area
-            ]
-
-            cols = st.columns(
-                len(area_df) + 1,
-                gap="small"
-            )
-
-            cols[0].markdown(
-                f"**{area}**"
-            )
-
-            for i, (_, row) in enumerate(
-                area_df.iterrows()
-            ):
-
-                weather_text = str(
-                    row["오후날씨"]
-                )
-
-                icon_path = None
-
-                for key in weather_icon:
-
-                    if key in weather_text:
-
-                        icon_path = weather_icon[key]
-                        break
-
-                with cols[i + 1]:
-
-                    if icon_path:
-
-                        st.image(
-                            icon_path,
-                            width=70
-                        )
-
-                    st.markdown(
-                        f"""
-                        <div style="
-                            text-align:center;
-                            font-size:12px;
-                            color:#666;
-                            margin-top:-8px;
-                        ">
-                            {row['최저기온']}~{row['최고기온']}℃
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-                    st.markdown(
-                        f"""
-                        <div style="
-                            text-align:center;
-                            font-size:12px;
-                            color:#666;
-                            margin-top:-4px;
-                        ">
-                            💧 {row['오후강수확률']}
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-            st.markdown(
-                "<hr style='margin-top:2px;margin-bottom:2px;'>",
-                unsafe_allow_html=True
-            )
+    components.html(
+        html,
+        height=650,
+        scrolling=True
+    )
