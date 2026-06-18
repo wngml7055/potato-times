@@ -634,6 +634,10 @@ with left:
     ymax = int(chart1.max().max()) + 500
     ymin = max(0, int(chart1.min().min()) - 200)
 
+    st.write(chart1.describe())
+    st.write("최대값 =", chart1.max().max())
+    st.write("최소값 =", chart1.min().min())
+
     fig1 = go.Figure()
 
     fig1.add_trace(
