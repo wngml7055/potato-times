@@ -637,11 +637,13 @@ with left:
     ymax = int(recent_max) + 500
     ymin = max(0, int(recent_min) - 100)
 
+    x_labels = [str(x) for x in chart1.index]
+
     fig1 = go.Figure()
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index.astype(str),
+            x=x_labels,
             y=chart1["올해"],
             mode="lines",
             name="올해",
@@ -654,7 +656,7 @@ with left:
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index.astype(str),
+            x=x_labels,
             y=chart1["전년"],
             mode="lines",
             name="전년",
@@ -667,7 +669,7 @@ with left:
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index.astype(str),
+            x=x_labels,
             y=chart1["평년"],
             mode="lines",
             name="평년",
@@ -688,9 +690,16 @@ with left:
         ),
         hovermode="x unified",
         dragmode=False,
+
+        xaxis=dict(
+            type="category",
+            tickangle=0
+        ),
+
         yaxis=dict(
             range=[ymin, ymax]
         ),
+
         legend=dict(
             orientation="h",
             y=1.15,
