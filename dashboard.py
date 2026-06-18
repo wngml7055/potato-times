@@ -639,13 +639,22 @@ with left:
 
     x_labels = [str(x) for x in chart1.index]
 
-    tickvals = x_labels[::3]
-
-    if x_labels[-1] not in tickvals:
-
-        tickvals.append(
-            x_labels[-1]
+    # 마지막 날짜 기준 2일 간격
+    tick_idx = list(
+        range(
+            len(x_labels) - 1,
+            -1,
+            -2
         )
+    )
+
+    tick_idx.reverse()
+
+    tickvals = [
+        x_labels[i]
+        for i in tick_idx
+    ]
+    
 
     fig1 = go.Figure()
 
