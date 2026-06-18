@@ -639,7 +639,8 @@ with left:
 
     x_labels = [str(x) for x in chart1.index]
 
-    tickvals = x_labels[::3]
+    # 2일 간격 + 마지막 날짜 강제 표시
+    tickvals = x_labels[::2]
 
     if x_labels[-1] not in tickvals:
 
@@ -688,6 +689,29 @@ with left:
                 color="gray",
                 width=2
             )
+        )
+    )
+
+    # 올해 최신값 표시
+    fig1.add_trace(
+        go.Scatter(
+            x=[x_labels[-1]],
+            y=[chart1["올해"].iloc[-1]],
+            mode="markers+text",
+            text=[
+                f"{int(chart1['올해'].iloc[-1]):,}원"
+            ],
+            textposition="top center",
+            textfont=dict(
+                size=10,
+                color="#1565C0"
+            ),
+            marker=dict(
+                size=6,
+                color="#1565C0"
+            ),
+            showlegend=False,
+            hoverinfo="skip"
         )
     )
 
