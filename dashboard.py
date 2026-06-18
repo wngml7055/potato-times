@@ -696,7 +696,7 @@ with left:
             t=30,
             b=10
         ),
-        hovermode="x unified",
+        hovermode="closest",
         dragmode=False,
 
         xaxis=dict(
@@ -724,7 +724,7 @@ with left:
         config={
             "scrollZoom": False,
             "displayModeBar": False,
-            "doubleClick": "reset"
+            "doubleClick": False
         }
     )
 
