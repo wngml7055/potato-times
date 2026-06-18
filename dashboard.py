@@ -789,19 +789,44 @@ with right:
         weather["지역"] == "양구"
     ]
 
-    header = st.columns(
-        len(sample) + 1
-    )
+    html = """
+    <div style="
+        overflow-x:auto;
+        width:100%;
+    ">
+    <table style="
+        border-collapse:collapse;
+        white-space:nowrap;
+        text-align:center;
+        font-size:13px;
+    ">
+    """
 
-    header[0].markdown("**산지**")
+    html += "<tr>"
+    html += """
+    <th style="
+        position:sticky;
+        left:0;
+        background:white;
+        min-width:70px;
+        padding:6px;
+    ">
+    산지
+    </th>
+    """
 
-    for i, (_, row) in enumerate(
-        sample.iterrows()
-    ):
+    for _, row in sample.iterrows():
 
-        header[i + 1].markdown(
-            f"**{str(row['날짜'])[5:]}**"
-        )
+        html += f"""
+        <th style="
+            min-width:95px;
+            padding:6px;
+        ">
+            {str(row['날짜'])[5:]}
+        </th>
+        """
+
+    html += "</tr>"
 
     for area in areas:
 
@@ -809,24 +834,27 @@ with right:
             weather["지역"] == area
         ]
 
-        cols = st.columns(
-            len(area_df) + 1,
-            gap="small"
-        )
+        html += "<tr>"
 
-        cols[0].markdown(
-            f"**{area}**"
-        )
+        html += f"""
+        <td style="
+            position:sticky;
+            left:0;
+            background:white;
+            font-weight:bold;
+            padding:4px;
+        ">
+            {area}
+        </td>
+        """
 
-        for i, (_, row) in enumerate(
-            area_df.iterrows()
-        ):
+        for _, row in area_df.iterrows():
 
             weather_text = str(
                 row["오후날씨"]
             )
 
-            icon_path = None
+            icon_path = ""
 
             for key in weather_icon:
 
@@ -835,44 +863,46 @@ with right:
                     icon_path = weather_icon[key]
                     break
 
-            with cols[i + 1]:
+            if icon_path:
 
-                if icon_path:
+                icon_html = f"""
+                <img src="{icon_path}"
+                width="50">
+                """
 
-                    st.image(
-                        icon_path,
-                        width=70
-                    )
+            else:
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-size:12px;
-                        color:#666;
-                        margin-top:-8px;
-                    ">
-                        {row['최저기온']}~{row['최고기온']}℃
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+                icon_html = ""
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-size:12px;
-                        color:#666;
-                        margin-top:-4px;
-                    ">
-                        💧 {row['오후강수확률']}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            html += f"""
+            <td style="
+                padding:4px 6px;
+                border-bottom:1px solid #EEE;
+            ">
+                {icon_html}
+                <div style="
+                    font-size:11px;
+                    color:#666;
+                ">
+                    {row['최저기온']}~{row['최고기온']}℃
+                </div>
+                <div style="
+                    font-size:11px;
+                    color:#666;
+                ">
+                    💧 {row['오후강수확률']}
+                </div>
+            </td>
+            """
 
-        st.markdown(
-            "<hr style='margin-top:2px;margin-bottom:2px;'>",
-            unsafe_allow_html=True
-        )
+        html += "</tr>"
+
+    html += """
+    </table>
+    </div>
+    """
+
+    st.markdown(
+        html,
+        unsafe_allow_html=True
+    )
