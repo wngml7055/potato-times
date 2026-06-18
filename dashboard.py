@@ -696,39 +696,48 @@ with left:
         )
     )
 
-    # PC만 레이블 표시
-    if not mobile:
+    # 최고 / 최저 / 최신 표시
+    max_idx = chart1["올해"].idxmax()
+    min_idx = chart1["올해"].idxmin()
+    last_idx = chart1.index[-1]
 
-        label_idx = tick_idx[::2]
+    label_x = [
+        str(max_idx),
+        str(min_idx),
+        str(last_idx)
+    ]
 
-        fig1.add_trace(
-            go.Scatter(
-                x=[
-                    x_labels[i]
-                    for i in label_idx
-                ],
-                y=[
-                    chart1["올해"].iloc[i]
-                    for i in label_idx
-                ],
-                mode="markers+text",
-                text=[
-                    f"{int(chart1['올해'].iloc[i]):,}"
-                    for i in label_idx
-                ],
-                textposition="top center",
-                textfont=dict(
-                    size=10,
-                    color="#1565C0"
-                ),
-                marker=dict(
-                    size=5,
-                    color="#1565C0"
-                ),
-                showlegend=False,
-                hoverinfo="skip"
-            )
+    label_y = [
+        chart1["올해"].max(),
+        chart1["올해"].min(),
+        chart1["올해"].iloc[-1]
+    ]
+
+    label_text = [
+        f"최고 {int(chart1['올해'].max()):,}원",
+        f"최저 {int(chart1['올해'].min()):,}원",
+        f"최신 {int(chart1['올해'].iloc[-1]):,}원"
+    ]
+
+    fig1.add_trace(
+        go.Scatter(
+            x=label_x,
+            y=label_y,
+            mode="markers+text",
+            text=label_text,
+            textposition="top center",
+            textfont=dict(
+                size=9 if mobile else 11,
+                color="#1565C0"
+            ),
+            marker=dict(
+                size=6,
+                color="#1565C0"
+            ),
+            showlegend=False,
+            hoverinfo="skip"
         )
+    )
 
     fig1.update_layout(
         height=220 if mobile else 280,
