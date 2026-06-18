@@ -513,7 +513,6 @@ with left:
                 ">
                     ▼ {abs(diff_rate)}%
                 </div>
-            </td>
             """
 
         st.markdown(
