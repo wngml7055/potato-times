@@ -789,69 +789,66 @@ with right:
         weather["지역"] == "양구"
     ]
 
-    # 날짜 헤더
-    header_html = """
+    html = """
     <div style="
         overflow-x:auto;
-        white-space:nowrap;
-        margin-bottom:8px;
+        width:100%;
     ">
-    <div style="display:flex;">
-        <div style="
-            min-width:70px;
-            font-weight:bold;
+    <table style="
+        border-collapse:collapse;
+        white-space:nowrap;
+        text-align:center;
+        font-size:13px;
+        width:max-content;
+    ">
+    """
+
+    html += """
+    <tr>
+        <th style="
             padding:8px;
+            min-width:70px;
+            background:white;
+            position:sticky;
+            left:0;
+            z-index:2;
         ">
             산지
-        </div>
+        </th>
     """
 
     for _, row in sample.iterrows():
 
-        header_html += f"""
-        <div style="
+        html += f"""
+        <th style="
             min-width:90px;
-            text-align:center;
-            font-weight:bold;
             padding:8px;
+            font-weight:bold;
         ">
             {str(row['날짜'])[5:]}
-        </div>
+        </th>
         """
 
-    header_html += "</div></div>"
+    html += "</tr>"
 
-    st.markdown(
-        header_html,
-        unsafe_allow_html=True
-    )
-
-    # 지역별 예보
     for area in areas:
 
         area_df = weather[
             weather["지역"] == area
         ]
 
-        row_html = f"""
-        <div style="
-            overflow-x:auto;
-            white-space:nowrap;
-            margin-bottom:4px;
-        ">
-        <div style="
-            display:flex;
-            align-items:center;
-            border-bottom:1px solid #EAEAEA;
-            padding:2px 0;
-        ">
-        <div style="
-            min-width:70px;
-            font-weight:bold;
-            padding:4px;
-        ">
-            {area}
-        </div>
+        html += f"""
+        <tr>
+            <td style="
+                padding:4px;
+                font-weight:bold;
+                background:white;
+                position:sticky;
+                left:0;
+                z-index:1;
+            ">
+                {area}
+            </td>
         """
 
         for _, row in area_df.iterrows():
@@ -862,24 +859,23 @@ with right:
 
             icon = "☁️"
 
-            if "맑음" in weather_text:
+            if "소나기" in weather_text:
+                icon = "🌦️"
+            elif "비" in weather_text:
+                icon = "🌧️"
+            elif "맑음" in weather_text:
                 icon = "☀️"
             elif "구름" in weather_text:
                 icon = "⛅"
             elif "흐림" in weather_text:
                 icon = "☁️"
-            elif "비" in weather_text:
-                icon = "🌧️"
-            elif "소나기" in weather_text:
-                icon = "🌦️"
 
-            row_html += f"""
-            <div style="
-                min-width:90px;
-                text-align:center;
-                padding:2px;
+            html += f"""
+            <td style="
+                padding:4px 6px;
+                border-bottom:1px solid #EAEAEA;
             ">
-                <div style="font-size:26px;">
+                <div style="font-size:28px;">
                     {icon}
                 </div>
 
@@ -896,12 +892,17 @@ with right:
                 ">
                     💧 {row['오후강수확률']}
                 </div>
-            </div>
+            </td>
             """
 
-        row_html += "</div></div>"
+        html += "</tr>"
 
-        st.markdown(
-            row_html,
-            unsafe_allow_html=True
-        )
+    html += """
+    </table>
+    </div>
+    """
+
+    st.markdown(
+        html,
+        unsafe_allow_html=True
+    )
