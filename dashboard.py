@@ -611,7 +611,7 @@ with right:
 
                     st.image(
                         icon_path,
-                        width=50
+                        width=75
                     )
 
                 st.markdown(
