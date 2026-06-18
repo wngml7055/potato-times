@@ -465,6 +465,7 @@ with left:
     # =====================
 
     if mobile:
+        st.write("mobile =", mobile)
 
         cols = st.columns(4)
 
