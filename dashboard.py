@@ -183,7 +183,7 @@ with header_left:
             color:#203864;
             line-height:1.0;
             margin-top:-30px;
-            margin-bottom:0px;
+            margin-bottom:-10px;
             white-space:nowrap;
         ">
             🥔 Potato Times
