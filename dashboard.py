@@ -500,25 +500,39 @@ with left:
 
                 st.markdown(
                     f"""
-                    <div style="text-align:center;">
-                        <div style="font-size:13px;font-weight:bold;">
-                            {grade}
-                        </div>
+                    <div style="
+                        text-align:center;
+                        font-size:14px;
+                        font-weight:bold;
+                    ">
+                        {grade}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-                        <div style="
-                            font-size:18px;
-                            font-weight:bold;
-                            color:#262730;
-                        ">
-                            {current_price:,}
-                        </div>
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align:center;
+                        font-size:20px;
+                        font-weight:bold;
+                        color:#262730;
+                    ">
+                        {current_price:,}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-                        <div style="
-                            font-size:11px;
-                            color:#0A36FF;
-                        ">
-                            ▼ {abs(diff_rate)}%
-                        </div>
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align:center;
+                        font-size:11px;
+                        color:#0A36FF;
+                    ">
+                        ▼ {abs(diff_rate)}%
                     </div>
                     """,
                     unsafe_allow_html=True
