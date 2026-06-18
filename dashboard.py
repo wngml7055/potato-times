@@ -697,6 +697,40 @@ with left:
         )
     )
 
+    fig1.add_trace(
+        go.Scatter(
+            x=[
+                x_labels[i]
+                for i in tick_idx
+            ],
+            y=[
+                chart1["올해"].iloc[i]
+                for i in tick_idx
+            ],
+            mode="markers+text",
+
+            text=[
+                f"{int(chart1['올해'].iloc[i]):,}"
+                for i in tick_idx
+            ],
+
+            textposition="top center",
+
+            textfont=dict(
+                size=11,
+                color="#1565C0"
+            ),
+
+            marker=dict(
+                size=5,
+                color="#1565C0"
+            ),
+
+            showlegend=False,
+            hoverinfo="skip"
+        )
+    )
+
     fig1.update_layout(
         height=220 if mobile else 280,
         margin=dict(
