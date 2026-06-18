@@ -145,7 +145,7 @@ with header_left:
         color:#203864;
         line-height:1.0;
         margin-top:10px;
-        margin-bottom:2px;
+        margin-bottom:0px;
     ">
         🥔 Potato Times
     </div>
@@ -164,7 +164,7 @@ with header_right:
             font-size:12px;
             font-weight:bold;
             margin-top:18px;
-            margin-bottom:2px;
+            margin-bottom:0px;
         ">
             정상<br>
             {datetime.today().strftime("%Y-%m-%d")}
