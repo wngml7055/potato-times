@@ -631,40 +631,49 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
+    ymax = int(chart1.max().max()) + 500
+    ymin = max(0, int(chart1.min().min()) - 200)
+
     fig1 = go.Figure()
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index,
+            x=chart1.index.astype(str),
             y=chart1["올해"],
             mode="lines",
-            name="올해"
+            name="올해",
+            hoverinfo="skip"
         )
     )
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index,
+            x=chart1.index.astype(str),
             y=chart1["전년"],
             mode="lines",
-            name="전년"
+            name="전년",
+            hoverinfo="skip"
         )
     )
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index,
+            x=chart1.index.astype(str),
             y=chart1["평년"],
             mode="lines",
-            name="평년"
+            name="평년",
+            hoverinfo="skip"
         )
     )
 
     fig1.update_layout(
         height=220 if mobile else 280,
         margin=dict(l=10, r=10, t=10, b=10),
+        hovermode=False,
         dragmode=False,
-        hovermode="x unified",
+        yaxis=dict(
+            range=[ymin, ymax]
+        ),
         legend=dict(
             orientation="h",
             y=-0.15
@@ -675,9 +684,8 @@ with left:
         fig1,
         use_container_width=True,
         config={
-            "scrollZoom": False,
-            "displayModeBar": False,
-            "doubleClick": False
+            "staticPlot": True,
+            "displayModeBar": False
         }
     )
 
@@ -696,22 +704,37 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
+    latest_month = monthly.iloc[-1]["월"][-2:]
+
+    compare = monthly[
+        monthly["월"].str.endswith(latest_month)
+    ].tail(4)
+
+    compare_text = " | ".join(
+        [
+            f"{row['월']} : {int(row['KG_P']):,}원"
+            for _, row in compare.iterrows()
+        ]
+    )
+
+    st.caption(compare_text)
+
     fig2 = go.Figure()
 
     fig2.add_trace(
         go.Scatter(
-            x=chart2.index,
+            x=chart2.index.astype(str),
             y=chart2["KG_P"],
             mode="lines",
-            name="가격"
+            hoverinfo="skip"
         )
     )
 
     fig2.update_layout(
         height=220 if mobile else 280,
         margin=dict(l=10, r=10, t=10, b=10),
+        hovermode=False,
         dragmode=False,
-        hovermode="x unified",
         showlegend=False
     )
 
@@ -719,9 +742,8 @@ with left:
         fig2,
         use_container_width=True,
         config={
-            "scrollZoom": False,
-            "displayModeBar": False,
-            "doubleClick": False
+            "staticPlot": True,
+            "displayModeBar": False
         }
     )
 
