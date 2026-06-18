@@ -173,7 +173,14 @@ with header_right:
         unsafe_allow_html=True
     )
 
-st.divider()
+st.markdown("""
+<hr style="
+    margin-top:0px;
+    margin-bottom:3px;
+    border:none;
+    border-top:1px solid #D9D9D9;
+">
+""", unsafe_allow_html=True)
 
 # ======================
 # KAMIS 시장동향
