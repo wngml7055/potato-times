@@ -654,10 +654,10 @@ if tick_idx[-1] != len(x_labels) - 1:
         len(x_labels) - 1
     )
 
-tickvals = [
-    x_labels[i]
-    for i in tick_idx
-]
+    tickvals = [
+        x_labels[i]
+        for i in tick_idx
+    ]
 
     fig1 = go.Figure()
 
