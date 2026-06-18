@@ -673,8 +673,10 @@ with left:
         dragmode=False,
         legend=dict(
             orientation="h",
-            y=-0.15
-        ),
+            y=1.15,
+            x=0,
+            bgcolor="rgba(0,0,0,0)"
+        )
         yaxis=dict(
             range=[ymin, ymax]
         )
