@@ -743,14 +743,17 @@ with left:
         monthly["월"].str.endswith(
             latest_month
         )
-    ].tail(4)
+    ].tail(6)
 
     fig2.add_trace(
         go.Scatter(
             x=chart2.index.astype(str),
             y=chart2["KG_P"],
             mode="lines",
-            name="가격"
+            name="가격",
+            line=dict(
+                width=3
+            )
         )
     )
 
@@ -760,10 +763,13 @@ with left:
             y=label_df["KG_P"],
             mode="markers+text",
             text=[
-                f"{int(v):,}"
-                for v in label_df["KG_P"]
+                f"{row['월']}<br>{int(row['KG_P']):,}원"
+                for _, row in label_df.iterrows()
             ],
-            textposition="top center",
+            textposition="top right",
+            textfont=dict(
+                size=11
+            ),
             marker=dict(
                 size=8
             ),
