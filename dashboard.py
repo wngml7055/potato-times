@@ -639,25 +639,13 @@ with left:
 
     x_labels = [str(x) for x in chart1.index]
 
-    # 2일 간격 + 마지막 날짜 강제 표시
-    tick_idx = list(
-        range(
-            0,
-            len(x_labels),
-            2
+    tickvals = x_labels[::3]
+
+    if x_labels[-1] not in tickvals:
+
+        tickvals.append(
+            x_labels[-1]
         )
-    )
-
-if tick_idx[-1] != len(x_labels) - 1:
-
-    tick_idx.append(
-        len(x_labels) - 1
-    )
-
-    tickvals = [
-        x_labels[i]
-        for i in tick_idx
-    ]
 
     fig1 = go.Figure()
 
@@ -667,7 +655,6 @@ if tick_idx[-1] != len(x_labels) - 1:
             y=chart1["올해"],
             mode="lines",
             name="올해",
-            hoverinfo="skip",
             line=dict(
                 color="#1565C0",
                 width=3
@@ -681,7 +668,6 @@ if tick_idx[-1] != len(x_labels) - 1:
             y=chart1["전년"],
             mode="lines",
             name="전년",
-            hoverinfo="skip",
             line=dict(
                 color="#64B5F6",
                 width=2
@@ -695,7 +681,6 @@ if tick_idx[-1] != len(x_labels) - 1:
             y=chart1["평년"],
             mode="lines",
             name="평년",
-            hoverinfo="skip",
             line=dict(
                 color="gray",
                 width=2
@@ -703,52 +688,26 @@ if tick_idx[-1] != len(x_labels) - 1:
         )
     )
 
-    # 올해 최신값 표시
-    fig1.add_trace(
-        go.Scatter(
-            x=[x_labels[-1]],
-            y=[chart1["올해"].iloc[-1]],
-            mode="markers+text",
-            text=[
-                f"{int(chart1['올해'].iloc[-1]):,}원"
-            ],
-            textposition="top center",
-            textfont=dict(
-                size=10,
-                color="#1565C0"
-            ),
-            marker=dict(
-                size=6,
-                color="#1565C0"
-            ),
-            showlegend=False,
-            hoverinfo="skip"
-        )
-    )
-
     fig1.update_layout(
         height=220 if mobile else 280,
-
         margin=dict(
             l=10,
             r=10,
             t=30,
             b=10
         ),
-
-        hovermode=False,
+        hovermode="x unified",
+        dragmode=False,
 
         xaxis=dict(
             type="category",
             tickmode="array",
             tickvals=tickvals,
-            ticktext=tickvals,
-            fixedrange=True
+            ticktext=tickvals
         ),
 
         yaxis=dict(
-            range=[ymin, ymax],
-            fixedrange=True
+            range=[ymin, ymax]
         ),
 
         legend=dict(
@@ -763,8 +722,9 @@ if tick_idx[-1] != len(x_labels) - 1:
         fig1,
         use_container_width=True,
         config={
-            "staticPlot": True,
-            "displayModeBar": False
+            "scrollZoom": False,
+            "displayModeBar": False,
+            "doubleClick": "reset"
         }
     )
 
