@@ -469,19 +469,26 @@ with left:
     # 가락시장 감자 시세
     # =====================
 
-    st.markdown("""
+    title_size = "18px" if mobile else "22px"
+    padding_size = "6px 10px" if mobile else "8px 12px"
+    margin_size = "6px" if mobile else "10px"
+
+    st.markdown(
+        f"""
     <div style="
         background:#FFF4D6;
-        padding:8px 12px;
+        padding:{padding_size};
         border-radius:8px;
-        font-size:22px;
+        font-size:{title_size};
         font-weight:bold;
         color:#7A4E00;
-        margin-bottom:10px;
+        margin-bottom:{margin_size};
     ">
         🥔 가락시장 감자 시세
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True
+    )
 
     # =====================
     # 시세 표시
