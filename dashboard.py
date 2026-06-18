@@ -265,7 +265,6 @@ if os.path.exists("data/kamis_potato.csv"):
 ">
 📢 KAMIS 시장동향 | {title}
 </b>
-
 <span style="
     display:block;
     margin-top:2px;
@@ -275,7 +274,6 @@ if os.path.exists("data/kamis_potato.csv"):
 ">
 {summary}
 </span>
-
 </div>
             """,
             unsafe_allow_html=True
