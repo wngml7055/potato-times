@@ -640,13 +640,24 @@ with left:
     x_labels = [str(x) for x in chart1.index]
 
     # 2일 간격 + 마지막 날짜 강제 표시
-    tickvals = x_labels[::2]
-
-    if x_labels[-1] not in tickvals:
-
-        tickvals.append(
-            x_labels[-1]
+    tick_idx = list(
+        range(
+            0,
+            len(x_labels),
+            2
         )
+    )
+
+if tick_idx[-1] != len(x_labels) - 1:
+
+    tick_idx.append(
+        len(x_labels) - 1
+    )
+
+tickvals = [
+    x_labels[i]
+    for i in tick_idx
+]
 
     fig1 = go.Figure()
 
