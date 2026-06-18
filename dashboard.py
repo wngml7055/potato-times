@@ -635,11 +635,7 @@ with left:
     data_min = chart1.min().min()
 
     ymax = int(data_max + 100)
-
-    ymin = max(
-        0,
-        int(data_min - 100)
-    )
+    ymin = int(data_min - 100)
 
     x_labels = [str(x) for x in chart1.index]
 
@@ -659,6 +655,7 @@ with left:
             y=chart1["올해"],
             mode="lines",
             name="올해",
+            hoverinfo="skip",
             line=dict(
                 color="#1565C0",
                 width=3
@@ -672,6 +669,7 @@ with left:
             y=chart1["전년"],
             mode="lines",
             name="전년",
+            hoverinfo="skip",
             line=dict(
                 color="#64B5F6",
                 width=2
@@ -685,6 +683,7 @@ with left:
             y=chart1["평년"],
             mode="lines",
             name="평년",
+            hoverinfo="skip",
             line=dict(
                 color="gray",
                 width=2
@@ -694,24 +693,27 @@ with left:
 
     fig1.update_layout(
         height=220 if mobile else 280,
+
         margin=dict(
             l=10,
             r=10,
             t=30,
             b=10
         ),
-        hovermode="closest",
-        dragmode=False,
+
+        hovermode=False,
 
         xaxis=dict(
             type="category",
             tickmode="array",
             tickvals=tickvals,
-            ticktext=tickvals
+            ticktext=tickvals,
+            fixedrange=True
         ),
 
         yaxis=dict(
-            range=[ymin, ymax]
+            range=[ymin, ymax],
+            fixedrange=True
         ),
 
         legend=dict(
@@ -726,9 +728,8 @@ with left:
         fig1,
         use_container_width=True,
         config={
-            "scrollZoom": False,
-            "displayModeBar": False,
-            "doubleClick": False
+            "staticPlot": True,
+            "displayModeBar": False
         }
     )
 
