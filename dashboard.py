@@ -639,7 +639,6 @@ with left:
 
     x_labels = [str(x) for x in chart1.index]
 
-    st.write(chart1.index)
     fig1 = go.Figure()
 
     fig1.add_trace(
