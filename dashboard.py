@@ -759,6 +759,14 @@ with left:
     )
 
 # =======================================
+components.html(
+    """
+    <h1 style="color:red">
+    TEST
+    </h1>
+    """,
+    height=100
+)
 
 with right:
 
