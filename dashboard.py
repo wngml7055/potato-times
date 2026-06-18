@@ -20,7 +20,7 @@ st.markdown("""
     padding-bottom: 0rem;
     padding-left: 1rem;
     padding-right: 1rem;
-    max-width: 100%;
+    max-width: 110%;
 }
 
 h1,h2,h3 {
