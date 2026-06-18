@@ -676,7 +676,8 @@ with left:
         use_container_width=True,
         config={
             "scrollZoom": False,
-            "displayModeBar": False
+            "displayModeBar": False,
+            "doubleClick": False
         }
     )
 
@@ -719,7 +720,8 @@ with left:
         use_container_width=True,
         config={
             "scrollZoom": False,
-            "displayModeBar": False
+            "displayModeBar": False,
+            "doubleClick": False
         }
     )
 
