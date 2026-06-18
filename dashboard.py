@@ -616,7 +616,7 @@ with left:
         unsafe_allow_html=True
     )
 
-# 보통가격 제목=======================
+    # 보통가격 제목=======================
     st.markdown("""
     <div style="
         background:#FFF4D6;
@@ -631,12 +631,56 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
-# ================================
-    st.line_chart(
-        chart1,
-        height=280
+    fig1 = go.Figure()
+
+    fig1.add_trace(
+        go.Scatter(
+            x=chart1.index,
+            y=chart1["올해"],
+            mode="lines",
+            name="올해"
+        )
     )
-# 평균가격 제목======================
+
+    fig1.add_trace(
+        go.Scatter(
+            x=chart1.index,
+            y=chart1["전년"],
+            mode="lines",
+            name="전년"
+        )
+    )
+
+    fig1.add_trace(
+        go.Scatter(
+            x=chart1.index,
+            y=chart1["평년"],
+            mode="lines",
+            name="평년"
+        )
+    )
+
+    fig1.update_layout(
+        height=220 if mobile else 280,
+        margin=dict(l=10, r=10, t=10, b=10),
+        dragmode=False,
+        hovermode="x unified",
+        legend=dict(
+            orientation="h",
+            y=-0.15
+        )
+    )
+
+    st.plotly_chart(
+        fig1,
+        use_container_width=True,
+        config={
+            "scrollZoom": False,
+            "displayModeBar": False
+        }
+    )
+
+    # 평균가격 제목======================
     st.markdown("""
     <div style="
         background:#FFF4D6;
@@ -650,12 +694,35 @@ with left:
         📊 월별 평균 가격
     </div>
     """, unsafe_allow_html=True)
-#===============================
 
-    st.line_chart(
-        chart2,
-        height=280
+    fig2 = go.Figure()
+
+    fig2.add_trace(
+        go.Scatter(
+            x=chart2.index,
+            y=chart2["KG_P"],
+            mode="lines",
+            name="가격"
+        )
     )
+
+    fig2.update_layout(
+        height=220 if mobile else 280,
+        margin=dict(l=10, r=10, t=10, b=10),
+        dragmode=False,
+        hovermode="x unified",
+        showlegend=False
+    )
+
+    st.plotly_chart(
+        fig2,
+        use_container_width=True,
+        config={
+            "scrollZoom": False,
+            "displayModeBar": False
+        }
+    )
+
 # =======================================
 
 with right:
