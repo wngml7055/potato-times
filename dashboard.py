@@ -137,9 +137,19 @@ header_left, header_right = st.columns([8, 1])
 
 with header_left:
 
-    st.markdown(
-        "# 🥔 POTATO TIMES"
-    )
+    st.markdown("""
+    <div style="
+        font-family:'Brush Script MT', 'Lucida Handwriting', cursive;
+        font-size:58px;
+        font-weight:bold;
+        color:#203864;
+        line-height:1.0;
+        margin-top:10px;
+        margin-bottom:10px;
+    ">
+        🥔 Potato Times
+    </div>
+    """, unsafe_allow_html=True)
 
 with header_right:
 
@@ -153,8 +163,7 @@ with header_right:
             text-align:center;
             font-size:12px;
             font-weight:bold;
-            margin-top:12px;
-            margin-bottom:2px;
+            margin-top:18px;
         ">
             정상<br>
             {datetime.today().strftime("%Y-%m-%d")}
