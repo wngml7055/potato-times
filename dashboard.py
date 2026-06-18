@@ -245,16 +245,37 @@ if os.path.exists("data/kamis_potato.csv"):
             latest["content"]
         )
 
-        st.markdown(
-            f"""
-<div style="background:#EDF4FF;border-left:4px solid #4A90E2;padding:10px 14px;border-radius:6px;margin-top:0px;margin-bottom:0px;">
-<b style="color:#1f4f9c;">📢 KAMIS 시장동향 | {title}</b>
-<br>
-<span style="color:#444;">{summary}</span>
-</div>
-            """,
-            unsafe_allow_html=True
-        )
+    kamis_font = "11px" if mobile else "14px"
+    kamis_title = "12px" if mobile else "15px"
+
+    st.markdown(
+        f"""
+        <div style="
+            background:#EEF4FF;
+            padding:10px;
+            border-left:4px solid #4A90E2;
+            overflow:hidden;
+        ">
+            <div style="
+                font-size:{kamis_title};
+                font-weight:bold;
+                color:#1E4FA3;
+                margin-bottom:3px;
+            ">
+                📢 KAMIS 시황동향 | {title}
+            </div>
+
+            <div style="
+                font-size:{kamis_font};
+                color:#444;
+                line-height:1.4;
+            ">
+                • {content}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # =======================
 
