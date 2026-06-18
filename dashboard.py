@@ -743,7 +743,7 @@ with left:
         }
     )
 
-    # 보통가격 제목=======================
+    # 평균가격 제목======================
     st.markdown("""
     <div style="
         background:#FFF4D6;
@@ -754,99 +754,90 @@ with left:
         color:#7A4E00;
         margin-bottom:5px;
     ">
-        📈 최근 30일 보통 가격
+        📊 월별 평균 가격
     </div>
     """, unsafe_allow_html=True)
 
-    data_max = chart1.max().max()
-    data_min = chart1.min().min()
+    fig2 = go.Figure()
 
-    ymax = int(data_max + 100)
-    ymin = int(data_min - 100)
+    latest_month = monthly.iloc[-1]["월"][-2:]
 
-    x_labels = [str(x) for x in chart1.index]
-
-    tickvals = x_labels[::3]
-
-    if x_labels[-1] not in tickvals:
-
-        tickvals.append(
-            x_labels[-1]
+    label_df = monthly[
+        monthly["월"].str.endswith(
+            latest_month
         )
+    ].tail(6)
 
-    fig1 = go.Figure()
+    ymax2 = chart2["KG_P"].max()
 
-    fig1.add_trace(
+    fig2.add_trace(
         go.Scatter(
-            x=x_labels,
-            y=chart1["올해"],
+            x=chart2.index.astype(str),
+            y=chart2["KG_P"],
             mode="lines",
-            name="올해",
+            name="가격",
             line=dict(
-                color="#1565C0",
                 width=3
             )
         )
     )
 
-    fig1.add_trace(
+    fig2.add_trace(
         go.Scatter(
-            x=x_labels,
-            y=chart1["전년"],
-            mode="lines",
-            name="전년",
-            line=dict(
-                color="#64B5F6",
-                width=2
-            )
+            x=label_df["월"],
+            y=label_df["KG_P"],
+            mode="markers",
+            marker=dict(
+                size=7
+            ),
+            showlegend=False
         )
     )
 
-    fig1.add_trace(
-        go.Scatter(
-            x=x_labels,
-            y=chart1["평년"],
-            mode="lines",
-            name="평년",
-            line=dict(
-                color="gray",
-                width=2
+    for _, row in label_df.iterrows():
+
+        fig2.add_vline(
+            x=row["월"],
+            line_width=1,
+            line_dash="dot",
+            line_color="rgba(120,120,120,0.35)"
+        )
+
+        fig2.add_annotation(
+            x=row["월"],
+            y=ymax2 + 250,
+            text=(
+                f"{row['월']}<br>"
+                f"{int(row['KG_P']):,}원"
+            ),
+            showarrow=False,
+            font=dict(
+                size=9,
+                color="gray"
             )
         )
-    )
 
-    fig1.update_layout(
+    fig2.update_layout(
         height=220 if mobile else 280,
         margin=dict(
             l=10,
             r=10,
-            t=30,
+            t=10,
             b=10
         ),
         hovermode="x unified",
         dragmode=False,
-
-        xaxis=dict(
-            type="category",
-            tickmode="array",
-            tickvals=tickvals,
-            ticktext=tickvals
-        ),
-
+        showlegend=False,
         yaxis=dict(
-            range=[ymin, ymax]
-        ),
-
-        legend=dict(
-            orientation="h",
-            y=1.15,
-            x=0,
-            bgcolor="rgba(0,0,0,0)"
+            range=[
+                0,
+                ymax2 + 500
+            ]
         )
     )
 
     st.plotly_chart(
-        fig1,
+        fig2,
         use_container_width=True,
         config={
             "scrollZoom": False,
