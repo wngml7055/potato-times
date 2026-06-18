@@ -631,35 +631,52 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
-    ymax = int(chart1.max().max()) + 500
-    ymin = max(0, int(chart1.min().min()) - 200)
+    data_max = chart1.max().max()
+    data_min = chart1.min().min()
+
+    ymax = int(data_max + 100)
+    ymin = int(data_min - 100)
+
+    x_labels = [str(x) for x in chart1.index]
 
     fig1 = go.Figure()
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index.astype(str),
+            x=x_labels,
             y=chart1["올해"],
             mode="lines",
-            name="올해"
+            name="올해",
+            line=dict(
+                color="#1565C0",
+                width=3
+            )
         )
     )
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index.astype(str),
+            x=x_labels,
             y=chart1["전년"],
             mode="lines",
-            name="전년"
+            name="전년",
+            line=dict(
+                color="#64B5F6",
+                width=2
+            )
         )
     )
 
     fig1.add_trace(
         go.Scatter(
-            x=chart1.index.astype(str),
+            x=x_labels,
             y=chart1["평년"],
             mode="lines",
-            name="평년"
+            name="평년",
+            line=dict(
+                color="gray",
+                width=2
+            )
         )
     )
 
@@ -668,17 +685,28 @@ with left:
         margin=dict(
             l=10,
             r=10,
-            t=10,
+            t=30,
             b=10
         ),
         hovermode="x unified",
         dragmode=False,
+
+        xaxis=dict(
+            type="category",
+            tickmode="array",
+            tickvals=x_labels[::3],
+            ticktext=x_labels[::3]
+        ),
+
         yaxis=dict(
             range=[ymin, ymax]
         ),
+
         legend=dict(
             orientation="h",
-            y=-0.15
+            y=1.15,
+            x=0,
+            bgcolor="rgba(0,0,0,0)"
         )
     )
 
@@ -707,33 +735,64 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
+    fig2 = go.Figure()
+
     latest_month = monthly.iloc[-1]["월"][-2:]
 
-    compare = monthly[
+    label_df = monthly[
         monthly["월"].str.endswith(
             latest_month
         )
-    ].tail(4)
+    ].tail(6)
 
-    compare_text = " | ".join(
-        [
-            f"{row['월']} : {int(row['KG_P']):,}원"
-            for _, row in compare.iterrows()
-        ]
-    )
-
-    st.caption(compare_text)
-
-    fig2 = go.Figure()
+    ymax2 = chart2["KG_P"].max()
 
     fig2.add_trace(
         go.Scatter(
             x=chart2.index.astype(str),
             y=chart2["KG_P"],
             mode="lines",
-            name="가격"
+            name="가격",
+            line=dict(
+                width=3
+            )
         )
     )
+
+    fig2.add_trace(
+        go.Scatter(
+            x=label_df["월"],
+            y=label_df["KG_P"],
+            mode="markers",
+            marker=dict(
+                size=7
+            ),
+            showlegend=False
+        )
+    )
+
+    for _, row in label_df.iterrows():
+
+        fig2.add_vline(
+            x=row["월"],
+            line_width=1,
+            line_dash="dot",
+            line_color="rgba(120,120,120,0.35)"
+        )
+
+        fig2.add_annotation(
+            x=row["월"],
+            y=ymax2 + 250,
+            text=(
+                f"{row['월']}<br>"
+                f"{int(row['KG_P']):,}원"
+            ),
+            showarrow=False,
+            font=dict(
+                size=9,
+                color="gray"
+            )
+        )
 
     fig2.update_layout(
         height=220 if mobile else 280,
@@ -745,7 +804,13 @@ with left:
         ),
         hovermode="x unified",
         dragmode=False,
-        showlegend=False
+        showlegend=False,
+        yaxis=dict(
+            range=[
+                0,
+                ymax2 + 500
+            ]
+        )
     )
 
     st.plotly_chart(
