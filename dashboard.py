@@ -245,8 +245,8 @@ if os.path.exists("data/kamis_potato.csv"):
             latest["content"]
         )
 
-        title_size = "14px" if mobile else "16px"
-        body_size = "13px" if mobile else "15px"
+        title_size = "14px" if mobile else "17px"
+        body_size = "13px" if mobile else "16px"
 
         st.markdown(
             f"""
