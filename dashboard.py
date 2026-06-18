@@ -156,23 +156,41 @@ else:
 # 헤더
 # ==========================
 
-header_left, header_right = st.columns([8, 1])
+if mobile:
+
+    header_left, header_right = st.columns([4, 1])
+
+    title_size = "34px"
+    status_size = "10px"
+    status_margin = "4px"
+
+else:
+
+    header_left, header_right = st.columns([8, 1])
+
+    title_size = "58px"
+    status_size = "12px"
+    status_margin = "18px"
 
 with header_left:
 
-    st.markdown("""
-    <div style="
-        font-family:'Palatino Linotype', serif;
-        font-size:58px;
-        font-weight:bold;
-        color:#203864;
-        line-height:1.0;
-        margin-top:10px;
-        margin-bottom:0px;
-    ">
-        🥔 Potato Times
+    st.markdown(
+        f"""
+        <div style="
+            font-family:'Palatino Linotype', serif;
+            font-size:{title_size};
+            font-weight:bold;
+            color:#203864;
+            line-height:1.0;
+            margin-top:0px;
+            margin-bottom:0px;
+            white-space:nowrap;
+        ">
+            🥔 Potato Times
         </div>
-    """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
 
 with header_right:
 
@@ -181,24 +199,23 @@ with header_right:
         <div style="
             background:#DFF5E1;
             color:#155724;
-            padding:6px;
+            padding:4px;
             border-radius:6px;
             text-align:center;
-            font-size:12px;
+            font-size:{status_size};
             font-weight:bold;
-            margin-top:18px;
-            margin-bottom:0px;
+            margin-top:{status_margin};
         ">
             정상<br>
             {datetime.today().strftime("%Y-%m-%d")}
-            </div>
+        </div>
         """,
         unsafe_allow_html=True
     )
 
 st.markdown("""
 <hr style="
-    margin-top:0px;
+    margin-top:5px;
     margin-bottom:5px;
     border:none;
     border-top:1px solid #D9D9D9;
