@@ -429,7 +429,7 @@ with left:
 
             st.metric(
                 label=grade,
-                value=f"{current_price:,}"
+                value=f"{current_price:,}원/kg"
             )
 
             st.caption(
