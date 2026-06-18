@@ -631,11 +631,11 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
-    recent_max = chart1.tail(10).max().max()
-    recent_min = chart1.tail(10).min().min()
+    data_max = chart1.max().max()
+    data_min = chart1.min().min()
 
-    ymax = int(recent_max) + 500
-    ymin = max(0, int(recent_min) - 100)
+    ymax = int(data_max + 100)
+    ymin = int(data_min - 100)
 
     x_labels = [str(x) for x in chart1.index]
 
