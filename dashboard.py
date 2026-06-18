@@ -133,32 +133,29 @@ else:
 # 헤더
 # ==========================
 
-status_color = "#DFF5E1" if success else "#FFE2E2"
-text_color   = "#155724" if success else "#B00020"
-status_text  = "정상" if success else "오류"
+header_left, header_right = st.columns([8, 1])
 
-title_col, status_col = st.columns([8, 2])
-
-with title_col:
+with header_left:
 
     st.markdown(
         "# 🥔 POTATO TIMES"
     )
 
-with status_col:
+with header_right:
 
     st.markdown(
         f"""
         <div style="
-            background:{status_color};
-            color:{text_color};
-            padding:8px;
-            border-radius:8px;
+            background:#DFF5E1;
+            color:#155724;
+            padding:6px;
+            border-radius:6px;
             text-align:center;
             font-size:12px;
             font-weight:bold;
+            margin-top:12px;
         ">
-            ● {status_text}<br>
+            정상<br>
             {datetime.today().strftime("%Y-%m-%d")}
         </div>
         """,
