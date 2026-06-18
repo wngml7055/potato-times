@@ -671,11 +671,14 @@ with left:
         )
     )
 
-    config={
-        "scrollZoom": False,
-        "displayModeBar": False,
-        "doubleClick": False
-    }
+    st.plotly_chart(
+        fig1,
+        use_container_width=True,
+        config={
+            "scrollZoom": False,
+            "displayModeBar": False
+        }
+    )
 
     # 평균가격 제목======================
     st.markdown("""
@@ -711,11 +714,14 @@ with left:
         showlegend=False
     )
 
-    config={
-        "scrollZoom": False,
-        "displayModeBar": False,
-        "doubleClick": False
-    }
+    st.plotly_chart(
+        fig2,
+        use_container_width=True,
+        config={
+            "scrollZoom": False,
+            "displayModeBar": False
+        }
+    )
 
 # =======================================
 
