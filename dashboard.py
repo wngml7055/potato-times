@@ -665,20 +665,15 @@ with left:
 
     fig1.update_layout(
         height=220 if mobile else 280,
-        margin=dict(
-            l=10,
-            r=10,
-            t=10,
-            b=10
-        ),
+        margin=dict(l=10, r=10, t=10, b=10),
         hovermode="x unified",
         dragmode=False,
-        yaxis=dict(
-            range=[ymin, ymax]
-        ),
         legend=dict(
             orientation="h",
             y=-0.15
+        ),
+        yaxis=dict(
+            range=[ymin, ymax]
         )
     )
 
