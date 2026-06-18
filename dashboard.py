@@ -810,7 +810,7 @@ with left:
             t=10,
             b=10
         ),
-        hovermode="x unified",
+        hovermode=False,
         dragmode=False,
         showlegend=False,
         yaxis=dict(
@@ -819,6 +819,11 @@ with left:
                 ymax2 + 500
             ]
         )
+    )
+
+    fig2.update_traces(
+        hoverinfo="skip",
+        hovertemplate=None
     )
 
     st.plotly_chart(
