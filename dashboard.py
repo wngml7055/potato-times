@@ -253,7 +253,7 @@ if os.path.exists("data/kamis_potato.csv"):
 <div style="
     background:#EDF4FF;
     border-left:4px solid #4A90E2;
-    padding:4px 4px 1px 4px;
+    padding:4px 4px 0px 4px;
     border-radius:6px;
     margin:0;
 ">
@@ -267,9 +267,10 @@ if os.path.exists("data/kamis_potato.csv"):
 <span style="
     display:block;
     margin-top:2px;
+    margin-bottom:2px;
     color:#444;
     font-size:{body_size};
-    line-height:1.2;
+    line-height:1.15;
 ">
 {summary}
 </span>
