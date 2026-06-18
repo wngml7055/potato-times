@@ -465,11 +465,10 @@ with left:
     # =====================
 
     if mobile:
-        st.write("mobile =", mobile)
 
-        cols = st.columns(4)
+        cards = ""
 
-        for idx, grade in enumerate(["특", "상", "보통", "하"]):
+        for grade in ["특", "상", "보통", "하"]:
 
             row = garak[
                 garak["G_NAME"] == grade
@@ -497,47 +496,51 @@ with left:
                 1
             )
 
-            with cols[idx]:
+            cards += f"""
+            <div style="
+                flex:1;
+                text-align:center;
+            ">
+                <div style="
+                    font-size:14px;
+                    font-weight:bold;
+                ">
+                    {grade}
+                </div>
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-size:14px;
-                        font-weight:bold;
-                    ">
-                        {grade}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+                <div style="
+                    font-size:22px;
+                    font-weight:bold;
+                    color:#262730;
+                ">
+                    {current_price:,}
+                </div>
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-size:20px;
-                        font-weight:bold;
-                        color:#262730;
-                    ">
-                        {current_price:,}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+                <div style="
+                    font-size:11px;
+                    color:#0A36FF;
+                ">
+                    ▼ {abs(diff_rate)}%
+                </div>
+            </div>
+            """
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-size:11px;
-                        color:#0A36FF;
-                    ">
-                        ▼ {abs(diff_rate)}%
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+        st.markdown(
+            f"""
+            <div style="
+                display:flex;
+                flex-direction:row;
+                justify-content:space-between;
+                align-items:flex-start;
+                width:100%;
+                margin-top:10px;
+                margin-bottom:10px;
+            ">
+                {cards}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
     else:
 
