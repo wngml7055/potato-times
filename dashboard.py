@@ -745,6 +745,8 @@ with left:
         )
     ].tail(6)
 
+    ymax2 = chart2["KG_P"].max()
+
     fig2.add_trace(
         go.Scatter(
             x=chart2.index.astype(str),
@@ -763,7 +765,7 @@ with left:
             y=label_df["KG_P"],
             mode="markers",
             marker=dict(
-                size=8
+                size=7
             ),
             showlegend=False
         )
@@ -771,19 +773,24 @@ with left:
 
     for _, row in label_df.iterrows():
 
+        fig2.add_vline(
+            x=row["월"],
+            line_width=1,
+            line_dash="dot",
+            line_color="rgba(120,120,120,0.35)"
+        )
+
         fig2.add_annotation(
             x=row["월"],
-            y=row["KG_P"],
+            y=ymax2 + 250,
             text=(
                 f"{row['월']}<br>"
                 f"{int(row['KG_P']):,}원"
             ),
-            showarrow=True,
-            arrowhead=0,
-            ax=0,
-            ay=-35,
+            showarrow=False,
             font=dict(
-                size=10
+                size=9,
+                color="gray"
             )
         )
 
@@ -797,7 +804,13 @@ with left:
         ),
         hovermode="x unified",
         dragmode=False,
-        showlegend=False
+        showlegend=False,
+        yaxis=dict(
+            range=[
+                0,
+                ymax2 + 500
+            ]
+        )
     )
 
     st.plotly_chart(
