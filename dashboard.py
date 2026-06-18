@@ -374,7 +374,10 @@ chart2 = monthly[
 
 with left:
 
-# 감자시세 제목==============
+    # =====================
+    # 가락시장 감자 시세
+    # =====================
+
     st.markdown("""
     <div style="
         background:#FFF4D6;
@@ -388,8 +391,6 @@ with left:
         🥔 가락시장 감자 시세
     </div>
     """, unsafe_allow_html=True)
-
-# ========================
 
     price_cols = st.columns(4)
 
@@ -411,21 +412,27 @@ with left:
             ) / 20
         )
 
-        diff_rate = round(
-            (
-                current_price
-                - last_year_price
+        if last_year_price > 0:
+
+            diff_rate = round(
+                (
+                    current_price
+                    - last_year_price
+                )
+                / last_year_price
+                * 100,
+                1
             )
-            / last_year_price
-            * 100,
-            1
-        )
+
+        else:
+
+            diff_rate = 0
 
         with price_cols[idx]:
 
             st.metric(
-                grade,
-                f"{current_price:,}원/kg"
+                label=grade,
+                value=f"{current_price:,}"
             )
 
             st.caption(
@@ -435,44 +442,54 @@ with left:
             if diff_rate > 0:
 
                 st.markdown(
-                    f"<span style='color:red'>▲ {diff_rate}%</span>",
+                    f"<span style='color:red;font-size:12px;'>▲ {diff_rate}%</span>",
+                    unsafe_allow_html=True
+                )
+
+            elif diff_rate < 0:
+
+                st.markdown(
+                    f"<span style='color:blue;font-size:12px;'>▼ {abs(diff_rate)}%</span>",
                     unsafe_allow_html=True
                 )
 
             else:
 
                 st.markdown(
-                    f"<span style='color:blue'>▼ {abs(diff_rate)}%</span>",
+                    "<span style='color:gray;font-size:12px;'>-</span>",
                     unsafe_allow_html=True
                 )
 
-# =============
-# 아래 코드는 감자시세 간격
-# =============
+    # =====================
+    # 시세 영역 스타일
+    # =====================
 
     st.markdown("""
     <style>
 
     [data-testid="metric-container"] {
-        padding: 0.2rem !important;
+        padding: 0.15rem !important;
     }
 
-    [data-testid="stMetric"] {
-        margin-bottom: -15px;
+    [data-testid="stMetricValue"] {
+        font-size: 1.3rem !important;
+    }
+
+    [data-testid="stMetricLabel"] {
+        font-size: 0.8rem !important;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-#===============
-# 아래는 등락율과 그래프 사이 여백
-# ===============
+    # =====================
+    # 그래프와의 간격
+    # =====================
 
     st.markdown(
         "<hr style='margin-top:5px;margin-bottom:10px;'>",
         unsafe_allow_html=True
     )
-#==========================================
 
 # 보통가격 제목=======================
     st.markdown("""
