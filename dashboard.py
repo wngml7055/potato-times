@@ -631,8 +631,11 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
-    ymax = int(chart1.max().max()) + 500
-    ymin = max(0, int(chart1.min().min()) - 200)
+    recent_max = chart1.tail(10).max().max()
+    recent_min = chart1.tail(10).min().min()
+
+    ymax = int(recent_max) + 500
+    ymin = max(0, int(recent_min) - 100)
 
     fig1 = go.Figure()
 
