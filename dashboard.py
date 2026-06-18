@@ -245,37 +245,37 @@ if os.path.exists("data/kamis_potato.csv"):
             latest["content"]
         )
 
-    kamis_font = "11px" if mobile else "14px"
-    kamis_title = "12px" if mobile else "15px"
+kamis_font = "11px" if mobile else "14px"
+kamis_title = "12px" if mobile else "15px"
 
-    st.markdown(
-        f"""
+st.markdown(
+    f"""
+    <div style="
+        background:#EEF4FF;
+        padding:10px;
+        border-left:4px solid #4A90E2;
+        overflow:hidden;
+    ">
         <div style="
-            background:#EEF4FF;
-            padding:10px;
-            border-left:4px solid #4A90E2;
-            overflow:hidden;
+            font-size:{kamis_title};
+            font-weight:bold;
+            color:#1E4FA3;
+            margin-bottom:3px;
         ">
-            <div style="
-                font-size:{kamis_title};
-                font-weight:bold;
-                color:#1E4FA3;
-                margin-bottom:3px;
-            ">
-                📢 KAMIS 시황동향 | {title}
-            </div>
-
-            <div style="
-                font-size:{kamis_font};
-                color:#444;
-                line-height:1.4;
-            ">
-                • {content}
-            </div>
+            📢 KAMIS 시황동향 | {title}
         </div>
-        """,
-        unsafe_allow_html=True
-    )
+
+        <div style="
+            font-size:{kamis_font};
+            color:#444;
+            line-height:1.4;
+        ">
+            • {content}
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # =======================
 
