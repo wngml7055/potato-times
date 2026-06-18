@@ -148,6 +148,7 @@ with header_left:
         margin-bottom:0px;
     ">
         🥔 Potato Times
+        </div>
     """, unsafe_allow_html=True)
 
 with header_right:
@@ -167,6 +168,7 @@ with header_right:
         ">
             정상<br>
             {datetime.today().strftime("%Y-%m-%d")}
+            </div>
         """,
         unsafe_allow_html=True
     )
