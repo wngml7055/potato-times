@@ -597,14 +597,14 @@ with left:
                 if diff_rate > 0:
 
                     st.markdown(
-                        f"<span style='color:red;font-size:12px;'>▲ {diff_rate}%</span>",
+                        f"<span style='color:blue;font-size:12px;'>▲ {diff_rate}%</span>",
                         unsafe_allow_html=True
                     )
 
                 else:
 
                     st.markdown(
-                        f"<span style='color:blue;font-size:12px;'>▼ {abs(diff_rate)}%</span>",
+                        f"<span style='color:red;font-size:12px;'>▼ {abs(diff_rate)}%</span>",
                         unsafe_allow_html=True
                     )
 
