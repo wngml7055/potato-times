@@ -644,7 +644,11 @@ with left:
             x=chart1.index.astype(str),
             y=chart1["올해"],
             mode="lines",
-            name="올해"
+            name="올해",
+            line=dict(
+                color="#1565C0",
+                width=3
+            )
         )
     )
 
@@ -653,7 +657,11 @@ with left:
             x=chart1.index.astype(str),
             y=chart1["전년"],
             mode="lines",
-            name="전년"
+            name="전년",
+            line=dict(
+                color="#64B5F6",
+                width=2
+            )
         )
     )
 
@@ -662,21 +670,32 @@ with left:
             x=chart1.index.astype(str),
             y=chart1["평년"],
             mode="lines",
-            name="평년"
+            name="평년",
+            line=dict(
+                color="gray",
+                width=2
+            )
         )
     )
 
     fig1.update_layout(
         height=220 if mobile else 280,
-        margin=dict(l=10, r=10, t=10, b=10),
+        margin=dict(
+            l=10,
+            r=10,
+            t=30,
+            b=10
+        ),
         hovermode="x unified",
         dragmode=False,
-        legend=dict(
-            orientation="h",
-            y=-0.15
-        )
         yaxis=dict(
             range=[ymin, ymax]
+        ),
+        legend=dict(
+            orientation="h",
+            y=1.15,
+            x=0,
+            bgcolor="rgba(0,0,0,0)"
         )
     )
 
