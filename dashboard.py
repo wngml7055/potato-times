@@ -523,7 +523,6 @@ with left:
             ">
                 <tr>
                     {row_html}
-                </tr>
             </table>
             """,
             unsafe_allow_html=True
