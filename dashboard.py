@@ -3,6 +3,7 @@ import pandas as pd
 import subprocess
 import plotly.graph_objects as go
 import streamlit.components.v1 as components
+from streamlit_js_eval import streamlit_js_eval
 import os
 from datetime import datetime
 
@@ -11,6 +12,28 @@ st.set_page_config(
     page_title="Potato Times",
     layout="wide"
 )
+
+# ==========================
+# 모바일 자동 감지
+# ==========================
+
+try:
+
+    screen_width = streamlit_js_eval(
+        js_expressions="window.innerWidth",
+        key="WIDTH"
+    )
+
+    mobile = (
+        screen_width is not None
+        and screen_width < 768
+    )
+
+except:
+
+    mobile = False
+
+# =======================================
 
 st.markdown("""
 <style>
@@ -252,7 +275,20 @@ st.markdown("""
 # 가격 추이
 # =====================
 
-left, right = st.columns([1, 2])
+# =====================
+# PC / 모바일 레이아웃
+# =====================
+
+if mobile:
+
+    left = st.container()
+    right = st.container()
+
+else:
+
+    left, right = st.columns([1, 2])
+
+# =============================
 
 history = pd.read_csv("data/garak_history.csv")
 
