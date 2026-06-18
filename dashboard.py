@@ -460,9 +460,15 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
-    price_cols = st.columns(4)
+# =====================
+# 시세 표시
+# =====================
 
-    for idx, grade in enumerate(["특", "상", "보통", "하"]):
+if mobile:
+
+    cards = ""
+
+    for grade in ["특", "상", "보통", "하"]:
 
         row = garak[
             garak["G_NAME"] == grade
@@ -480,53 +486,110 @@ with left:
             ) / 20
         )
 
-        if last_year_price > 0:
-
-            diff_rate = round(
-                (
-                    current_price
-                    - last_year_price
-                )
-                / last_year_price
-                * 100,
-                1
+        diff_rate = round(
+            (
+                current_price
+                - last_year_price
             )
+            / last_year_price
+            * 100,
+            1
+        )
 
-        else:
+        color = "#0A36FF"
 
-            diff_rate = 0
+        cards += f"""
+        <div style="
+            flex:1;
+            text-align:center;
+        ">
+            <div style="
+                font-size:13px;
+                font-weight:700;
+            ">
+                {grade}
+            </div>
+
+            <div style="
+                font-size:22px;
+                font-weight:700;
+                color:#262730;
+            ">
+                {current_price:,}
+            </div>
+
+            <div style="
+                font-size:11px;
+                color:{color};
+            ">
+                ▼ {abs(diff_rate)}%
+            </div>
+        </div>
+        """
+
+    st.markdown(
+        f"""
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            margin-top:10px;
+            margin-bottom:10px;
+        ">
+            {cards}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+else:
+
+    price_cols = st.columns(4)
+
+    for idx, grade in enumerate(
+        ["특", "상", "보통", "하"]
+    ):
+
+        row = garak[
+            garak["G_NAME"] == grade
+        ].iloc[0]
+
+        current_price = round(
+            int(row["AV_P"]) / 20
+        )
+
+        last_year_price = round(
+            int(
+                str(row["J_365_RATE"])
+                .split("(")[0]
+                .replace(",", "")
+            ) / 20
+        )
+
+        diff_rate = round(
+            (
+                current_price
+                - last_year_price
+            )
+            / last_year_price
+            * 100,
+            1
+        )
 
         with price_cols[idx]:
 
             st.metric(
-                label=grade,
-                value=f"{current_price:,}원/kg"
+                grade,
+                f"{current_price:,}원/kg"
             )
 
             st.caption(
                 f"전년 {last_year_price:,}원/kg"
             )
 
-            if diff_rate > 0:
-
-                st.markdown(
-                    f"<span style='color:red;font-size:12px;'>▲ {diff_rate}%</span>",
-                    unsafe_allow_html=True
-                )
-
-            elif diff_rate < 0:
-
-                st.markdown(
-                    f"<span style='color:blue;font-size:12px;'>▼ {abs(diff_rate)}%</span>",
-                    unsafe_allow_html=True
-                )
-
-            else:
-
-                st.markdown(
-                    "<span style='color:gray;font-size:12px;'>-</span>",
-                    unsafe_allow_html=True
-                )
+            st.markdown(
+                f"<span style='color:blue'>▼ {abs(diff_rate)}%</span>",
+                unsafe_allow_html=True
+            )
 
     # =====================
     # 시세 영역 스타일
