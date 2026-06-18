@@ -838,7 +838,7 @@ with left:
 
     st.plotly_chart(
         fig2,
-        use_container_width=false,
+        use_container_width=true,
         config={
             "scrollZoom": False,
             "displayModeBar": False,
