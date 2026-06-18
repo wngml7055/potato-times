@@ -735,24 +735,15 @@ with left:
     </div>
     """, unsafe_allow_html=True)
 
+    fig2 = go.Figure()
+
     latest_month = monthly.iloc[-1]["월"][-2:]
 
-    compare = monthly[
+    label_df = monthly[
         monthly["월"].str.endswith(
             latest_month
         )
     ].tail(4)
-
-    compare_text = " | ".join(
-        [
-            f"{row['월']} : {int(row['KG_P']):,}원"
-            for _, row in compare.iterrows()
-        ]
-    )
-
-    st.caption(compare_text)
-
-    fig2 = go.Figure()
 
     fig2.add_trace(
         go.Scatter(
@@ -760,6 +751,23 @@ with left:
             y=chart2["KG_P"],
             mode="lines",
             name="가격"
+        )
+    )
+
+    fig2.add_trace(
+        go.Scatter(
+            x=label_df["월"],
+            y=label_df["KG_P"],
+            mode="markers+text",
+            text=[
+                f"{int(v):,}"
+                for v in label_df["KG_P"]
+            ],
+            textposition="top center",
+            marker=dict(
+                size=8
+            ),
+            showlegend=False
         )
     )
 
