@@ -786,7 +786,7 @@ with left:
             b=10
         ),
 
-        hovermode="x unified",
+        hovermode=False if mobile else "x unified",
         dragmode=False,
 
         xaxis=dict(
@@ -812,9 +812,10 @@ with left:
         fig1,
         use_container_width=True,
         config={
+            "staticPlot": mobile,
             "scrollZoom": False,
             "displayModeBar": False,
-            "doubleClick": "reset"
+            "doubleClick": False
         }
     )
 
@@ -906,7 +907,7 @@ with left:
             t=10,
             b=10
         ),
-        hovermode="x unified",
+        hovermode=False if mobile else "x unified",
         dragmode=False,
         showlegend=False,
         yaxis=dict(
@@ -921,9 +922,10 @@ with left:
         fig2,
         use_container_width=True,
         config={
+            "staticPlot": mobile,
             "scrollZoom": False,
             "displayModeBar": False,
-            "doubleClick": "reset"
+            "doubleClick": False
         }
     )
 
