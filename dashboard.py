@@ -785,32 +785,40 @@ with right:
     </div>
     """, unsafe_allow_html=True)
 
+    sample = weather[
+        weather["지역"] == "양구"
+    ]
+
+    header = st.columns(
+        len(sample) + 1
+    )
+
+    header[0].markdown("**산지**")
+
+    for i, (_, row) in enumerate(
+        sample.iterrows()
+    ):
+
+        header[i + 1].markdown(
+            f"**{str(row['날짜'])[5:]}**"
+        )
+
     for area in areas:
 
         area_df = weather[
             weather["지역"] == area
         ]
 
-        st.markdown(
-            f"""
-            <div style="
-                font-size:18px;
-                font-weight:bold;
-                margin-top:8px;
-                margin-bottom:4px;
-            ">
-                {area}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
         cols = st.columns(
-            len(area_df),
+            len(area_df) + 1,
             gap="small"
         )
 
-        for idx, (_, row) in enumerate(
+        cols[0].markdown(
+            f"**{area}**"
+        )
+
+        for i, (_, row) in enumerate(
             area_df.iterrows()
         ):
 
@@ -827,36 +835,22 @@ with right:
                     icon_path = weather_icon[key]
                     break
 
-            with cols[idx]:
-
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-size:12px;
-                        font-weight:bold;
-                        margin-bottom:4px;
-                    ">
-                        {str(row['날짜'])[5:]}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            with cols[i + 1]:
 
                 if icon_path:
 
                     st.image(
                         icon_path,
-                        width=50
+                        width=70
                     )
 
                 st.markdown(
                     f"""
                     <div style="
                         text-align:center;
-                        font-size:11px;
+                        font-size:12px;
                         color:#666;
-                        margin-top:-6px;
+                        margin-top:-8px;
                     ">
                         {row['최저기온']}~{row['최고기온']}℃
                     </div>
@@ -868,8 +862,9 @@ with right:
                     f"""
                     <div style="
                         text-align:center;
-                        font-size:11px;
+                        font-size:12px;
                         color:#666;
+                        margin-top:-4px;
                     ">
                         💧 {row['오후강수확률']}
                     </div>
@@ -878,8 +873,6 @@ with right:
                 )
 
         st.markdown(
-            "<hr style='margin-top:4px;margin-bottom:4px;'>",
+            "<hr style='margin-top:2px;margin-bottom:2px;'>",
             unsafe_allow_html=True
         )
-
-# =======================================
