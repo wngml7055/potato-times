@@ -253,7 +253,7 @@ if os.path.exists("data/kamis_potato.csv"):
 <div style="
     background:#EDF4FF;
     border-left:4px solid #4A90E2;
-    padding:4px 12px;
+    padding:4px 4px;
     border-radius:6px;
     margin-top:0px;
     margin-bottom:0px;
