@@ -495,7 +495,7 @@ with left:
     # =====================
 
     st.markdown(
-        "<hr style='margin-top:5px;margin-bottom:10px;'>",
+        "<hr style='margin-top:5px;margin-bottom:2px;'>",
         unsafe_allow_html=True
     )
 
@@ -622,7 +622,7 @@ with right:
 
                     st.image(
                         icon_path,
-                        width=75
+                        width=70
                     )
 
                 st.markdown(
