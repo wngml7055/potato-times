@@ -492,8 +492,8 @@ with left:
 
 
     price_size = "22px" if mobile else "32px"
-    sub_size = "11px" if mobile else "16px"
-    rate_size = "11px" if mobile else "15px"
+    sub_size = "14px" if mobile else "16px"
+    rate_size = "14px" if mobile else "15px"
     grade_size = "14px" if mobile else "18px"
     
     # =====================
