@@ -574,7 +574,7 @@ with left:
 
         components.html(
             html,
-            height=120
+            height=90
         )
     else:
 
