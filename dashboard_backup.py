@@ -492,8 +492,8 @@ with left:
 
 
     price_size = "22px" if mobile else "32px"
-    sub_size = "11px" if mobile else "16px"
-    rate_size = "11px" if mobile else "15px"
+    sub_size = "14px" if mobile else "16px"
+    rate_size = "14px" if mobile else "15px"
     grade_size = "14px" if mobile else "18px"
     
     # =====================
@@ -502,9 +502,12 @@ with left:
 
     if mobile:
 
-        row_html = ""
+        html = """
+        <table style='width:100%; text-align:center; table-layout:fixed;'>
+        <tr>
+        """
 
-        for grade in ["특", "상", "보통", "하"]:
+        for grade in ["특","상","보통","하"]:
 
             row = garak[
                 garak["G_NAME"] == grade
@@ -532,41 +535,47 @@ with left:
                 1
             )
 
-            row_html += f"""
-            <td style="text-align:center;">
-                <div style="
-                    font-weight:bold;
-                    font-size:{grade_size};
-                ">
+            color = (
+                "#1565C0"
+                if diff_rate >= 0
+                else "#D32F2F"
+            )
+
+            arrow = (
+                "▲"
+                if diff_rate >= 0
+                else "▼"
+            )
+
+            html += f"""
+            <td>
+                <div style="font-size:15px;font-weight:bold;">
                     {grade}
                 </div>
-                <div style="
-                    font-size:{price_size};
-                    font-weight:bold;
-                ">
+
+                <div style="font-size:22px;font-weight:bold;">
                     {current_price:,}
                 </div>
-                <div style="
-                    font-size:{rate_size};
-                    color:#0A36FF;
-                ">
-                    ▼ {abs(diff_rate)}%
+
+                <div style="font-size:10px;color:#888;">
+                    전년 {last_year_price:,}
                 </div>
+
+                <div style="font-size:11px;color:{color};">
+                    {arrow} {abs(diff_rate)}%
+                </div>
+            </td>
             """
 
-        st.markdown(
-            f"""
-            <table style="
-                width:100%;
-                table-layout:fixed;
-            ">
-                <tr>
-                    {row_html}
-            </table>
-            """,
-            unsafe_allow_html=True
-        )
+        html += """
+        </tr>
+        </table>
+        """
 
+        components.html(
+            html,
+            height=120
+        )
     else:
 
         price_cols = st.columns(4)
