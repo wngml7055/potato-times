@@ -914,7 +914,7 @@ with left:
             ),
             showarrow=False,
             font=dict(
-                size=10 if mobile else 13,
+                size=10 if mobile else 15,
                 color="gray"
             )
         )
@@ -1193,7 +1193,7 @@ with right:
                         f"""
                         <div style="
                             text-align:center;
-                            font-size:12px;
+                            font-size:15px;
                             color:#666;
                             margin-top:-8px;
                         ">
@@ -1207,7 +1207,7 @@ with right:
                         f"""
                         <div style="
                             text-align:center;
-                            font-size:12px;
+                            font-size:15px;
                             color:#666;
                             margin-top:-4px;
                         ">
