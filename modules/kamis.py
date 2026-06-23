@@ -5,7 +5,12 @@ from datetime import datetime, timedelta
 
 url = "https://www.kamis.or.kr/customer/trend/trade/daily.do"
 
-today = datetime.today()
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
+today = datetime.now(
+    ZoneInfo("Asia/Seoul")
+)
 
 rows = []
 
