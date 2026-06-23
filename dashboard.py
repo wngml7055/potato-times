@@ -493,8 +493,8 @@ with left:
 
     price_size = "22px" if mobile else "32px"
     sub_size = "14px" if mobile else "16px"
-    rate_size = "14px" if mobile else "15px"
-    grade_size = "14px" if mobile else "18px"
+    rate_size = "14px" if mobile else "16px"
+    grade_size = "14px" if mobile else "20px"
     
     # =====================
     # 시세 표시
@@ -574,7 +574,7 @@ with left:
 
         components.html(
             html,
-            height=90
+            height=100
         )
     else:
 
