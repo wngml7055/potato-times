@@ -914,7 +914,7 @@ with left:
             ),
             showarrow=False,
             font=dict(
-                size=9,
+                size=10 if mobile else 13,
                 color="gray"
             )
         )
