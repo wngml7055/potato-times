@@ -230,7 +230,7 @@ if os.path.exists("data/kamis_potato.csv"):
 
     kamis = pd.read_csv(
         "data/kamis_potato.csv",
-        encoding="cp949"
+        encoding="utf-8-sig"
     )
 
     if len(kamis) > 0:
