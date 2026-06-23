@@ -465,6 +465,41 @@ chart2 = monthly[
 
 with left:
 
+    # =====================
+    # 가락시장 감자 시세
+    # =====================
+
+    title_size = "18px" if mobile else "22px"
+    padding_size = "6px 10px" if mobile else "8px 12px"
+    margin_size = "6px" if mobile else "10px"
+
+    st.markdown(
+        f"""
+    <div style="
+        background:#FFF4D6;
+        padding:{padding_size};
+        border-radius:8px;
+        font-size:{title_size};
+        font-weight:bold;
+        color:#7A4E00;
+        margin-bottom:{margin_size};
+    ">
+        🥔 가락시장 감자 시세
+    </div>
+    """,
+        unsafe_allow_html=True
+    )
+
+
+    price_size = "22px" if mobile else "32px"
+    sub_size = "11px" if mobile else "16px"
+    rate_size = "11px" if mobile else "15px"
+    grade_size = "14px" if mobile else "18px"
+    
+    # =====================
+    # 시세 표시
+    # =====================
+
     if mobile:
 
         cols = st.columns(4)
