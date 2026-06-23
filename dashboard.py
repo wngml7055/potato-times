@@ -557,11 +557,11 @@ with left:
                     {current_price:,}
                 </div>
 
-                <div style="font-size:10px;color:#888;">
+                <div style="font-size:14px;color:#888;">
                     전년 {last_year_price:,}
                 </div>
 
-                <div style="font-size:11px;color:{color};">
+                <div style="font-size:14px;color:{color};">
                     {arrow} {abs(diff_rate)}%
                 </div>
             </td>
@@ -574,7 +574,7 @@ with left:
 
         components.html(
             html,
-            height=120
+            height=90
         )
     else:
 
