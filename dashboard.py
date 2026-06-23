@@ -500,54 +500,71 @@ with left:
     # 시세 표시
     # =====================
 
-if mobile:
+    if mobile:
 
-    cols1 = st.columns(4)
+        row_html = ""
 
-    for idx, grade in enumerate(
-        ["특", "상", "보통", "하"]
-    ):
+        for grade in ["특", "상", "보통", "하"]:
 
-        row = garak[
-            garak["G_NAME"] == grade
-        ].iloc[0]
+            row = garak[
+                garak["G_NAME"] == grade
+            ].iloc[0]
 
-        current_price = round(
-            int(row["AV_P"]) / 20
+            current_price = round(
+                int(row["AV_P"]) / 20
+            )
+
+            last_year_price = round(
+                int(
+                    str(row["J_365_RATE"])
+                    .split("(")[0]
+                    .replace(",", "")
+                ) / 20
+            )
+
+            diff_rate = round(
+                (
+                    current_price
+                    - last_year_price
+                )
+                / last_year_price
+                * 100,
+                1
+            )
+
+            row_html += f"""
+            <td style="text-align:center;">
+                <div style="font-weight:bold;">
+                    {grade}
+                </div>
+                <div style="
+                    font-size:22px;
+                    font-weight:bold;
+                ">
+                    {current_price:,}
+                </div>
+                <div style="
+                    font-size:11px;
+                    color:#0A36FF;
+                ">
+                    ▼ {abs(diff_rate)}%
+                </div>
+            </td>
+            """
+
+        st.markdown(
+            f"""
+            <table style="
+                width:100%;
+                table-layout:fixed;
+            ">
+                <tr>
+                    {row_html}
+                </tr>
+            </table>
+            """,
+            unsafe_allow_html=True
         )
-
-        with cols1[idx]:
-            st.markdown(
-                f"<div style='text-align:center;font-weight:bold'>{grade}</div>",
-                unsafe_allow_html=True
-            )
-            st.markdown(
-                f"<div style='text-align:center;font-size:22px;font-weight:bold'>{current_price:,}</div>",
-                unsafe_allow_html=True
-            )
-
-    cols2 = st.columns(4)
-
-    for idx, grade in enumerate(
-        ["특", "상", "보통", "하"]
-    ):
-
-        row = garak[
-            garak["G_NAME"] == grade
-        ].iloc[0]
-
-        last_year_price = round(
-            int(
-                str(row["J_365_RATE"])
-                .split("(")[0]
-                .replace(",", "")
-            ) / 20
-        )
-
-        with cols2[idx]:
-            st.caption(
-                f"전년 {last_year_price:,}"
-            )
 
     else:
 
