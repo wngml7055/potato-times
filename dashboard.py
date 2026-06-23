@@ -549,7 +549,6 @@ with left:
                 ">
                     ▼ {abs(diff_rate)}%
                 </div>
-            </td>
             """
 
         st.markdown(
@@ -560,7 +559,6 @@ with left:
             ">
                 <tr>
                     {row_html}
-                </tr>
             </table>
             """,
             unsafe_allow_html=True
