@@ -502,9 +502,11 @@ with left:
 
     if mobile:
 
-        row_html = ""
+        price_cols = st.columns(4)
 
-        for grade in ["특", "상", "보통", "하"]:
+        for idx, grade in enumerate(
+            ["특", "상", "보통", "하"]
+        ):
 
             row = garak[
                 garak["G_NAME"] == grade
@@ -532,58 +534,53 @@ with left:
                 1
             )
 
-            row_html += f"""
-            <td style="
-                text-align:center;
-                padding:6px 2px;
-            ">
-                <div style="
-                    font-weight:bold;
-                    font-size:16px;
-                ">
-                    {grade}
-                </div>
+            with price_cols[idx]:
 
-                <div style="
-                    font-size:22px;
-                    font-weight:bold;
-                ">
-                    {current_price:,}
-                </div>
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align:center;
+                    ">
+                        <div style="
+                            font-size:16px;
+                            font-weight:bold;
+                            margin-bottom:6px;
+                        ">
+                            {grade}
+                        </div>
 
-                <div style="
-                    font-size:10px;
-                    color:#999;
-                    margin-top:2px;
-                ">
-                    전년 {last_year_price:,}
-                </div>
+                        <div style="
+                            font-size:22px;
+                            font-weight:bold;
+                            color:#333;
+                        ">
+                            {current_price:,}
+                        </div>
 
-                <div style="
-                    font-size:11px;
-                    color:#0A36FF;
-                    margin-top:2px;
-                ">
-                    ▼ {abs(diff_rate)}%
-                </div>
-            </td>
-            """
+                        <div style="
+                            font-size:10px;
+                            color:#999;
+                            margin-top:4px;
+                        ">
+                            전년 {last_year_price:,}
+                        </div>
 
-        st.markdown(
-            f"""
-            <table style="
-                width:100%;
-                table-layout:fixed;
-                border-collapse:collapse;
-            ">
-                <tr>
-                    {row_html}
-                </tr>
-            </table>
-            """,
-            unsafe_allow_html=True
+                        <div style="
+                            font-size:11px;
+                            color:#0A36FF;
+                            margin-top:4px;
+                            font-weight:bold;
+                        ">
+                            ▼ {abs(diff_rate)}%
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+        st.caption(
+            "출처 : 서울시농수산식품공사"
         )
-
     else:
 
         price_cols = st.columns(4)
