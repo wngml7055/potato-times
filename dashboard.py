@@ -500,102 +500,82 @@ with left:
     # 시세 표시
     # =====================
 
-    if mobile:
+if mobile:
 
-        c1, c2, c3, c4 = st.columns(4)
+    html = """
+    <table style='width:100%; text-align:center; table-layout:fixed;'>
+    <tr>
+    """
 
-        mobile_cols = {
-            "특": c1,
-            "상": c2,
-            "보통": c3,
-            "하": c4
-        }
+    for grade in ["특","상","보통","하"]:
 
-        for grade in ["특", "상", "보통", "하"]:
+        row = garak[
+            garak["G_NAME"] == grade
+        ].iloc[0]
 
-            row = garak[
-                garak["G_NAME"] == grade
-            ].iloc[0]
+        current_price = round(
+            int(row["AV_P"]) / 20
+        )
 
-            current_price = round(
-                int(row["AV_P"]) / 20
+        last_year_price = round(
+            int(
+                str(row["J_365_RATE"])
+                .split("(")[0]
+                .replace(",", "")
+            ) / 20
+        )
+
+        diff_rate = round(
+            (
+                current_price
+                - last_year_price
             )
+            / last_year_price
+            * 100,
+            1
+        )
 
-            last_year_price = round(
-                int(
-                    str(row["J_365_RATE"])
-                    .split("(")[0]
-                    .replace(",", "")
-                ) / 20
-            )
+        color = (
+            "#1565C0"
+            if diff_rate >= 0
+            else "#D32F2F"
+        )
 
-            diff_rate = round(
-                (
-                    current_price
-                    - last_year_price
-                )
-                / last_year_price
-                * 100,
-                1
-            )
+        arrow = (
+            "▲"
+            if diff_rate >= 0
+            else "▼"
+        )
 
-            color = (
-                "#1565C0"
-                if diff_rate >= 0
-                else "#D32F2F"
-            )
+        html += f"""
+        <td>
+            <div style="font-size:15px;font-weight:bold;">
+                {grade}
+            </div>
 
-            arrow = (
-                "▲"
-                if diff_rate >= 0
-                else "▼"
-            )
+            <div style="font-size:22px;font-weight:bold;">
+                {current_price:,}
+            </div>
 
-            with mobile_cols[grade]:
+            <div style="font-size:10px;color:#888;">
+                전년 {last_year_price:,}
+            </div>
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-size:14px;
-                        font-weight:bold;
-                    ">
-                        {grade}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            <div style="font-size:11px;color:{color};">
+                {arrow} {abs(diff_rate)}%
+            </div>
+        </td>
+        """
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        font-size:22px;
-                        font-weight:bold;
-                    ">
-                        {current_price:,}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+    html += """
+    </tr>
+    </table>
+    """
 
-                st.caption(
-                    f"전년 {last_year_price:,}"
-                )
-
-                st.markdown(
-                    f"""
-                    <div style="
-                        text-align:center;
-                        color:{color};
-                        font-size:11px;
-                        font-weight:bold;
-                    ">
-                        {arrow} {abs(diff_rate)}%
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+    components.html(
+        html,
+        height=120
+    )
     else:
 
         price_cols = st.columns(4)
