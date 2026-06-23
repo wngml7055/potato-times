@@ -492,9 +492,9 @@ with left:
 
 
     price_size = "22px" if mobile else "32px"
-    sub_size = "15px" if mobile else "16px"
-    rate_size = "15px" if mobile else "16px"
-    grade_size = "20px" if mobile else "20px"
+    sub_size = "14px" if mobile else "16px"
+    rate_size = "14px" if mobile else "16px"
+    grade_size = "18px" if mobile else "20px"
     
     # =====================
     # 시세 표시
