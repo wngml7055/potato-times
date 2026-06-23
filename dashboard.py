@@ -502,11 +502,16 @@ with left:
 
     if mobile:
 
-        cols = st.columns(4)
+        c1, c2, c3, c4 = st.columns(4)
 
-        for idx, grade in enumerate(
-            ["특", "상", "보통", "하"]
-        ):
+        mobile_cols = {
+            "특": c1,
+            "상": c2,
+            "보통": c3,
+            "하": c4
+        }
+
+        for grade in ["특", "상", "보통", "하"]:
 
             row = garak[
                 garak["G_NAME"] == grade
@@ -534,28 +539,61 @@ with left:
                 1
             )
 
-            with cols[idx]:
+            color = (
+                "#1565C0"
+                if diff_rate >= 0
+                else "#D32F2F"
+            )
+
+            arrow = (
+                "▲"
+                if diff_rate >= 0
+                else "▼"
+            )
+
+            with mobile_cols[grade]:
 
                 st.markdown(
-                    f"<div style='text-align:center;font-size:14px;font-weight:bold'>{grade}</div>",
+                    f"""
+                    <div style="
+                        text-align:center;
+                        font-size:14px;
+                        font-weight:bold;
+                    ">
+                        {grade}
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
 
                 st.markdown(
-                    f"<div style='text-align:center;font-size:22px;font-weight:bold'>{current_price:,}</div>",
+                    f"""
+                    <div style="
+                        text-align:center;
+                        font-size:22px;
+                        font-weight:bold;
+                    ">
+                        {current_price:,}
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
 
-                st.markdown(
-                    f"<div style='text-align:center;font-size:10px;color:#888'>전년 {last_year_price:,}</div>",
-                    unsafe_allow_html=True
+                st.caption(
+                    f"전년 {last_year_price:,}"
                 )
 
-                color = "blue" if diff_rate > 0 else "red"
-                arrow = "▲" if diff_rate > 0 else "▼"
-
                 st.markdown(
-                    f"<div style='text-align:center;font-size:11px;color:{color}'>{arrow} {abs(diff_rate)}%</div>",
+                    f"""
+                    <div style="
+                        text-align:center;
+                        color:{color};
+                        font-size:11px;
+                        font-weight:bold;
+                    ">
+                        {arrow} {abs(diff_rate)}%
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
     else:
