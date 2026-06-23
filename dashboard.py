@@ -537,31 +537,27 @@ with left:
             with cols[idx]:
 
                 st.markdown(
-                    f"**{grade}**"
+                    f"<div style='text-align:center;font-size:14px;font-weight:bold'>{grade}</div>",
+                    unsafe_allow_html=True
                 )
 
                 st.markdown(
-                    f"### {current_price:,}"
+                    f"<div style='text-align:center;font-size:22px;font-weight:bold'>{current_price:,}</div>",
+                    unsafe_allow_html=True
                 )
 
-                st.caption(
-                    f"전년 {last_year_price:,}"
+                st.markdown(
+                    f"<div style='text-align:center;font-size:10px;color:#888'>전년 {last_year_price:,}</div>",
+                    unsafe_allow_html=True
                 )
 
-                if diff_rate > 0:
+                color = "blue" if diff_rate > 0 else "red"
+                arrow = "▲" if diff_rate > 0 else "▼"
 
-                    st.markdown(
-                        f"<span style='color:blue;'>▲ {diff_rate}%</span>",
-                        unsafe_allow_html=True
-                    )
-
-                else:
-
-                    st.markdown(
-                        f"<span style='color:red;'>▼ {abs(diff_rate)}%</span>",
-                        unsafe_allow_html=True
-                    )
-
+                st.markdown(
+                    f"<div style='text-align:center;font-size:11px;color:{color}'>{arrow} {abs(diff_rate)}%</div>",
+                    unsafe_allow_html=True
+                )
     else:
 
         price_cols = st.columns(4)
