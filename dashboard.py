@@ -540,28 +540,18 @@ with left:
                 ">
                     {grade}
                 </div>
-
                 <div style="
                     font-size:{price_size};
                     font-weight:bold;
                 ">
                     {current_price:,}
                 </div>
-
-                <div style="
-                    font-size:10px;
-                    color:#888;
-                ">
-                    전년 {last_year_price:,}
-                </div>
-
                 <div style="
                     font-size:{rate_size};
                     color:#0A36FF;
                 ">
                     ▼ {abs(diff_rate)}%
                 </div>
-            </td>
             """
 
         st.markdown(
@@ -572,11 +562,12 @@ with left:
             ">
                 <tr>
                     {row_html}
-                </tr>
             </table>
             """,
             unsafe_allow_html=True
         )
+
+    else:
 
         price_cols = st.columns(4)
 
