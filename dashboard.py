@@ -539,13 +539,13 @@ with left:
             ">
                 <div style="
                     font-weight:bold;
-                    font-size:{grade_size};
+                    font-size:16px;
                 ">
                     {grade}
                 </div>
 
                 <div style="
-                    font-size:{price_size};
+                    font-size:22px;
                     font-weight:bold;
                 ">
                     {current_price:,}
@@ -555,14 +555,14 @@ with left:
                     font-size:10px;
                     color:#999;
                     margin-top:2px;
-                    margin-bottom:2px;
                 ">
                     전년 {last_year_price:,}
                 </div>
 
                 <div style="
-                    font-size:{rate_size};
+                    font-size:11px;
                     color:#0A36FF;
+                    margin-top:2px;
                 ">
                     ▼ {abs(diff_rate)}%
                 </div>
@@ -574,6 +574,7 @@ with left:
             <table style="
                 width:100%;
                 table-layout:fixed;
+                border-collapse:collapse;
             ">
                 <tr>
                     {row_html}
