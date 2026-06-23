@@ -59,10 +59,22 @@ for i in range(7):
 
 df = pd.DataFrame(rows)
 
+df["title"] = (
+    df["title"]
+    .astype(str)
+    .str.replace("\xa0", " ", regex=False)
+)
+
+df["content"] = (
+    df["content"]
+    .astype(str)
+    .str.replace("\xa0", " ", regex=False)
+)
+
 df.to_csv(
     "data/kamis_potato.csv",
     index=False,
-    encoding="cp949"
+    encoding="utf-8-sig"
 )
 
 print(df.head())
