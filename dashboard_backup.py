@@ -490,6 +490,12 @@ with left:
         unsafe_allow_html=True
     )
 
+
+    price_size = "22px" if mobile else "32px"
+    sub_size = "11px" if mobile else "16px"
+    rate_size = "11px" if mobile else "15px"
+    grade_size = "14px" if mobile else "18px"
+    
     # =====================
     # 시세 표시
     # =====================
@@ -528,17 +534,20 @@ with left:
 
             row_html += f"""
             <td style="text-align:center;">
-                <div style="font-weight:bold;">
+                <div style="
+                    font-weight:bold;
+                    font-size:{grade_size};
+                ">
                     {grade}
                 </div>
                 <div style="
-                    font-size:22px;
+                    font-size:{price_size};
                     font-weight:bold;
                 ">
                     {current_price:,}
                 </div>
                 <div style="
-                    font-size:11px;
+                    font-size:{rate_size};
                     color:#0A36FF;
                 ">
                     ▼ {abs(diff_rate)}%
@@ -592,28 +601,39 @@ with left:
 
             with price_cols[idx]:
 
-                st.metric(
-                    label=grade,
-                    value=f"{current_price:,}원/kg"
+                st.markdown(
+                    f"""
+                    <div style="font-size:18px;font-weight:bold;">
+                        {grade}
+                    </div>
+
+                    <div style="
+                        font-size:32px;
+                        font-weight:bold;
+                        margin-top:8px;
+                    ">
+                        {current_price:,}원/kg
+                    </div>
+
+                    <div style="
+                        font-size:16px;
+                        color:#888;
+                        margin-top:10px;
+                    ">
+                        전년 {last_year_price:,}원/kg
+                    </div>
+
+                    <div style="
+                        font-size:15px;
+                        color:{'blue' if diff_rate > 0 else 'red'};
+                        margin-top:8px;
+                        font-weight:bold;
+                    ">
+                        {'▲' if diff_rate > 0 else '▼'} {abs(diff_rate)}%
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
-
-                st.caption(
-                    f"전년 {last_year_price:,}원/kg"
-                )
-
-                if diff_rate > 0:
-
-                    st.markdown(
-                        f"<span style='color:blue;font-size:12px;'>▲ {diff_rate}%</span>",
-                        unsafe_allow_html=True
-                    )
-
-                else:
-
-                    st.markdown(
-                        f"<span style='color:red;font-size:12px;'>▼ {abs(diff_rate)}%</span>",
-                        unsafe_allow_html=True
-                    )
 
     # =====================
     # 시세 영역 스타일
