@@ -533,13 +533,17 @@ with left:
             )
 
             row_html += f"""
-            <td style="text-align:center;">
+            <td style="
+                text-align:center;
+                padding:6px 2px;
+            ">
                 <div style="
                     font-weight:bold;
                     font-size:{grade_size};
                 ">
                     {grade}
                 </div>
+
                 <div style="
                     font-size:{price_size};
                     font-weight:bold;
@@ -562,6 +566,7 @@ with left:
                 ">
                     ▼ {abs(diff_rate)}%
                 </div>
+            </td>
             """
 
         st.markdown(
@@ -572,6 +577,7 @@ with left:
             ">
                 <tr>
                     {row_html}
+                </tr>
             </table>
             """,
             unsafe_allow_html=True
