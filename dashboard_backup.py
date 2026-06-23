@@ -764,7 +764,7 @@ with left:
         showarrow=False,
         yshift=18,
         font=dict(
-            size=10 if mobile else 12,
+            size=10 if mobile else 15,
             color="#1565C0"
         )
     )
@@ -777,7 +777,7 @@ with left:
         showarrow=False,
         yshift=18,
         font=dict(
-            size=10 if mobile else 12,
+            size=10 if mobile else 15,
             color="#1565C0"
         )
     )
@@ -791,7 +791,7 @@ with left:
         xshift=-45,
         yshift=18,
         font=dict(
-            size=10 if mobile else 12,
+            size=10 if mobile else 15,
             color="#1565C0"
         )
     )
@@ -914,7 +914,7 @@ with left:
             ),
             showarrow=False,
             font=dict(
-                size=9,
+                size=10 if mobile else 13,
                 color="gray"
             )
         )
