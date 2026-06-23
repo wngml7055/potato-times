@@ -557,11 +557,11 @@ with left:
                     {current_price:,}
                 </div>
 
-                <div style="font-size:14px;color:#888;">
+                <div style="font-size:15px;font-weight:600;color:#888;">
                     전년 {last_year_price:,}
                 </div>
 
-                <div style="font-size:14px;color:{color};">
+                <div style="font-size:15px;font-weight:600;color:{color};">
                     {arrow} {abs(diff_rate)}%
                 </div>
             </td>
