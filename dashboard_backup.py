@@ -484,7 +484,7 @@ with left:
         color:#7A4E00;
         margin-bottom:{margin_size};
     ">
-        🥔 가락시장 감자 시세
+        🥔 가락시장 감자 시세(원/kg)
     </div>
     """,
         unsafe_allow_html=True
@@ -492,9 +492,9 @@ with left:
 
 
     price_size = "22px" if mobile else "32px"
-    sub_size = "14px" if mobile else "16px"
-    rate_size = "14px" if mobile else "15px"
-    grade_size = "14px" if mobile else "18px"
+    sub_size = "16px" if mobile else "16px"
+    rate_size = "16px" if mobile else "16px"
+    grade_size = "20px" if mobile else "20px"
     
     # =====================
     # 시세 표시
@@ -557,11 +557,11 @@ with left:
                     {current_price:,}
                 </div>
 
-                <div style="font-size:10px;color:#888;">
+                <div style="font-size:14px;color:#888;">
                     전년 {last_year_price:,}
                 </div>
 
-                <div style="font-size:11px;color:{color};">
+                <div style="font-size:14px;color:{color};">
                     {arrow} {abs(diff_rate)}%
                 </div>
             </td>
@@ -574,7 +574,7 @@ with left:
 
         components.html(
             html,
-            height=120
+            height=100
         )
     else:
 
