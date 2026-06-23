@@ -465,46 +465,13 @@ chart2 = monthly[
 
 with left:
 
-    # =====================
-    # 가락시장 감자 시세
-    # =====================
-
-    title_size = "18px" if mobile else "22px"
-    padding_size = "6px 10px" if mobile else "8px 12px"
-    margin_size = "6px" if mobile else "10px"
-
-    st.markdown(
-        f"""
-    <div style="
-        background:#FFF4D6;
-        padding:{padding_size};
-        border-radius:8px;
-        font-size:{title_size};
-        font-weight:bold;
-        color:#7A4E00;
-        margin-bottom:{margin_size};
-    ">
-        🥔 가락시장 감자 시세
-    </div>
-    """,
-        unsafe_allow_html=True
-    )
-
-
-    price_size = "22px" if mobile else "32px"
-    sub_size = "11px" if mobile else "16px"
-    rate_size = "11px" if mobile else "15px"
-    grade_size = "14px" if mobile else "18px"
-    
-    # =====================
-    # 시세 표시
-    # =====================
-
     if mobile:
 
-        row_html = ""
+        cols = st.columns(4)
 
-        for grade in ["특", "상", "보통", "하"]:
+        for idx, grade in enumerate(
+            ["특", "상", "보통", "하"]
+        ):
 
             row = garak[
                 garak["G_NAME"] == grade
@@ -532,40 +499,41 @@ with left:
                 1
             )
 
-            row_html += f"""
-            <td style="text-align:center;">
-                <div style="
-                    font-weight:bold;
-                    font-size:{grade_size};
-                ">
-                    {grade}
-                </div>
-                <div style="
-                    font-size:{price_size};
-                    font-weight:bold;
-                ">
-                    {current_price:,}
-                </div>
-                <div style="
-                    font-size:{rate_size};
-                    color:#0A36FF;
-                ">
-                    ▼ {abs(diff_rate)}%
-                </div>
-            """
+            with cols[idx]:
 
-        st.markdown(
-            f"""
-            <table style="
-                width:100%;
-                table-layout:fixed;
-            ">
-                <tr>
-                    {row_html}
-            </table>
-            """,
-            unsafe_allow_html=True
-        )
+                st.markdown(
+                    f"**{grade}**"
+                )
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        font-size:22px;
+                        font-weight:bold;
+                        text-align:center;
+                    ">
+                        {current_price:,}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                st.caption(
+                    f"전년 {last_year_price:,}"
+                )
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        color:#0A36FF;
+                        font-size:11px;
+                        text-align:center;
+                    ">
+                        ▼ {abs(diff_rate)}%
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
     else:
 
