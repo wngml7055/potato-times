@@ -546,6 +546,16 @@ with left:
                 ">
                     {current_price:,}
                 </div>
+
+                <div style="
+                    font-size:10px;
+                    color:#999;
+                    margin-top:2px;
+                    margin-bottom:2px;
+                ">
+                    전년 {last_year_price:,}
+                </div>
+
                 <div style="
                     font-size:{rate_size};
                     color:#0A36FF;
