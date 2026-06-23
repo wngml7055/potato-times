@@ -484,7 +484,7 @@ with left:
         color:#7A4E00;
         margin-bottom:{margin_size};
     ">
-        🥔 가락시장 감자 시세
+        🥔 가락시장 감자 시세(원/kg)
     </div>
     """,
         unsafe_allow_html=True
