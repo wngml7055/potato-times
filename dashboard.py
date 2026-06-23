@@ -537,36 +537,22 @@ with left:
             with cols[idx]:
 
                 st.markdown(
-                    f"**{grade}**"
-                )
-
-                st.markdown(
-                    f"""
-                    <div style="
-                        font-size:22px;
-                        font-weight:bold;
-                        text-align:center;
-                    ">
-                        {current_price:,}
-                    </div>
-                    """,
+                    f"<div style='text-align:center;font-weight:bold;'>{grade}</div>",
                     unsafe_allow_html=True
                 )
 
-                st.caption(
-                    f"전년 {last_year_price:,}"
+                st.markdown(
+                    f"<div style='text-align:center;font-size:18px;font-weight:bold;'>{current_price:,}</div>",
+                    unsafe_allow_html=True
                 )
 
                 st.markdown(
-                    f"""
-                    <div style="
-                        color:#0A36FF;
-                        font-size:11px;
-                        text-align:center;
-                    ">
-                        ▼ {abs(diff_rate)}%
-                    </div>
-                    """,
+                    f"<div style='text-align:center;font-size:9px;color:#999;'>전년 {last_year_price:,}</div>",
+                    unsafe_allow_html=True
+                )
+
+                st.markdown(
+                    f"<div style='text-align:center;font-size:10px;color:#0A36FF;'>▼ {abs(diff_rate)}%</div>",
                     unsafe_allow_html=True
                 )
 
