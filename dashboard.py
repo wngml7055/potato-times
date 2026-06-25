@@ -46,6 +46,23 @@ st.markdown("""
     max-width: 110%;
 }
 
+@media (prefers-color-scheme: dark) {
+
+    body,
+    .stApp {
+        background:#111 !important;
+        color:#EEE !important;
+    }
+
+    div,
+    span,
+    p,
+    label {
+        color:#EEE !important;
+    }
+
+}
+
 h1,h2,h3 {
     margin-bottom: 0.3rem;
 }
