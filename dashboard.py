@@ -574,7 +574,7 @@ with left:
                     {current_price:,}
                 </div>
 
-                <div style="font-size:14px;color:#888;">
+                <div style="font-size:14px;color:inherit;">
                     전년 {last_year_price:,}
                 </div>
 
