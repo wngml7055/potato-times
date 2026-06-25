@@ -46,23 +46,6 @@ st.markdown("""
     max-width: 110%;
 }
 
-@media (prefers-color-scheme: dark) {
-
-    body,
-    .stApp {
-        background:#111 !important;
-        color:#EEE !important;
-    }
-
-    div,
-    span,
-    p,
-    label {
-        color:#EEE !important;
-    }
-
-}
-
 h1,h2,h3 {
     margin-bottom: 0.3rem;
 }
@@ -285,7 +268,7 @@ if os.path.exists("data/kamis_potato.csv"):
     display:block;
     margin-top:2px;
     margin-bottom:-10px;
-    color:inherit;
+    color:#444;
     font-size:{body_size};
     line-height:1.5;
 ">
@@ -574,7 +557,7 @@ with left:
                     {current_price:,}
                 </div>
 
-                <div style="font-size:14px;color:inherit;">
+                <div style="font-size:14px;color:#888;">
                     전년 {last_year_price:,}
                 </div>
 
