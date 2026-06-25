@@ -285,7 +285,7 @@ if os.path.exists("data/kamis_potato.csv"):
     display:block;
     margin-top:2px;
     margin-bottom:-10px;
-    color:#444;
+    color:inherit;
     font-size:{body_size};
     line-height:1.5;
 ">
